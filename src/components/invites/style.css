@@ -1,0 +1,22 @@
+#invites {
+  width: 100vw;
+  overflow: hidden;
+}
+#invites .container {
+  width: 100vw;
+  height: 20vh;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  display: -webkit-box;
+}
+
+.inviteCard {
+  width: calc(100vw - 20vw);
+  height: calc(20vh - 10vw);
+  margin: 5vw 0 0 5vw;
+  background: #efefef;
+  border-radius: 1vh;
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(3, auto);
+}
