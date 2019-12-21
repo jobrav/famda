@@ -6,7 +6,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./defaultApp.css";
 import styled from "styled-components"
 //context
-import { ViewContext, SelectContext, DateContext } from "../../contexts"
+import { ViewContext, SelectContext, DateContext, ShowContext } from "../../contexts"
 
 //assets
 import SearchBar from "../searchBar/index";
@@ -141,8 +141,11 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
   const [select, setSelect] = useState({ id: agendaSelects[key], name: key } || {});
   const providerSelect = useMemo(() => ({ select, setSelect }), [select, setSelect])
   // date 
+  const [startPoint, setStartPoint] = useState(new Date());
+  const providerDate = useMemo(() => ({ startPoint, setStartPoint }), [startPoint, setStartPoint])
+  // date 
   const [show, setShow] = useState({ datePicker: false, groupSource: false });
-  const providerDate = useMemo(() => ({ show, setShow }), [show, setShow])
+  const providerShow = useMemo(() => ({ show, setShow }), [show, setShow])
 
 
 
@@ -151,40 +154,41 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
   };
 
   return (
-    <TransitionGroup component={null}>
-      <div className="App">
-        <Redirect exact from='/' to='/view/' />
+    // <TransitionGroup component={null}>
+    <div className="App">
+      <Redirect exact from='/' to='/view/' />
 
-        <CSSTransition
-          key={route.location.pathname}
-          timeout={0}
-          classNames=""
-        >
-          <Switch location={route.location}>
-            <Route
-              exact
-              path={editActivityLinks}
-              component={AddActivity}
-            />
-            <Route
-              exact
-              path={editCalendarLinks}
-              component={AddCalendar}
-            />
-            <Route exact path={editMenuLinks} component={AddMenu} />
-            <Route exact path={"/card/:id"} component={InfoCard} />
-            <Route exact path={["/menu", "/menu/:id"]} component={Menu} />
-          </Switch>
-        </CSSTransition>
+      <CSSTransition
+        key={route.location.pathname}
+        timeout={0}
+        classNames=""
+      >
+        <Switch location={route.location}>
+          <Route
+            exact
+            path={editActivityLinks}
+            component={AddActivity}
+          />
+          <Route
+            exact
+            path={editCalendarLinks}
+            component={AddCalendar}
+          />
+          <Route exact path={editMenuLinks} component={AddMenu} />
+          <Route exact path={"/card/:id"} component={InfoCard} />
+          <Route exact path={["/menu", "/menu/:id"]} component={Menu} />
+        </Switch>
+      </CSSTransition>
 
-        <MenuBar />
+      <MenuBar />
 
-        <ViewContext.Provider value={providerView}>
-          <SelectContext.Provider value={providerSelect}>
-            <DateContext.Provider value={providerDate}>
+      <ViewContext.Provider value={providerView}>
+        <SelectContext.Provider value={providerSelect}>
+          <DateContext.Provider value={providerDate}>
+            <ShowContext.Provider value={providerShow}>
               <Route
                 path={"/view/"}
-                render={route => <Agenda source={sources} listArr={listArr} startingPoint={today} view={view} source={select.id} route={route} />}
+                render={route => <Agenda source={sources} listArr={listArr} startingPoint={startPoint} view={view} source={select.id} route={route} />}
               />
               <Route
                 path={"/view/"}
@@ -196,36 +200,37 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
                   {show.groupSource ? <MenuList allSelect={agendaSelects} /> : null}
                 </NavAgenda>)}
               />
-            </DateContext.Provider>
-          </SelectContext.Provider>
-        </ViewContext.Provider>
+            </ShowContext.Provider>
+          </DateContext.Provider>
+        </SelectContext.Provider>
+      </ViewContext.Provider>
 
-        <Link to="/profile">
-          <UserInfoCard>
-            <TextM justify="end" align="end" bold>Jochem van der valk</TextM>
-            {userData && <ProfilePic style={{ background: `url("data:image/jpeg;base64,${userData ? userData.picture : null}")` }} />}
-            <TextS justify="end" align="top">online - gesynchroniseerde</TextS>
-          </UserInfoCard>
-        </Link>
+      <Link to="/profile">
+        <UserInfoCard>
+          <TextM justify="end" align="end" bold>Jochem van der valk</TextM>
+          {userData && <ProfilePic style={{ background: `url("data:image/jpeg;base64,${userData ? userData.picture : null}")` }} />}
+          <TextS justify="end" align="top">online - gesynchroniseerde</TextS>
+        </UserInfoCard>
+      </Link>
 
-        {/* news wall and search */}
-        <div className="header searchHead" >
-          <SearchBar srchCtx={srchContext[0]} changeSrchCtx={changeSrchCtx} />
-        </div>
-        {srchContext ? <SearchFeed srchCntx={srchContext} /> : null}
-        <News user={userData} userData={newsData} />
-
-
-
-        <Route path={["/docs/:root1/:root2/:root3", "/docs/:root1/:root2", "/docs/:root1/", "/docs/"]} render={route => <Docs route={route} />} />
-
-        <Route
-          exact
-          path="/profile"
-          render={route => <Profile route={route} user={userData} />}
-        />
+      {/* news wall and search */}
+      <div className="header searchHead" >
+        <SearchBar srchCtx={srchContext[0]} changeSrchCtx={changeSrchCtx} />
       </div>
-    </TransitionGroup>
+      {srchContext ? <SearchFeed srchCntx={srchContext} /> : null}
+      <News user={userData} userData={newsData} />
+
+
+
+      <Route path={["/docs/:root1/:root2/:root3", "/docs/:root1/:root2", "/docs/:root1/", "/docs/"]} render={route => <Docs route={route} />} />
+
+      <Route
+        exact
+        path="/profile"
+        render={route => <Profile route={route} user={userData} />}
+      />
+    </div>
+    // </TransitionGroup>
   );
 });
 

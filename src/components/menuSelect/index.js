@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components"
 import { ReactComponent as Arrow } from "./arrow.svg";
-import { SelectContext, DateContext } from "../../contexts"
+import { SelectContext, ShowContext } from "../../contexts"
 
 const Wrapper = styled.div`
 position: relative;
@@ -27,7 +27,7 @@ grid-template-columns: auto 20px;
 grid-template-rows: 1fr;
 `
 
-const Text = styled.a`
+const Text = styled.div`
 justify-self: center;
 align-self: center;
 align-self: center;
@@ -55,7 +55,7 @@ align-self: center;
 
 const MenuSelect = ({ allSelect }) => {
     const { select, setSelect } = useContext(SelectContext);
-    const { show, setShow } = useContext(DateContext)
+    const { show, setShow } = useContext(ShowContext)
     let keys = Object.keys(allSelect)
     const [active, setActive] = useState(keys[0] || null);
     // const [show, setShow] = useState(true);
@@ -64,7 +64,12 @@ const MenuSelect = ({ allSelect }) => {
 
     return (
         <Wrapper>
-            <Button onClick={() => setShow({ groupSource: !show.groupSource })}><Text >{keys ? select.name : "undefined"}</Text><Icon><Arrow /></Icon></Button>
+            <Button onClick={() => setShow({ groupSource: !show.groupSource })}>
+                <Text >{keys ? select.name : "undefined"}</Text>
+                <Icon>
+                    <Arrow />
+                </Icon>
+            </Button>
         </Wrapper>
     )
 }

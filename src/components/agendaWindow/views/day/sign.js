@@ -33,7 +33,7 @@ const Sign = props => {
       key={`${classType} ${props.zipcode}`}
       className={classType}
       data-sign={"type" in props && props.type}
-      data-date={props.zipcode}
+      sign-date={props.zipcode}
     >{`${week[NewdateWeek]} ${NewdateDay}`}</div>
   );
 };

@@ -29,7 +29,8 @@ export const concatChunks = _ => {
   refresh();
 };
 
-const Agenda = React.memo(({ route, view, source, listArr }) => {
+const Agenda = React.memo(({ route, view, source, listArr, startingPoint }) => {
+
   const [update, setUpdate] = useState(false);
   useEffect(_ => {
     setTimeout(_ => {
@@ -87,8 +88,8 @@ const Agenda = React.memo(({ route, view, source, listArr }) => {
               classNames="zoom"
             >
               <Switch location={route.location}>
-                {view === listArr[0] && <ListView source={source} onChange={onChange} />}
-                {view === listArr[1] && <DayView source={source} onChange={onChange} />}
+                {view === listArr[0] && <ListView startingPoint={startingPoint} source={source} onChange={onChange} />}
+                {view === listArr[1] && <DayView startingPoint={startingPoint} source={source} onChange={onChange} />}
                 {view === listArr[2] && <WeekView source={source} onChange={onChange} />}
                 {view === listArr[3] && <MonthView source={source} onChange={onChange} />}
               </Switch></CSSTransition></TransitionGroup>

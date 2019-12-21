@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import * as firebase from "firebase";
 import buildCalendar from "../buildCalendar";
 
-export const Chunk = React.memo(({ startZipcode, endZipcode, sources, query, dispatch }) => {
+export const Chunk = React.memo(({ startZipcode, endZipcode, sources, query, setRender }) => {
     const db = firebase.firestore();
     const id = `${startZipcode}${endZipcode}`;
     let map = {}; // render
@@ -13,7 +13,11 @@ export const Chunk = React.memo(({ startZipcode, endZipcode, sources, query, dis
     }, [sources])
     const update = () => {
         sortFetch().then(docs => {
-            dispatch({ type: 'change', id, content: docs })
+
+            // dispatch({ type: 'change', id, content: docs })
+            let obj = {};
+            obj[id] = docs;
+            setRender(prev => ({ ...prev, ...obj }))
         })
     }
 
@@ -67,7 +71,10 @@ export const Chunk = React.memo(({ startZipcode, endZipcode, sources, query, dis
     const newChunk = () => {
         console.log("start chunk")
         map = {}
-        dispatch({ type: 'change', id, content: [] })
+        // dispatch({ type: 'change', id, content: [] })
+        let obj = {};
+        obj[id] = [];
+        setRender(prev => ({ ...prev, ...obj }))
         sources.forEach((source, Gindex, Garr) => {
             if (!query || query.repeat) fetchRepeatObjs(source);
             if (!query || query.single) fetchSingleObjs(source);

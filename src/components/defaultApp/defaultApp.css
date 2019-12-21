@@ -193,6 +193,9 @@ a {
   height: calc(100vh - 65px);
   overflow: auto;
 }
+#newsWindow > :last-child {
+  margin-bottom: 75px;
+}
 #searchFeed {
   border-top: #f3f3f3 1px solid;
   grid-row: 2;

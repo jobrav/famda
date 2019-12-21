@@ -37,7 +37,7 @@ const Sign = props => {
       data-sign={"type" in props && props.type}
       className="container_list"
       key={`${props.zipcode}_sign`}
-      data-date={props.zipcode}
+      sign-date={props.zipcode}
     >
       <div
         key={`${classType} ${props.zipcode}`}

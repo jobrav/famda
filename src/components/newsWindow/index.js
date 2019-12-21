@@ -11,7 +11,7 @@ const News = React.memo(({ user, userData, reminders }) => {
 
   return (
     <div className="scrollBody" id="newsWindow">
-      <div className="newsCounters">
+      {/* <div className="newsCounters">
         <a className="counter wallItem">
           <div className="icon" />
           <div className="number">0</div>
@@ -22,16 +22,19 @@ const News = React.memo(({ user, userData, reminders }) => {
           <div className="number">0</div>
           <div className="text name">Alle</div>
         </a>
-      </div>
-
-      {profileFinished || <FinishProfile />}
-      {hasInvites ? <Invites input={userData && invites} /> : <div />}
-
-      <div className="text" style={{ margin: "10px 0", textAlign: "left", width: "90%", fontWeight: "800" }}>Vandaag</div>
+      </div> */}
+      <div className="text" style={{ marginBottom: "10px", textAlign: "left", width: "90%", fontWeight: "800" }}>Volgende activiteit</div>
       <a className="card counter wallItem">
         <div className="icon" />
         <div className="text name">Deadline Nederlands PO3</div>
       </a>
+
+      {profileFinished || <FinishProfile />}
+      {hasInvites ? <Invites input={userData && invites} /> : <div />}
+
+
+      <img className="card wallItem" src="https://images.unsplash.com/photo-1491147334573-44cbb4602074?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80">
+      </img>
 
       <div className="text" style={{ margin: "10px 0", textAlign: "left", width: "90%", fontWeight: "800" }}>Recent gebruikt</div>
       <a className="card counter wallItem">

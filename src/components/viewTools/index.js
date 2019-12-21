@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components"
-import { DateContext } from "../../contexts"
+import { ShowContext } from "../../contexts"
 import { ReactComponent as Arrow } from "./arrow.svg";
 import { ReactComponent as Calendar } from "./calendar.svg";
 
@@ -43,7 +43,7 @@ align-self: center;
 
 const ViewTools = () => {
     let pos = 0;
-    const { show, setShow } = useContext(DateContext)
+    const { show, setShow } = useContext(ShowContext)
     const move = direction => {
         let timeline = document.getElementsByClassName("timeline")[0];
         let child = document.getElementsByClassName("sign_day");

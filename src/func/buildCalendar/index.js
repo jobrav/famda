@@ -21,7 +21,11 @@ const buildCalendar = (essdoc, minView, maxView) => {
             placeholder = [...placeholder, doc];
           } else console.log(doc);
         } else {
-          if (doc.date.ww != undefined) {
+          if (doc.date.daily) {
+            daily(doc, min, offset).then(ghosts =>
+              ghosts.forEach(doc => placeholder.push(doc))
+            );
+          } else if (doc.date.ww != undefined) {
             // console.log(min);
             // console.log(max);
             // console.log(offset)
@@ -40,11 +44,6 @@ const buildCalendar = (essdoc, minView, maxView) => {
               ghosts.forEach(doc => placeholder.push(doc));
             });
           }
-          // else if (doc.date && !doc.date.dd && !doc.date.ww && !doc.date.mm) {
-          //   daily(doc, min, offset).then(ghosts =>
-          //     ghosts.forEach(doc => placeholder.push(doc))
-          //   );
-          // }
           else {
             reject("Geen doc.date gevonden");
           }
