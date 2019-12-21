@@ -137,6 +137,7 @@ const App = props => {
           <Route render={route => (
             device == "mobile" ? (
               <MobileApp
+                route={route}
                 userData={userData}
                 auth={auth}
                 newsData={newsData}

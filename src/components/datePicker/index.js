@@ -69,7 +69,7 @@ const Picker = styled.div`
     grid-auto-rows: auto;
     max-height: 360px;
     overflow: auto;
-    scroll-behavior: smooth;
+    scroll-behavior: ${props => props.firstScroll ? "inherit" : "smooth"};
 `
 const Section = styled.div`
     scroll-snap-align: start;
@@ -130,6 +130,7 @@ const DatePicker = React.memo(({ }) => {
     const { startPoint, setStartPoint } = useContext(DateContext)
     const [date, setDate] = useState(new Date(today));
     const [objCount, setObjCount] = useState(12);
+    const [firstScroll, setFirstScroll] = useState(true);
 
     const createMonthRange = () => {
         const mm = new Date(today).getMonth();
@@ -150,6 +151,7 @@ const DatePicker = React.memo(({ }) => {
         const container = document.getElementById("datePicker")
         const obj = container.children[objCount].offsetTop;
         container.scrollTop = obj;
+        setFirstScroll(false);
     }, [objCount])
 
     const move = count => allowedToMove(objCount, count) && setObjCount(prev => prev + count)
@@ -183,7 +185,7 @@ const DatePicker = React.memo(({ }) => {
             <Move justify="end" rotate="true" src={arrow} onClick={() => move(-1)}></Move>
             <Move justify="start" src={arrow} onClick={() => move(1)}></Move>
             <List>{daysInWeek.map((day, i) => <ListItem key={`${day}_${i}_listitem`}>{day}</ListItem>)}</List>
-            <Picker id="datePicker">{createMonthRange().map((zipcodeMonth, i) =>
+            <Picker firstScroll={firstScroll} id="datePicker">{createMonthRange().map((zipcodeMonth, i) =>
                 <Section id={i} key={`${zipcodeMonth}_section`}>
                     {getDays(zipcodeMonth)}
                 </Section>)}
