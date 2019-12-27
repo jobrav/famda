@@ -28,6 +28,7 @@ export const concatChunks = _ => {
   renderList = bucket;
   refresh();
 };
+let cache = ["12312312321"];
 
 const Agenda = React.memo(({ route, view, source, listArr, startingPoint }) => {
 
@@ -72,6 +73,9 @@ const Agenda = React.memo(({ route, view, source, listArr, startingPoint }) => {
   let path = match.path != match.url;
   let infocard = match.path == "/card/:id";
 
+  let placeholder = cache;
+  const outputChange = render => cache = render
+
   return (
     <div
       id="agendaWindow"
@@ -83,13 +87,13 @@ const Agenda = React.memo(({ route, view, source, listArr, startingPoint }) => {
         {renderList ? (
           <TransitionGroup component={null}>
             <CSSTransition
-              key={route.location.pathname}
+              key={view}
               timeout={150}
               classNames="zoom"
             >
               <Switch location={route.location}>
                 {view === listArr[0] && <ListView startingPoint={startingPoint} source={source} onChange={onChange} />}
-                {view === listArr[1] && <DayView startingPoint={startingPoint} source={source} onChange={onChange} />}
+                {view === listArr[1] && <DayView startingPoint={startingPoint} source={source} placeholder={placeholder} output={outputChange} />}
                 {view === listArr[2] && <WeekView source={source} onChange={onChange} />}
                 {view === listArr[3] && <MonthView source={source} onChange={onChange} />}
               </Switch></CSSTransition></TransitionGroup>

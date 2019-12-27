@@ -59,7 +59,7 @@ a {
   border-radius: 8px;
 }
 .itemList {
-  width: 225px;
+  width: 100%;
   border-right: 1px #f3f3f3 solid;
 }
 .itemActive {
@@ -213,9 +213,11 @@ a {
 }
 #docsWindow {
   border-top: #f3f3f3 1px solid;
-  display: flex;
-  flex-direction: row;
+  display: grid;
   overflow: hidden;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
   width: 100%;
   grid-column: 2;
   grid-row: 2;

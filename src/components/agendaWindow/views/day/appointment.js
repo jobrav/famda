@@ -42,7 +42,7 @@ const Appointment = ({ data, zipcodeEnd, zipcode, beforeToday }) => {
       key={`${activity.id}_${zipcode}_obj`}
       data-key={activity.id}
       data-zipcode={zipcode}
-      style={{ opacity: beforeToday && 0.8, gridRow: `${getStartHour * 4 - 3 + startQuarter}/${getEndHour * 4 - 3 + endQuarter}` }}
+      style={{ background: activity.theme ? data.theme : null, opacity: beforeToday && 0.8, gridRow: `${getStartHour * 4 - 3 + startQuarter}/${getEndHour * 4 - 3 + endQuarter}` }}
     >
       <div
         // style={activity.theme ? appColorStyle : null}
@@ -50,10 +50,10 @@ const Appointment = ({ data, zipcodeEnd, zipcode, beforeToday }) => {
         className="appType_day"
         key="appType"
       />
-      <div key="appTitle" className="appTitle">
+      <div key="appTitle" style={{ color: "white" }} className="appTitle">
         {activity.title}
       </div>
-      <div key="appFeed" className="appFeed">
+      <div key="appFeed" style={{ color: "white" }} className="appFeed">
         {activity.feed}
       </div>
     </Link>

@@ -45,29 +45,6 @@ border-radius: 5px;
  }
 `
 
-const NavIcon = styled.div`
-width: 15px;
-height: 15px;
-justify-self: center;
-align-self: center;
-grid-template-rows: 1fr;
-
-& > svg {
-  fill: ${props => props.active ?  props.theme.menuIC : props.theme.primaryFC};
-}
-`
-
-const NavTitle = styled.div`
-font-size: 12.5px
-justify-self: start;
-font-weight: 600;
-align-self: center;
-color: ${props => props.active ? props.theme.menuIC : props.theme.primaryFC}
-
-&:hover{
-  color: ${props => props.active ? props.theme.menuIC : props.theme.primaryFHC}
-}
-`
 const add = (  <svg viewBox="0 0 491.86 491.86" xmlns="http://www.w3.org/2000/svg">
 <g>
     <path d="M465.167,211.614H280.245V26.691c0-8.424-11.439-26.69-34.316-26.69s-34.316,18.267-34.316,26.69v184.924H26.69
@@ -99,7 +76,31 @@ const menu = (  <svg viewBox="0 0 491.86 491.86" xmlns="http://www.w3.org/2000/s
 </svg>)
 
 
-let MenuBar = React.memo(props => {
+let MenuBar = React.memo(({route}) => {
+
+  const NavIcon = styled.div`
+width: 15px;
+height: 15px;
+justify-self: center;
+align-self: center;
+grid-template-rows: 1fr;
+
+& > svg {
+  fill: ${props => props.active === route.match.path ?  props.theme.menuIC : props.theme.primaryFC};
+}
+`
+
+const NavTitle = styled.div`
+font-size: 12.5px
+justify-self: start;
+font-weight: 600;
+align-self: center;
+color: ${props => props.active === route.match.path ? props.theme.menuIC : props.theme.primaryFC}
+
+&:hover{
+  color: ${props => props.active === route.match.path ? props.theme.menuIC : props.theme.primaryFHC}
+}
+`
 
   const navListItems = [
     { icon: blocks, title: "Agenda", link: "/view/" },
@@ -124,8 +125,8 @@ let MenuBar = React.memo(props => {
           key={`${link}_${title}`}
         >
           <NavItem>
-            <NavIcon active={i == 0}>{icon}</NavIcon>
-            <NavTitle to="/view/day" active={i == 0} className="title link">{title}</NavTitle>
+            <NavIcon active={link}>{icon}</NavIcon>
+            <NavTitle to="/view/day" active={link} className="title link">{title}</NavTitle>
           </NavItem>
         </NavLink>
 })}

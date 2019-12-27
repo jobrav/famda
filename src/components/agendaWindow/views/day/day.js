@@ -5,7 +5,7 @@ import Event from "./event";
 import Sign from "./sign";
 let storage = 0;
 
-const DayView = React.memo(({ source, startingPoint }) => {
+const DayView = React.memo(({ source, startingPoint, output, placeholder }) => {
 
   const today = new Date().setHours(0, 0, 0, 0)
   const AminView = new Date(today).setMonth(new Date(today).getMonth() - 1);
@@ -109,7 +109,7 @@ const DayView = React.memo(({ source, startingPoint }) => {
   }
 
   const [data, setData] = useState({})
-  const [render, setRender] = useState([]);
+  const [render, setRender] = useState(placeholder);
   const [renderTime, setRenderTime] = useState(0);
 
   useEffect(() => {
@@ -122,6 +122,7 @@ const DayView = React.memo(({ source, startingPoint }) => {
       setRender(render); //push render
       const startItem = document.querySelectorAll(`[sign-date="${new Date(startingPoint).setHours(0, 0, 0, 0)}"]`)[0]; // get today element
       timeline.scrollLeft = startItem ? startItem.offsetLeft : currentScroll; // scroll to startingpoint or fix scroll bug
+      output(render)
     })
 
   }, [data, startingPoint])

@@ -6,7 +6,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./defaultApp.css";
 import styled from "styled-components"
 //context
-import { ViewContext, SelectContext, DateContext, ShowContext } from "../../contexts"
+import { ViewContext, SelectContext, DateContext, ShowContext, DocRefContext } from "../../contexts"
 
 //assets
 import SearchBar from "../searchBar/index";
@@ -15,6 +15,7 @@ import ViewTools from "../viewTools";
 import MenuSelect from "../menuSelect";
 import DatePicker from "../datePicker"
 import MenuList from "../menuList"
+import DocFinder from "../docFinder"
 
 // controlers
 import MenuBar from "../menuBar";
@@ -143,9 +144,12 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
   // date 
   const [startPoint, setStartPoint] = useState(new Date());
   const providerDate = useMemo(() => ({ startPoint, setStartPoint }), [startPoint, setStartPoint])
-  // date 
+  // what to show 
   const [show, setShow] = useState({ datePicker: false, groupSource: false });
   const providerShow = useMemo(() => ({ show, setShow }), [show, setShow])
+  // ref
+  const [docRef, setDocRef] = useState(['base']);
+  const providerDocRef = useMemo(() => ({ docRef, setDocRef }), [docRef, setDocRef])
 
 
 
@@ -180,7 +184,7 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
         </Switch>
       </CSSTransition>
 
-      <MenuBar />
+      <Route path={["/docs/", "/view/", "/profile/"]} render={route => <MenuBar route={route} />}></Route>
 
       <ViewContext.Provider value={providerView}>
         <SelectContext.Provider value={providerSelect}>
@@ -222,7 +226,12 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
 
 
 
-      <Route path={["/docs/:root1/:root2/:root3", "/docs/:root1/:root2", "/docs/:root1/", "/docs/"]} render={route => <Docs route={route} />} />
+      <Route path={["/docs/:root1/:root2/:root3", "/docs/:root1/:root2", "/docs/:root1/", "/docs/"]} render={route =>
+        <DocRefContext.Provider value={providerDocRef}>
+          <DocFinder />
+          <Docs route={route} />
+        </DocRefContext.Provider>
+      } />
 
       <Route
         exact

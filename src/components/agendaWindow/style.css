@@ -13,6 +13,7 @@
   margin-top: 0;
   position: sticky;
   top: 0px;
+  z-index: 5;
 }
 .dayView {
   height: calc(100vh - 65px);
@@ -79,6 +80,7 @@
   grid-row: 2;
   min-width: 250px;
   background: #f7f7f7;
+  padding: 0 5px;
   margin: 2px 2.5px;
 }
 .container_day {
@@ -210,4 +212,7 @@
   margin-left: 5px;
   line-height: 20px;
   float: left;
+}
+.event .evtTitle {
+  margin-left: calc(5% + 10px);
 }

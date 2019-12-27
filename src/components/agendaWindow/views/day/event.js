@@ -6,7 +6,7 @@ const Event = props => {
   return (
     <Link
       to={`/card/${activity.id}`}
-      className="event"
+      className="event_day"
       key={`${activity.id}_${props.zipcode}_obj`}
       data-key={activity.id}
       data-zipcode={props.zipcode}
