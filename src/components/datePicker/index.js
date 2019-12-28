@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react"
-import arrow from "./arrow.svg";
 import styled from "styled-components"
-import { DateContext } from "../../contexts";
+import { DateContext, ShowContext } from "../../contexts";
 
 
 
@@ -17,26 +16,43 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: 1fr 40px 40px;
     grid-template-rows: 40px auto 1fr;
-    background: #fafafada;
+    background: ${props => props.theme.floatBGC || "#fafafada"};
     box-shadow: 0 0 25px 0 #1212121a;
+    z-index: 10;
 `
 const Text = styled.a`
     justify-self: start;
     margin-left: 20px
     align-self: center;
-    color: #272727;
+    color: ${props => props.theme.primaryFC || "#121212da"};
     font-size: 12.5px;
     font-weight: 600;
 `
-const Move = styled.img`
+const Move = styled.div`
     justify-self: ${props => props.justify || "start"};
     cursor: pointer;
     align-self: center;
     width: 10px;
-    height: 10px;
     padding: 7.5px;
     background-position: center;
     ${props => props.rotate ? "transform: rotate(180deg);" : null}
+    
+    & > svg{
+        fill: ${props => props.theme.primaryFC || "#121212da"};
+    }
+`
+const Picker = styled.div`
+    scroll-snap-type: y mandatory;
+    grid-column: 1/4;
+    width: calc(100% + 16px);
+    background: ${props => props.theme.primaryBGC || "#fff"};;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    grid-auto-rows: auto;
+    max-height: 360px;
+    overflow: auto;
+    scroll-behavior: ${props => props.firstScroll ? "inherit" : "smooth"};};
 `
 const List = styled.div`
     justify-self: center;
@@ -48,7 +64,7 @@ const List = styled.div`
     display: grid;
     grid-template-columns: repeat(7,1fr);
     grid-template-rows: 1fr;
-    border-bottom: 1px #e6e6e6  solid;
+    border-bottom:  ${props => props.theme.secondaryBGC || "#f3f3f3"} 1px solid;
     `
 const ListItem = styled.div`
     justify-self: center;
@@ -57,19 +73,6 @@ const ListItem = styled.div`
     font-size: 8px;
     text-align: center;
     color: ${props => props.theme.primaryFC || "#121212"}
-`
-const Picker = styled.div`
-    scroll-snap-type: y mandatory;
-    grid-column: 1/4;
-    width: calc(100% + 16px);
-    background: #f3f3f3;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-auto-flow: row;
-    grid-auto-rows: auto;
-    max-height: 360px;
-    overflow: auto;
-    scroll-behavior: ${props => props.firstScroll ? "inherit" : "smooth"};
 `
 const Section = styled.div`
     scroll-snap-align: start;
@@ -101,7 +104,7 @@ const Day = styled.div`
     width: 20px;
     padding: 2.5px;
     border-radius: 25px;
-    color: ${props => (!props.today && !props.active) ? "#121212" : props.theme.primaryFAC};
+    color: ${props => (!props.today && !props.active) ? props.theme.primaryFC : props.theme.primaryFAC};
     background: ${props => props.active ? "#b7b7b7" : null};
     background: ${props => props.today ? "#007aff" : null};
 `
@@ -125,22 +128,39 @@ const today = new Date().setHours(0, 0, 0, 0);
 
 const allowedToMove = (objCount, count) => (objCount > 0 && count >= 0) || (objCount < 24 && count <= 0)
 
-const DatePicker = React.memo(({ }) => {
-
-    const { startPoint, setStartPoint } = useContext(DateContext)
-    const [date, setDate] = useState(new Date(today));
-    const [objCount, setObjCount] = useState(12);
-    const [firstScroll, setFirstScroll] = useState(true);
-
-    const createMonthRange = () => {
+let monthRangeCache = [];
+const createMonthRange = () => {
+    if (monthRangeCache) {
         const mm = new Date(today).getMonth();
         let bucket = [];
         for (let i = -12; i <= 12; i++) {
             const zipcode = new Date(today).setMonth(mm + i)
             bucket = [...bucket, zipcode]
         }
+        monthRangeCache = bucket
         return bucket;
-    }
+    } else return monthRangeCache;
+}
+let sectionsCache = [];
+
+const arrow = (
+    <svg viewBox="0 0 491.86 491.86" xmlns="http://www.w3.org/2000/svg">
+        <g>
+            <path d="M345.441,248.292L151.154,442.573c-12.359,12.365-32.397,12.365-44.75,0c-12.354-12.354-12.354-32.391,0-44.744L278.318,225.92L106.409,54.017c-12.354-12.359-12.354-32.394,0-44.748c12.354-12.359,32.391-12.359,44.75,0l194.287,194.284c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,248.292z" />
+        </g>
+    </svg>
+)
+
+const DatePicker = React.memo(({ }) => {
+
+    const { show, setShow } = useContext(ShowContext)
+    const { startPoint, setStartPoint } = useContext(DateContext)
+    const [date, setDate] = useState(new Date(today));
+    const [objCount, setObjCount] = useState(12);
+    const [firstScroll, setFirstScroll] = useState(true);
+    const [sections, setSections] = useState(sectionsCache)
+
+    useEffect(() => { sectionsCache = sections }, [sections]) //create cache for sections
 
     useEffect(() => {
         // set date
@@ -149,12 +169,14 @@ const DatePicker = React.memo(({ }) => {
 
         // scroll
         const container = document.getElementById("datePicker")
-        const obj = container.children[objCount].offsetTop;
-        container.scrollTop = obj;
-        setFirstScroll(false);
-    }, [objCount])
+        if (container.children[objCount]) {
+            const obj = container.children[objCount].offsetTop;
+            container.scrollTop = obj;
+            setFirstScroll(false);
+        }
+    }, [objCount, sections])
 
-    const move = count => allowedToMove(objCount, count) && setObjCount(prev => prev + count)
+    const move = (objCount, count) => allowedToMove(objCount, count) && setObjCount(prev => prev + count)
     const link = zipcode => setStartPoint(zipcode)
 
     const getDays = (monthZipcode) => {
@@ -165,30 +187,50 @@ const DatePicker = React.memo(({ }) => {
         const year = new Date(zipcode).getFullYear();
         const month = new Date(zipcode).getMonth() + 1;
         const days = new Date(year, month, 0).getDate()
-
         for (let i = 1; i <= days; i++) {
             const isToday = new Date(today).valueOf() === new Date(zipcode).setDate(i);
             const isActive = new Date(startPoint).valueOf() === new Date(zipcode).setDate(i);
 
             bucket = [...bucket, <DayContainer onClick={() => link(new Date(zipcode).setDate(i))} pos={i === 1 && dayInWeek} key={`${i}_day`}>
                 <Day today={isToday} active={isActive}>{i}</Day>
-                <Flag />
+                {/* <Flag /> */}
             </DayContainer >]
         }
         return bucket
+    }
+    useEffect(() => {
+        window.addEventListener("click", clicked) //set event listener
+        if (!sections[2]) {
+            setSections(() => createMonthRange().map((zipcodeMonth, i) =>
+                <Section id={i} key={`${zipcodeMonth}_section`}>
+                    {getDays(zipcodeMonth)}
+                </Section>))
+        }
+    }, [show])
+
+    const clicked = e => {
+        const key = Container.componentStyle.componentId; //get id container element
+        const isKey = e.path.map(i => i.classList && i.classList[0] === key) //loop through path array
+        if (!isKey.includes(true)) showhide(); // if doensn't inlcude "true" then hide
+    }
+
+    const showhide = _ => {
+        setShow({ datePicker: false })//hide container
+        window.removeEventListener("click", clicked)//remove event listener
     }
 
 
     return (
         <Container>
             <Text>{`${monthNames[date ? new Date(date).getMonth() : undefined]} ${new Date(date).getFullYear()}`}</Text>
-            <Move justify="end" rotate="true" src={arrow} onClick={() => move(-1)}></Move>
-            <Move justify="start" src={arrow} onClick={() => move(1)}></Move>
+
+            <Move justify="end" rotate="true" onClick={() => move(objCount, -1)}>{arrow}</Move>
+            <Move justify="start" onClick={() => move(objCount, 1)}>{arrow}</Move>
+
             <List>{daysInWeek.map((day, i) => <ListItem key={`${day}_${i}_listitem`}>{day}</ListItem>)}</List>
-            <Picker firstScroll={firstScroll} id="datePicker">{createMonthRange().map((zipcodeMonth, i) =>
-                <Section id={i} key={`${zipcodeMonth}_section`}>
-                    {getDays(zipcodeMonth)}
-                </Section>)}
+
+            <Picker firstScroll={firstScroll} id="datePicker">
+                {sections}
             </Picker>
         </Container>)
 })

@@ -1,13 +1,13 @@
 import React from "react";
 
 const week = [
+  "Zo.",
   "Ma.",
   "Di.",
   "Wo.",
   "Do.",
   "Vr.",
-  "Za.",
-  "Zo.",
+  "Za."
 ];
 const Sign = props => {
   const date = new Date();
@@ -23,11 +23,6 @@ const Sign = props => {
 
   if (tmm === NewdateMonth && tdd === NewdateDay) classType = "sign_day today";
 
-  // prevDate = props.input || {
-  //   mm: NewdateMonth,
-  //   dd: NewdateDay,
-  //   yy: NewdateYear
-  // };
   return (
     <div
       key={`${classType} ${props.zipcode}`}

@@ -9,7 +9,7 @@ import DayView from "./views/day/day";
 import WeekView from "./views/week";
 import MonthView from "./views/month";
 import "./style.css";
-import { resolve } from "q";
+import styled from "styled-components"
 
 const today = new Date();
 const mm = today.getMonth();
@@ -28,7 +28,24 @@ export const concatChunks = _ => {
   renderList = bucket;
   refresh();
 };
-let cache = ["12312312321"];
+let cache = [];
+
+const Section = styled.section`
+border-top: ${props => props.theme.secondaryBGC || "#f3f3f3"} 1px solid;
+grid-column: 2;
+grid-row: 2;
+overflow: hidden;
+width: 100%;
+height: 100%;
+border-radius: 0;
+`
+const Wrapper = styled.div`
+position: relative;
+width: auto;
+width: 100%;
+height: 100%;
+`
+
 
 const Agenda = React.memo(({ route, view, source, listArr, startingPoint }) => {
 
@@ -50,7 +67,7 @@ const Agenda = React.memo(({ route, view, source, listArr, startingPoint }) => {
   };
 
   const onChange = (entries) => {
-    return new Promise(() => {
+    return new Promise((resolve) => {
       if (update === false && chunkBorder[0]) {
         const bottom = entries[0].target.id == "bottom" ? true : false;
         let chunkBorderBottom = bottom ? chunkBorder[0] : chunkBorder[chunkBorder.length - 1];
@@ -77,12 +94,8 @@ const Agenda = React.memo(({ route, view, source, listArr, startingPoint }) => {
   const outputChange = render => cache = render
 
   return (
-    <div
-      id="agendaWindow"
-      key="agendaWindow"
-      className={`screen ${false ? "hidden" : "default"}`}
-    >
-      <div className="render" key="render">
+    <Section>
+      <Wrapper className="render">
         <div id="top" />
         {renderList ? (
           <TransitionGroup component={null}>
@@ -99,8 +112,8 @@ const Agenda = React.memo(({ route, view, source, listArr, startingPoint }) => {
               </Switch></CSSTransition></TransitionGroup>
         ) : <Loader key="Loader" />}
         <div id="bottom" />
-      </div>
-    </div>
+      </Wrapper>
+    </Section>
   );
 });
 

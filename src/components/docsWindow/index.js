@@ -5,7 +5,7 @@ import styled from "styled-components"
 import { DocRefContext } from "../../contexts";
 
 const Section = styled.section`
-border-top: #f3f3f3 1px solid;
+border-top:  ${props => props.theme.secondaryBGC || "#f3f3f3"} 1px solid;
 display: grid;
 overflow-x: auto;
 grid-auto-flow: column;

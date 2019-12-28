@@ -118,11 +118,12 @@ const App = props => {
 
   const defaultColorStyles = {
     primaryBGC: darkMode ? "#121212" : "#fff",
-    secondaryBGC: darkMode ? "#121212" : "#efefefb9",
+    secondaryBGC: darkMode ? "#272727" : "#f3f3f3",
+    floatBGC: darkMode ? "#272727da" : "#f3f3f3da",
     //primary font color || default and hover
-    primaryFC: darkMode ? "#white" : "#b7b7b7",
-    primaryFHC: darkMode ? "#white" : "#b7b7b79a",
-    primaryFAC: darkMode ? "#white" : "#fff",
+    primaryFC: darkMode ? "#efefef" : "#b7b7b7",
+    primaryFHC: darkMode ? "#efefef9a" : "#b7b7b79a",
+    primaryFAC: darkMode ? "#ffffff" : "#fff",
     //secondary font color || default and hover
     secondaryFC: darkMode ? "#white" : "#b7b7b7",
     secondaryFHC: darkMode ? "#white" : "#b7b7b79a",

@@ -1,6 +1,5 @@
-import * as firebase from "firebase";
 import { NavLink, Link } from "react-router-dom";
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components"
 
 // styling
@@ -17,9 +16,9 @@ grid-template-rows: 50px;
 rid-auto-flow: row;
 grid-auto-rows: 30px;
 grid-gap: 5px;
-border-top: #f3f3f3 1px solid;
-background: #f3f3f3;
-border-right: #f3f3f3 1px solid;
+border-top: ${props => props.theme.secondaryBGC || "#f3f3f3"} 1px solid;
+background: ${props => props.theme.secondaryBGC || "#f3f3f3"};
+border-right: ${props => props.theme.secondaryBGC || "#f3f3f3"} 1px solid;
 `
 const NavItem = styled.div`
 background: transparent;
@@ -86,7 +85,7 @@ align-self: center;
 grid-template-rows: 1fr;
 
 & > svg {
-  fill: ${props => props.active === route.match.path ?  props.theme.menuIC : props.theme.primaryFC};
+  fill: ${props => route && (props.active === route.match.path ?  props.theme.menuIC : props.theme.primaryFC)};
 }
 `
 
@@ -95,10 +94,10 @@ font-size: 12.5px
 justify-self: start;
 font-weight: 600;
 align-self: center;
-color: ${props => props.active === route.match.path ? props.theme.menuIC : props.theme.primaryFC}
+color: ${props =>  route && (props.active === route.match.path ? props.theme.menuIC : props.theme.primaryFC)}
 
 &:hover{
-  color: ${props => props.active === route.match.path ? props.theme.menuIC : props.theme.primaryFHC}
+  color: ${props =>  route && (props.active === route.match.path ? props.theme.menuIC : props.theme.primaryFHC)}
 }
 `
 

@@ -8,7 +8,7 @@ const Nav = styled.div`
   border-radius: 25px;
   padding: 0 2px;
   height: 25px;
-  background: #efefefb9;
+  background: ${props => props.theme.secondaryBGC || "#f3f3f3"};
   backdrop-filter: blur(2px);
   display: grid;
   justify-self: center;
@@ -35,16 +35,18 @@ const ListItem = styled.a`
   height: 21px;
   line-height: 21px;
   border-radius: 25px;
-  color: #b7b7b7;
+  color: ${props => props.theme.primaryFC || "#b7b7b7"};
   max-width: 75px;
   width: calc(100vw / 4 - 10px);
   text-align: center;
   transition: all 0.1s ease-in-out;
   
-  &:hover & {
-  color: #b7b7b79a;
+  &:hover {
+    color: ${props => props.theme.primaryFHC || "#b7b7b7da"}
   transition: all 0.1s ease-in-out;
   }
+
+
 `;
 
 
@@ -60,7 +62,7 @@ const ViewSize = ({ listArr }) => {
   return (
     <Nav>
       <Backdrop className="viewActive" style={{ left: `${moveActive()}px` }} />
-      {listArr.map(elm => <ListItem key={elm} className="viewLink" style={isActive(elm)} onClick={() => setView(elm)}>{elm}</ListItem>)}
+      {listArr.map(elm => <ListItem key={elm} style={isActive(elm)} onClick={() => setView(elm)}>{elm}</ListItem>)}
     </Nav >
   );
 }

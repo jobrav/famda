@@ -37,10 +37,10 @@ let groupSources = [];
 
 //styling
 const Layout = styled.section`
- width: 100vw;
+width: 100vw;
 height: 100vh;
 overflow: hidden;
-background: white;
+background: ${props => props.theme.primaryBGC || "white"};
 display: grid;
 grid-template-columns: 190px 1fr auto;
 grid-template-rows: 65px auto;
@@ -50,6 +50,7 @@ cursor: ${props => props.select ? "text" : "default"};
 align-self: ${props => props.align || "none"};
 justify-self: ${props => props.justify || "none"};
 font-weight: ${props => props.bold ? "600" : "300"};
+color: ${props => props.theme.primaryFC || "#272727"};
 `
 const TextL = styled(Text)`
 font-size: 14.5px;
@@ -75,6 +76,10 @@ position: relative;
 background: ${props => props.theme.primaryBGC || "#fff"}
 width: 100%;
 height: 100%;
+`
+const SearchHeader = styled(Header)`
+grid-row: 1;
+grid-column: 3;
 `
 const NavAgenda = styled(Header)`
 grid-row: 1;
@@ -159,7 +164,8 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
 
   return (
     // <TransitionGroup component={null}>
-    <div className="App">
+    // <div className="App">
+    <Layout>
       <Redirect exact from='/' to='/view/' />
 
       <CSSTransition
@@ -218,9 +224,9 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
       </Link>
 
       {/* news wall and search */}
-      <div className="header searchHead" >
+      <SearchHeader>
         <SearchBar srchCtx={srchContext[0]} changeSrchCtx={changeSrchCtx} />
-      </div>
+      </SearchHeader>
       {srchContext ? <SearchFeed srchCntx={srchContext} /> : null}
       <News user={userData} userData={newsData} />
 
@@ -238,7 +244,8 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
         path="/profile"
         render={route => <Profile route={route} user={userData} />}
       />
-    </div>
+    </Layout>
+    // </div>
     // </TransitionGroup>
   );
 });

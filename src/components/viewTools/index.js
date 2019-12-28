@@ -11,13 +11,14 @@ max-width: 120px;
 width: calc(50vw - 7.5px);
 padding: 0 2px;
 height: 25px;
-background: #efefefb9;
+background: ${props => props.theme.secondaryBGC || "#f3f3f3"};
 backdrop-filter: blur(2px);
 display: grid;
 justify-self: start;
 align-self: center;
 grid-template-columns: auto 20px;
 grid-template-rows: 1fr;
+z-index: 10;
 `
 const Text = styled.div`
 justify-self: center;
@@ -26,7 +27,7 @@ align-self: center;
 font-size: 12.5px;
 text-align: center;
 font-weight: 600;
-color: #b7b7b7;
+color: ${props => props.theme.primaryFC};
 transition: all 0.1s ease-in-out;
 
 &:hover {
@@ -36,22 +37,13 @@ transition: all 0.1s ease-in-out;
 `
 const Icon = styled.div`
 width: 12.5px;
-fill: #b7b7b7;
+fill: ${props => props.theme.primaryFC};
 justify-self: start;
 align-self: center;
 `
 
 const ViewTools = () => {
-    let pos = 0;
     const { show, setShow } = useContext(ShowContext)
-    const move = direction => {
-        let timeline = document.getElementsByClassName("timeline")[0];
-        let child = document.getElementsByClassName("sign_day");
-        direction === "right" ? pos < child.length - 1 && pos++ : pos > 0 && pos--;
-        console.log(pos)
-        child[pos] && (timeline.scrollLeft = child[pos].offsetLeft)
-    }
-
     const date = new Date();
     const dd = date.getDate()
     const mm = date.getMonth()
@@ -62,8 +54,8 @@ const ViewTools = () => {
 
     return (
         <Button onClick={() => setShow({ datePicker: !show.datePicker })}>
-            <Text className="text">{`${dd} ${monthNames[mm]}`}</Text>
-            <Icon><Calendar className="icon" /></Icon>
+            <Text>{`${dd} ${monthNames[mm]}`}</Text>
+            <Icon><Calendar /></Icon>
         </Button>
 
     );

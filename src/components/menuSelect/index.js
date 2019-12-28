@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components"
 import { ReactComponent as Arrow } from "./arrow.svg";
 import { SelectContext, ShowContext } from "../../contexts"
@@ -10,7 +10,7 @@ max-width: 120px;
 width: calc(50vw - 7.5px);
 padding: 0 2px;
 height: 25px;
-background: #efefefb9;
+background: ${props => props.theme.secondaryBGC || "#f3f3f3"};
 backdrop-filter: blur(2px);
 display: grid;
 justify-self: end;
@@ -37,17 +37,17 @@ line-height: 25px;
 font-size: 12.5px;
 text-align: center;
 font-weight: 600;
-color: #b7b7b7;
+color: ${props => props.theme.primaryFC};;
 transition: all 0.1s ease-in-out;
 
 &:hover {
-    color: #b7b7b79a;
+    color: ${props => props.theme.primaryFHC};;
     transition: all  0.1s ease-in-out;
 }
 `
 const Icon = styled.div`
 width: 12.5px;
-fill: #b7b7b7;
+fill: ${props => props.theme.primaryFC || "#fff"}
 transform: rotate(90deg);
 justify-self: start;
 align-self: center;
@@ -57,13 +57,10 @@ const MenuSelect = ({ allSelect }) => {
     const { select, setSelect } = useContext(SelectContext);
     const { show, setShow } = useContext(ShowContext)
     let keys = Object.keys(allSelect)
-    const [active, setActive] = useState(keys[0] || null);
-    // const [show, setShow] = useState(true);
-
 
 
     return (
-        <Wrapper>
+        <Wrapper >
             <Button onClick={() => setShow({ groupSource: !show.groupSource })}>
                 <Text >{keys ? select.name : "undefined"}</Text>
                 <Icon>

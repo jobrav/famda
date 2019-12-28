@@ -28,38 +28,7 @@
   margin-bottom: 5px;
   padding: 0 2.5px;
 }
-.dayView .timeline {
-  display: grid;
-  margin-left: 50px;
-  overflow-x: auto;
-  grid-auto-flow: column;
-  scroll-snap-align: end;
-  scroll-snap-type: x mandatory;
-  grid-template-rows: 50px 50px 1fr;
-}
-.listView .timeline {
-  overflow-y: scroll;
-  height: calc(100vh - 65px);
-}
-.dayView .timetable {
-  position: absolute;
-  background: white;
-  left: 0px;
-  grid-column: 1;
-  grid-row: 2/4;
-  top: 50px;
-  /* height: 100%; */
-  width: 45px;
-  padding-right: 5px;
-  display: grid;
-  grid-template-rows: 50px repeat(96, 17px);
-}
-.dayView .timetable .text {
-  justify-self: end;
-  align-self: start;
-  text-align: right;
-  margin: 0;
-}
+
 .appointment_day {
   all: unset;
   width: 100%;

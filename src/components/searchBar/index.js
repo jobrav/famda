@@ -1,8 +1,30 @@
 import React from "react";
 import { ReactComponent as Icon } from "./search.svg";
 import { ReactComponent as Close } from "./close.svg";
+import styled from "styled-components";
 import "./style.css";
 
+const Container = styled.div`
+border-radius: 5px;
+display: grid;
+grid-row: 1;
+grid-column: 2/4;
+grid-template-columns: 30px auto 30px;
+height: 100%;
+transition: all 300ms ease-in-out;
+background: ${props => props.theme.secondaryBGC || "#f7f7f7"};
+`
+const Text = styled.input`
+all: unset;
+font-size: 12.5px;
+grid-column: 2;
+height: 100%;
+color: ${props => props.theme.primaryFC || "#121212"};
+transition: all 300ms ease-in-out;
+&:placeholder {
+  color:  ${props => props.theme.primaryFC || "#121212"};
+}
+`
 
 const SearchBar = React.memo(({ srchCtx, changeSrchCtx }) => {
   const clear = e => {
@@ -11,19 +33,15 @@ const SearchBar = React.memo(({ srchCtx, changeSrchCtx }) => {
   }
   return (
     <div id="searchBar">
-      <div
-        id="searchBox"
-        style={{ gridColumn: "2/4" }}
-      >
+      <Container>
         <Icon id="searchIcon" />
-        <input
+        <Text
           type="text"
-          id="searchInput"
           placeholder="Zoeken"
           onChange={e => changeSrchCtx(e.currentTarget.value)}
         />
         {srchCtx ? <Close id="cancelIcon" onClick={clear} /> : null}
-      </div>
+      </Container>
     </div>
   );
 })
