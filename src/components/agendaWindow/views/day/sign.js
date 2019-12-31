@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components"
 
 const week = [
   "Zo.",
@@ -9,27 +10,36 @@ const week = [
   "Vr.",
   "Za."
 ];
-const Sign = props => {
+
+const Container = styled.div`
+  align-self: end;
+  justify-self: start;
+  color: #272727;
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  padding: 0 2.5px;
+  color: ${props => props.today ? "#007aff" : props.theme.primaryFC};
+`
+
+
+const Sign = ({ zipcode }) => {
   const date = new Date();
   const tmm = date.getMonth();
   const tdd = date.getDate();
-  let classType = "sign_day";
-  let extraSign = [];
-  const Newdate = new Date(props.zipcode);
+  const Newdate = new Date(zipcode);
   const NewdateMonth = Newdate.getMonth();
   const NewdateWeek = Newdate.getDay();
   const NewdateDay = Newdate.getDate();
   const NewdateYear = Newdate.getFullYear();
 
-  if (tmm === NewdateMonth && tdd === NewdateDay) classType = "sign_day today";
-
+  let isToday = tmm === NewdateMonth && tdd === NewdateDay;
   return (
-    <div
-      key={`${classType} ${props.zipcode}`}
-      className={classType}
-      data-sign={"type" in props && props.type}
-      sign-date={props.zipcode}
-    >{`${week[NewdateWeek]} ${NewdateDay}`}</div>
+    <Container
+      key={`${isToday ? "today" : "sign"} ${zipcode}`}
+      today={isToday}
+      className={`sign_zipcode_${zipcode}`}
+    >{`${week[NewdateWeek]} ${NewdateDay}`}</Container>
   );
 };
 

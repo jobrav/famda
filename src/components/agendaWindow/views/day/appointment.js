@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 // import { activate } from "./../infoCard";
 
-const Appointment = ({ data, zipcodeEnd, zipcode, beforeToday }) => {
+const Appointment = ({ data, zipcodeEnd, zipcode }) => {
   function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result
@@ -35,6 +35,7 @@ const Appointment = ({ data, zipcodeEnd, zipcode, beforeToday }) => {
   const getEndHour = new Date(data.zipcodeEnd).getHours()
   const getEndQuarter = new Date(data.zipcodeEnd).getMinutes()
   const endQuarter = Math.floor(getEndQuarter / 15)
+  const beforeToday = new Date() > new Date(zipcode);
   return (
     <Link
       to={`/card/${activity.id}`}
@@ -42,7 +43,7 @@ const Appointment = ({ data, zipcodeEnd, zipcode, beforeToday }) => {
       key={`${activity.id}_${zipcode}_obj`}
       data-key={activity.id}
       data-zipcode={zipcode}
-      style={{ background: activity.theme ? data.theme : null, opacity: beforeToday && 0.8, gridRow: `${getStartHour * 4 - 3 + startQuarter}/${getEndHour * 4 - 3 + endQuarter}` }}
+      style={{ background: activity.theme ? data.theme : null, opacity: beforeToday && 0.8, gridRow: `${getStartHour * 4 + startQuarter}/${getEndHour * 4 + endQuarter}` }}
     >
       <div
         // style={activity.theme ? appColorStyle : null}
@@ -51,7 +52,7 @@ const Appointment = ({ data, zipcodeEnd, zipcode, beforeToday }) => {
         key="appType"
       />
       <div key="appTitle" style={{ color: "white" }} className="appTitle">
-        {activity.title}
+        {`${activity.title}`}
       </div>
       <div key="appFeed" style={{ color: "white" }} className="appFeed">
         {activity.feed}

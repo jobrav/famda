@@ -99,7 +99,7 @@ grid-gap: 0 5px;
 
 export let getGroupSources = () => groupSources;
 
-const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) => {
+const DefaultApp = React.memo(({ setAppSettings, auth, userData, newsData, reminders, route }) => {
 
   const [srchContext, setSrchContext] = useState("");
   const changeSrchCtx = useCallback(value => { setSrchContext(value) }, [setSrchContext])
@@ -137,7 +137,7 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
   let agendaSelects = userData ? userData.sources : {};
   let sources = userData ? userData.sources : [];
   // agenda array
-  let listArr = ["Lijst", "Dag", "Week", "Maand"]
+  let listArr = ["Lijst", "Dag", "Week"]
 
   // view 
   const [view, setView] = useState(listArr[1]);
@@ -234,7 +234,7 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
 
       <Route path={["/docs/:root1/:root2/:root3", "/docs/:root1/:root2", "/docs/:root1/", "/docs/"]} render={route =>
         <DocRefContext.Provider value={providerDocRef}>
-          <DocFinder />
+          <DocFinder user={userData} />
           <Docs route={route} />
         </DocRefContext.Provider>
       } />
@@ -242,7 +242,7 @@ const DefaultApp = React.memo(({ auth, userData, newsData, reminders, route }) =
       <Route
         exact
         path="/profile"
-        render={route => <Profile route={route} user={userData} />}
+        render={route => <Profile settings={setAppSettings} route={route} user={userData} />}
       />
     </Layout>
     // </div>

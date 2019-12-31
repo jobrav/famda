@@ -64,7 +64,6 @@ const Link = styled(LinkBase)`
 padding-left: ${props => props.active ? "calc(10% + 7.5px) !important" : null};
 background: ${props => props.active ? props.theme.secondaryBGC || "#f3f3f3 !important" : null};
 border-radius: ${props => props.active ? "0 !important" : null};
-transition: all 50ms ease-in-out;
 `
 const Image = styled.img` 
 display: flex;

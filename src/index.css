@@ -10,7 +10,17 @@ input {
   -moz-osx-font-smoothing: grayscale;
   font-family: "Raleway", sans-serif !important;
 }
-
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: #b7b7b7;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-corner {
+  opacity: 0;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

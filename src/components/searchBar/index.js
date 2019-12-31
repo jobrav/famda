@@ -11,7 +11,6 @@ grid-row: 1;
 grid-column: 2/4;
 grid-template-columns: 30px auto 30px;
 height: 100%;
-transition: all 300ms ease-in-out;
 background: ${props => props.theme.secondaryBGC || "#f7f7f7"};
 `
 const Text = styled.input`
@@ -20,7 +19,6 @@ font-size: 12.5px;
 grid-column: 2;
 height: 100%;
 color: ${props => props.theme.primaryFC || "#121212"};
-transition: all 300ms ease-in-out;
 &:placeholder {
   color:  ${props => props.theme.primaryFC || "#121212"};
 }

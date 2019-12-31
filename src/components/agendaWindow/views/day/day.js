@@ -65,7 +65,7 @@ const Timetable = styled.div`
 `
 const Number = styled.p`
 justify-self: end;
-align-self: start;
+align-self: end;
 text-align: right;
 margin: 0;
 font-size:12.5px;
@@ -140,7 +140,7 @@ const DayView = React.memo(({ source, startingPoint, output, placeholder }) => {
             bucket.head.push(
               <Sign
                 key={`${obj.zipcode}_sign`}
-                zipcode={new Date(obj.zipcode).setHours(0, 0, 0, 0)}
+                zipcode={new Date(storage).setHours(0, 0, 0, 0)}
                 input={metaData.date || null}
               />
             );
@@ -159,15 +159,11 @@ const DayView = React.memo(({ source, startingPoint, output, placeholder }) => {
           }
           prev = obj.zipcode
           storage = obj.zipcode;
-          let beforeToday =
-            new Date(today) >
-            new Date(obj.zipcode)
           // feed or no feed
           if (metaData && (metaData.feed || metaData.fullDay == false)) {
             dayBucket.push(
               <Appointment
                 key={`${obj.zipcode}_${obj.id}_apm`}
-                beforeToday={beforeToday}
                 zipcode={obj.zipcode}
                 data={metaData}
               />
@@ -184,7 +180,7 @@ const DayView = React.memo(({ source, startingPoint, output, placeholder }) => {
   const [render, setRender] = useState(placeholder);
   const [renderTime, setRenderTime] = useState(0);
 
-  const currentTime = new Date().getHours() * 60 + new Date().getMinutes() - 60;
+  const currentTime = new Date().getHours() * 60 + new Date().getMinutes();
   useEffect(() => {
 
     const timeline = document.getElementById("timeline"); // get timeline container
@@ -193,9 +189,9 @@ const DayView = React.memo(({ source, startingPoint, output, placeholder }) => {
 
     getRender(data, today).then(render => { // create render
       setRender(render); //push render
-      const startItem = document.querySelectorAll(`[sign-date="${new Date(startingPoint).setHours(0, 0, 0, 0)}"]`)[0]; // get today element
+      const startItem = document.getElementsByClassName(`sign_zipcode_${new Date(startingPoint).setHours(0, 0, 0, 0)}`)[0]; // get today element
       timeline.scrollLeft = startItem ? startItem.offsetLeft : currentScrollX; // scroll to startingpoint or fix scroll bug
-      timeline.scrollTop = renderTime < 5 ? currentTime * 17 : currentScrollY; // scroll to startingpoint or fix scroll bug
+      timeline.scrollTop = renderTime < 5 ? currentTime * 17 / 15 - 100 : currentScrollY; // scroll to startingpoint or fix scroll bug
       setRenderTime(prev => prev += 1) // add rendertime
     });
   }, [data, startingPoint])

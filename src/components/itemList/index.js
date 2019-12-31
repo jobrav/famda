@@ -13,13 +13,13 @@ const Container = styled.div`
 `
 const LinkBase = styled.a`
     display: flex;
-    flex-flow: row;
     width: calc(90% - 15px);
     background:  ${props => props.theme.secondaryBGC || "#f3f3f3"};
     padding: 7.5px 7.5px;
     margin-bottom: 10px;
     border-radius: 8px;
-    height: 22.5px;
+    min-height: 22.5px;
+    flex-wrap: wrap;
 `
 const Icon = styled.div`
     height: 22.5px;
@@ -30,16 +30,22 @@ const Icon = styled.div`
 `
 const Text = styled.div`
     font-size: 12.5px;
-    color: #727272;
+    color: ${props => props.theme.primaryFC || "#fff"};
     font-weight: 600;
     justify-self: start;
     align-self: center;
-    color: #b7b7b7;
-    &:hover{
-        color: #b7b7b7;
-        transition: all 50ms ease-in-out;
-    }
 `
+const Description = styled.div`
+    padding: 2.5px 0;
+    width: 100%;
+    font-size: 8px;
+    font-weight: 400;
+    justify-self: start;
+    align-self: center;
+    color: ${props => props.theme.secondaryFC || "#d3d3d3"};
+    align-self: flex-end;
+`
+
 const Link = styled(LinkBase)` 
 padding-left: ${props => props.active ? "calc(10% + 7.5px) !important" : null};
 background: ${props => props.active ? props.theme.secondaryBGC || "#f3f3f3 !important" : null};
@@ -49,10 +55,11 @@ transition: all 50ms ease-in-out;
 
 const ItemList = ({ items, active, click }) => {
     return (<Container>
-        {items.map(e => (
-            <Link active={active === e.title} onClick={() => click(e.title)}>
-                {e.icon ? <Icon /> : null}
-                <Text>{e.title}</Text>
+        {items.map(item => (
+            <Link active={active === item.title} onClick={() => click(item.title)}>
+                {item.icon ? <Icon /> : null}
+                <Text>{item.title}</Text>
+                {item.description ? <Description>{item.description}</Description> : null}
             </Link>)
         )}
     </Container>)

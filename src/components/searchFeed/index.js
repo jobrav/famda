@@ -9,12 +9,12 @@ position: relative;
   align-items: center;
   flex-direction: column;
   border-top: ${props => props.theme.secondaryBGC || "#f3f3f3"} 1px solid;
+  border-left: ${props => props.theme.secondaryBGC || "#f3f3f3"} 1px solid;
   grid-row: 2;
   width: 20vw;
   z-index: 5;
   backdrop-filter: blur(25px);
   min-width: 225px;
-  border-left: #f3f3f3 1px solid;
   grid-column: 3;
   background: ${props => props.theme.floatBGC || "#f7f7f7da"};
 `

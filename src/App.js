@@ -39,7 +39,7 @@ const App = props => {
   const [newsData, setNewsData] = useState();
   const [reminders, setReminder] = useState();
 
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState('true' == localStorage.getItem('darkmodeThemeEnabled') || false);
   const [device, setDevice] = useState("default");
 
 
@@ -121,39 +121,51 @@ const App = props => {
     secondaryBGC: darkMode ? "#272727" : "#f3f3f3",
     floatBGC: darkMode ? "#272727da" : "#f3f3f3da",
     //primary font color || default and hover
-    primaryFC: darkMode ? "#efefef" : "#b7b7b7",
-    primaryFHC: darkMode ? "#efefef9a" : "#b7b7b79a",
+    primaryFC: darkMode ? "#e7e7e7" : "#b7b7b7",
+    primaryFHC: darkMode ? "#e7e7e79a" : "#b7b7b79a",
     primaryFAC: darkMode ? "#ffffff" : "#fff",
     //secondary font color || default and hover
-    secondaryFC: darkMode ? "#white" : "#b7b7b7",
-    secondaryFHC: darkMode ? "#white" : "#b7b7b79a",
+    secondaryFC: darkMode ? "#e2e2e2" : "#b2b2b2",
+    secondaryFHC: darkMode ? "#e2e2e29a" : "#b2b2b29a",
     //menu items
     menuIC: darkMode ? "#409fff" : "#409fff",
+  }
+  const setSettings = opt => {
+    switch (opt) {
+      case "darkmode":
+        localStorage.setItem('darkmodeThemeEnabled', !darkMode);
+        setDarkMode(p => !p);
+        break;
+    }
+
   }
 
   return (
     <ThemeProvider theme={defaultColorStyles}>
       <BrowserRouter>
         {(setup && auth) ? (
-          <Route render={route => (
-            device == "mobile" ? (
-              <MobileApp
-                route={route}
-                userData={userData}
-                auth={auth}
-                newsData={newsData}
-                reminders={reminders}
-              />
-            ) : (
-                <DefaultApp
+          <Switch>
+            <Route render={route => (
+              device == "mobile" ? (
+                <MobileApp
                   route={route}
                   userData={userData}
                   auth={auth}
                   newsData={newsData}
                   reminders={reminders}
                 />
-              )
-          )} />
+              ) : (
+                  <DefaultApp
+                    route={route}
+                    userData={userData}
+                    auth={auth}
+                    newsData={newsData}
+                    reminders={reminders}
+                    setAppSettings={setSettings}
+                  />
+                )
+            )} />
+          </Switch>
         ) : (
             <div className="App">
               <Route exact path="/" component={SignIn} />

@@ -73,9 +73,9 @@ const Docs = React.memo(() => {
                   title: 'Bedrijfseconomie', "sub": {
                     Huiswerk: {
                       title: 'Huiswerk', icon: true, sub: {
-                        Nederlands: { title: 'Nederlands' },
-                        Wiskunde: { title: 'Wiskunde' },
-                        Bedrijfseconomie: { title: 'Bedrijfseconomie' }
+                        Nederlands: { title: 'Nederlands', description: "Morbi varius turpis orci, at laoreet quam viverra et. Vivamus vitae leo mi. Phasellus in nisi laoreet, sodales est id, maximus lacus. Phasellus semper lectus risus, gravida dignissim nulla lobortis at. Proin sem tortor, suscipit a tempor sit amet, mollis non tortor. " },
+                        Wiskunde: { title: 'Wiskunde', description: "Nunc ligula est, elementum quis tincidunt quis, ornare sed ligula. Fusce eget eros urna. Sed egestas enim vel dolor porttitor, id pellentesque nulla ullamcorper." },
+                        Bedrijfseconomie: { title: 'Bedrijfseconomie', description: "Nam lobortis nisl sed interdum placerat. Phasellus accumsan mi non mauris aliquam finibus. Aenean imperdiet aliquam ante nec congue. Curabitur et eros tortor. " }
                       }
                     }
                   }
