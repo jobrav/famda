@@ -62,7 +62,7 @@ const App = props => {
         // getUserData(user).then(val => setNewsData(val));
         // getReminders(user).then(val => setReminder(val));
         let width = window.innerWidth;
-        let deviceType = width > 800 ? "default" : "mobile";
+        let deviceType = width > 0 ? "default" : "mobile";
         setDevice(deviceType);
 
 

@@ -77,18 +77,6 @@ const menu = (  <svg viewBox="0 0 491.86 491.86" xmlns="http://www.w3.org/2000/s
 
 let MenuBar = React.memo(({route}) => {
 
-  const NavIcon = styled.div`
-width: 15px;
-height: 15px;
-justify-self: center;
-align-self: center;
-grid-template-rows: 1fr;
-
-& > svg {
-  fill: ${props => route && (props.active === route.match.path ?  props.theme.menuIC : props.theme.primaryFC)};
-}
-`
-
 const NavTitle = styled.div`
 font-size: 12.5px
 justify-self: start;
@@ -100,6 +88,23 @@ color: ${props =>  route && (props.active === route.match.path ? props.theme.men
   color: ${props =>  route && (props.active === route.match.path ? props.theme.menuIC : props.theme.primaryFHC)}
 }
 `
+
+  const NavIcon = styled.div`
+width: 15px;
+height: 15px;
+justify-self: center;
+align-self: center;
+grid-template-rows: 1fr;
+
+${NavTitle}:hover & > svg{
+  fill: ${props =>  route && (props.active === route.match.path ? props.theme.menuIC : props.theme.primaryFHC)}
+}
+
+& > svg {
+  fill: ${props => route && (props.active === route.match.path ?  props.theme.menuIC : props.theme.primaryFC)};
+}
+`
+
 
   const navListItems = [
     { icon: blocks, title: "Agenda", link: "/view/" },

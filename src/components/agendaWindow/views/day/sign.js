@@ -12,6 +12,8 @@ const week = [
 ];
 
 const Container = styled.div`
+  cursor: default;
+  pointer-events: none;
   align-self: end;
   justify-self: start;
   color: #272727;

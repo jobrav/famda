@@ -952,6 +952,15 @@ a {
   color: #919baa;
   font-weight: 600;
 }
+.cls-1 {
+  fill: #516ff4;
+}
+.cls-2 {
+  fill: #2f47f4;
+}
+.cls-3 {
+  fill: #2f47f4;
+}
 
 /* Animations */
 #infoCard .content {

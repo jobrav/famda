@@ -44,13 +44,12 @@ const Move = styled.div`
 const Picker = styled.div`
     scroll-snap-type: y mandatory;
     grid-column: 1/4;
-    width: calc(100% + 16px);
     background: ${props => props.theme.primaryBGC || "#fff"};;
     display: grid;
     grid-template-columns: 1fr;
     grid-auto-flow: row;
     grid-auto-rows: auto;
-    max-height: 360px;
+    height: 375px;
     overflow: auto;
     scroll-behavior: ${props => props.firstScroll ? "inherit" : "smooth"};};
 `
@@ -75,6 +74,7 @@ const ListItem = styled.div`
     color: ${props => props.theme.primaryFC || "#121212"}
 `
 const Section = styled.div`
+    height: 375px;
     scroll-snap-align: start;
     padding: 0px 15px 5px 15px;
     width: calc(100% - 30px);
@@ -85,7 +85,7 @@ const Section = styled.div`
 `
 const DayContainer = styled.a`
     justify-self: center;
-    align-self: center;
+    align-self: start;
     text-align: center;
     display: grid;
     grid-template-columns: 1fr;
@@ -93,7 +93,6 @@ const DayContainer = styled.a`
     padding-top: 5px;
     padding-bottom: 10px;
     width: 100%;
-    height: 100%;
     grid-column: ${props => props.pos || null};
     border-top: 1px #b7b7b72e solid;
 `
@@ -126,7 +125,7 @@ const daysInWeek = ["M", "D", "W", "D", "V", "Z", "Z"];
 const today = new Date().setHours(0, 0, 0, 0);
 
 
-const allowedToMove = (objCount, count) => (objCount > 0 && count >= 0) || (objCount < 24 && count <= 0)
+const allowedToMove = (prev, count) => (prev > 0 && count >= 0) || (prev < 24 && count <= 0)
 
 let monthRangeCache = [];
 const createMonthRange = () => {
@@ -152,31 +151,33 @@ const arrow = (
 )
 
 const DatePicker = React.memo(({ }) => {
-
     const { show, setShow } = useContext(ShowContext)
     const { startPoint, setStartPoint } = useContext(DateContext)
     const [date, setDate] = useState(new Date(today));
-    const [objCount, setObjCount] = useState(12);
+    const [objCount, setObjCount] = useState({ count: 12 });
+    let currentCount = objCount.count;
     const [firstScroll, setFirstScroll] = useState(true);
     const [sections, setSections] = useState(sectionsCache)
+
+    const scroll = data => {
+        const newScroll = Math.round(data.target.scrollTop / 375);
+        setDate(() => new Date(startPoint).setMonth(newScroll - 12)) //change date
+        if (objCount.count <= newScroll || objCount.count >= newScroll) currentCount = newScroll //change current pos
+    }
 
     useEffect(() => { sectionsCache = sections }, [sections]) //create cache for sections
 
     useEffect(() => {
-        // set date
-        const newDate = new Date(startPoint).setMonth(objCount - 1)
-        setDate(newDate)
-
         // scroll
         const container = document.getElementById("datePicker")
-        if (container.children[objCount]) {
-            const obj = container.children[objCount].offsetTop;
-            container.scrollTop = obj;
+        if (container.children[objCount.count]) {
+            container.scrollTop = container.children[objCount.count].offsetTop;
             setFirstScroll(false);
         }
     }, [objCount, sections])
 
-    const move = (objCount, count) => allowedToMove(objCount, count) && setObjCount(prev => prev + count)
+    const move = (count) => allowedToMove(currentCount, count) && setObjCount({ count: currentCount + count, num: Math.random() });
+
     const link = zipcode => setStartPoint(zipcode)
 
     const getDays = (monthZipcode) => {
@@ -221,11 +222,11 @@ const DatePicker = React.memo(({ }) => {
 
 
     return (
-        <Container>
+        <Container onScroll={scroll}>
             <Text>{`${monthNames[date ? new Date(date).getMonth() : undefined]} ${new Date(date).getFullYear()}`}</Text>
 
-            <Move justify="end" rotate="true" onClick={() => move(objCount, -1)}>{arrow}</Move>
-            <Move justify="start" onClick={() => move(objCount, 1)}>{arrow}</Move>
+            <Move justify="end" rotate="true" onClick={() => move(-1)}>{arrow}</Move>
+            <Move justify="start" onClick={() => move(1)}>{arrow}</Move>
 
             <List>{daysInWeek.map((day, i) => <ListItem key={`${day}_${i}_listitem`}>{day}</ListItem>)}</List>
 

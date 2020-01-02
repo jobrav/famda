@@ -39,6 +39,8 @@ const Body = styled.div`
 `
 
 const Legenda = styled.div`
+cursor: default;
+pointer-events: none;
   width: 40px;
   padding-right: 5px;
   padding-top: 55px;
@@ -52,6 +54,8 @@ const Legenda = styled.div`
   background: ${props => props.theme.primaryBGC || "#fff"}
 `
 const Timetable = styled.div`
+cursor: default;
+pointer-events: none;
   position: sticky;
   left:0;
   background: ${props => props.theme.primaryBGC || "#fff"}
@@ -64,6 +68,8 @@ const Timetable = styled.div`
   grid-template-rows: repeat(24, auto);
 `
 const Number = styled.p`
+cursor: default;
+pointer-events: none;
 justify-self: end;
 align-self: end;
 text-align: right;
