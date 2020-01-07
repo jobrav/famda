@@ -13,8 +13,8 @@ import SignIn from "./components/signIn";
 import SignUp from "./components/signUp";
 
 // devices
-import MobileApp from "./components/mobileApp";
-import DefaultApp from "./components/defaultApp";
+// import MobileApp from "./components/mobileApp";
+import DefaultApp from "./components/default/defaultApp";
 
 let groupSources = [];
 export let getGroupSources = () => groupSources;
@@ -119,7 +119,7 @@ const App = props => {
   const defaultColorStyles = {
     primaryBGC: darkMode ? "#121212" : "#fff",
     secondaryBGC: darkMode ? "#272727" : "#f3f3f3",
-    floatBGC: darkMode ? "#272727da" : "#f3f3f3da",
+    floatBGC: darkMode ? "#121212da" : "#ffffffda",
     //primary font color || default and hover
     primaryFC: darkMode ? "#e7e7e7" : "#b7b7b7",
     primaryFHC: darkMode ? "#e7e7e79a" : "#b7b7b79a",
@@ -147,13 +147,14 @@ const App = props => {
           <Switch>
             <Route render={route => (
               device == "mobile" ? (
-                <MobileApp
-                  route={route}
-                  userData={userData}
-                  auth={auth}
-                  newsData={newsData}
-                  reminders={reminders}
-                />
+                // <MobileApp
+                //   route={route}
+                //   userData={userData}
+                //   auth={auth}
+                //   newsData={newsData}
+                //   reminders={reminders}
+                // />
+                <div></div>
               ) : (
                   <DefaultApp
                     route={route}

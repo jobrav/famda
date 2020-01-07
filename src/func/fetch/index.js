@@ -1,7 +1,7 @@
 import * as firebase from "firebase";
 import { chunkBorder, updateChunk } from "../autoLoader";
 import { getGroupSources } from "../../App";
-import { concatChunks } from "../../components/agendaWindow/index";
+import { concatChunks } from "../../components/default/agendaWindow/index";
 
 export let docdata = () => fulldoc;
 let fulldoc = {};

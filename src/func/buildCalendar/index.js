@@ -11,24 +11,14 @@ const buildCalendar = (essdoc, minView, maxView) => {
         let diff = new Date(max) - new Date(min);
         let oneDay = 1000 * 60 * 60 * 24;
         let offset = Math.floor(diff / oneDay);
-        if (doc.repeat != true && doc.zipcode) {
-          if (
-            new Date(doc.zipcode).setHours(0, 0, 0, 0) >=
-            new Date(doc.minView).setHours(0, 0, 0, 0) &&
-            new Date(doc.zipcodeEnd).setHours(0, 0, 0, 0) <=
-            new Date(doc.maxView).setHours(0, 0, 0, 0)
-          ) {
-            placeholder = [...placeholder, doc];
-          } else console.log(doc);
+        if (!doc.repeat && doc.zipcode) {
+          placeholder = [...placeholder, doc];
         } else {
           if (doc.date.daily) {
             daily(doc, min, offset).then(ghosts =>
               ghosts.forEach(doc => placeholder.push(doc))
             );
           } else if (doc.date.ww != undefined) {
-            // console.log(min);
-            // console.log(max);
-            // console.log(offset)
             weekly(doc, min, offset, max).then(ghosts =>
               ghosts.forEach(doc => placeholder.push(doc))
             );
@@ -38,9 +28,6 @@ const buildCalendar = (essdoc, minView, maxView) => {
             );
           else if (doc.date.dd && doc.date.mm) {
             yearly(doc, min, max).then(ghosts => {
-              // if (doc.id === "zr4bsr2SRgMfHFdf6DDZ")
-              // console.log(ghosts, doc, min.valueOf(), max.valueOf());
-
               ghosts.forEach(doc => placeholder.push(doc));
             });
           }
@@ -50,12 +37,6 @@ const buildCalendar = (essdoc, minView, maxView) => {
         }
         setTimeout(_ => {
           if (index === arr.length - 1) {
-            // let placeholderOrder = placeholder.sort((a, b) =>
-            //   a.zipcode > b.zipcode ? 1 : b.zipcode > a.zipcode ? -1 : 0
-            // );
-            let placeholderOrder = placeholder;
-            // console.log(placeholderOrder);
-
             resolve(placeholder);
           }
         }, 100);
