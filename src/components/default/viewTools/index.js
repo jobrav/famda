@@ -1,15 +1,12 @@
 import React, { useContext } from "react";
 import styled from "styled-components"
 import { ShowContext, DateContext } from "../../../contexts"
-import { ReactComponent as Arrow } from "./arrow.svg";
-import { ReactComponent as Calendar } from "./calendar.svg";
 
 const Container = styled.div`
     width: 200px;
     display: grid;
     grid-template-rows:1fr;
-    grid-auto-flow: column;
-    grid-atuo-culumn: auto;
+    grid-template-columns:auto 90px auto;
     height: 25px;
     justify-self: start;
     align-self: center;
@@ -17,7 +14,6 @@ const Container = styled.div`
 const Button = styled.a`
 position: relative;
 border-radius: 25px;
-margin: 0 2.5px;
 height: 100%;
 background: ${props => props.theme.secondaryBGC || "#f3f3f3"};
 backdrop-filter: blur(2px);
@@ -32,7 +28,7 @@ z-index: 10;
     width: 12px;
     height: 12px;
     padding: 6.5px;
-    transform: rotate(${props => props.rotate ? 180 : 0}deg);
+    transform: rotate(${props => props.rotate || 0}deg);
     &:hover {
         fill: #b7b7b79a;
         transition: all  0.1s ease-in-out;
@@ -74,11 +70,9 @@ const ViewTools = () => {
     const mm = new Date(startPoint).getMonth()
 
 
-
-
     return (
         <Container>
-            <Button rotate={true} onClick={() => setStartPoint(prev => new Date(prev).setDate(new Date(startPoint).getDate() - 1))}>
+            <Button rotate={180} onClick={() => setStartPoint(prev => new Date(prev).setDate(new Date(startPoint).getDate() - 1))}>
                 {arrow}
             </Button>
             <Button onClick={() => setShow({ datePicker: !show.datePicker })}>

@@ -13,7 +13,7 @@ import SignIn from "./components/signIn";
 import SignUp from "./components/signUp";
 
 // devices
-// import MobileApp from "./components/mobileApp";
+import MobileApp from "./components/mobile/mobileApp";
 import DefaultApp from "./components/default/defaultApp";
 
 let groupSources = [];
@@ -62,7 +62,7 @@ const App = props => {
         // getUserData(user).then(val => setNewsData(val));
         // getReminders(user).then(val => setReminder(val));
         let width = window.innerWidth;
-        let deviceType = width > 0 ? "default" : "mobile";
+        let deviceType = width > 600 ? "default" : "mobile";
         setDevice(deviceType);
 
 
@@ -120,6 +120,7 @@ const App = props => {
     primaryBGC: darkMode ? "#121212" : "#fff",
     secondaryBGC: darkMode ? "#272727" : "#f3f3f3",
     floatBGC: darkMode ? "#121212da" : "#ffffffda",
+    floatSecBGC: darkMode ? "#272727da" : "#f3f3f3da",
     //primary font color || default and hover
     primaryFC: darkMode ? "#e7e7e7" : "#b7b7b7",
     primaryFHC: darkMode ? "#e7e7e79a" : "#b7b7b79a",
@@ -147,14 +148,13 @@ const App = props => {
           <Switch>
             <Route render={route => (
               device == "mobile" ? (
-                // <MobileApp
-                //   route={route}
-                //   userData={userData}
-                //   auth={auth}
-                //   newsData={newsData}
-                //   reminders={reminders}
-                // />
-                <div></div>
+                <MobileApp
+                  route={route}
+                  userData={userData}
+                  auth={auth}
+                  newsData={newsData}
+                  reminders={reminders}
+                />
               ) : (
                   <DefaultApp
                     route={route}

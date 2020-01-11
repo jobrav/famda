@@ -1,16 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import * as firebase from "firebase";
 import buildCalendar from "../buildCalendar";
 
-export const Chunk = React.memo(({ startZipcode, endZipcode, sources, query, setRender }) => {
+export const Chunk = React.memo(({ startZipcode, endZipcode, sources, query, setRender, finshed }) => {
     const db = firebase.firestore();
     const id = `${startZipcode}${endZipcode}`;
     let map = {}; // render
 
+    const [setupDone, setSetupDone] = useState(false);
     useEffect(() => {
         newChunk()
     }, [sources])
+    useEffect(() => {
+        finshed(e => e += 1)
+    }, [setupDone])
+
     const update = () => {
         sortFetch().then(docs => {
             // dispatch({ type: 'change', id, content: docs })
@@ -36,32 +41,40 @@ export const Chunk = React.memo(({ startZipcode, endZipcode, sources, query, set
     }
 
     const fetchData = (ref, parentData) => {
-        ref.onSnapshot(snap => {
-            let changes = snap.docChanges();
-            changes.forEach(change => {
-                if (change.type === "added" || change.type === "modified") modify(change.doc, parentData);
-                if (change.type === "removed") remove(change.doc);
-            })
-            update()
-        });
+        return new Promise(resolve => {
+            ref.onSnapshot(snap => {
+                let changes = snap.docChanges();
+                changes.forEach(change => {
+                    if (change.type === "added" || change.type === "modified") modify(change.doc, parentData);
+                    if (change.type === "removed") remove(change.doc);
+                })
+                update()
+                resolve(true);
+            });
+        })
     }
     const fetchRepeatObjs = (source, parentData) => {
-        const ref = db
-            .collection("calendars")
-            .doc(source)
-            .collection("activityIndex")
-            .where("repeat", "==", true);
-        fetchData(ref, parentData);
+        return new Promise(resolve => {
+            const ref = db
+                .collection("calendars")
+                .doc(source)
+                .collection("activityIndex")
+                .where("repeat", "==", true);
+
+            fetchData(ref, parentData).then(() => resolve(true));
+        })
     }
     const fetchSingleObjs = (source, parentData) => {
-        const ref = db
-            .collection("calendars")
-            .doc(source)
-            .collection("activityIndex")
-            .where("zipcode", ">=", startZipcode)
-            .where("zipcode", "<=", endZipcode);
+        return new Promise(resolve => {
+            const ref = db
+                .collection("calendars")
+                .doc(source)
+                .collection("activityIndex")
+                .where("zipcode", ">=", startZipcode)
+                .where("zipcode", "<=", endZipcode);
 
-        fetchData(ref, parentData);
+            fetchData(ref, parentData).then(() => resolve(true));
+        })
     }
     const getChildRefs = (type, children, id) => {
         switch (type) {
@@ -74,26 +87,31 @@ export const Chunk = React.memo(({ startZipcode, endZipcode, sources, query, set
         }
     }
     const fetchSources = (source) => {
-        const ref = db
-            .collection("calendars")
-            .doc(source)
+        new Promise(resolve => {
+            const ref = db
+                .collection("calendars")
+                .doc(source)
 
-        ref.get().then(snap => {
-            const { type, children, theme } = snap.data();
-            getChildRefs(type, children, snap.id).forEach((source) => {
-                fetchRepeatObjs(source, { parentTheme: theme, parentId: snap.id });
-                fetchSingleObjs(source, { parentTheme: theme, parentId: snap.id });
+            ref.get().then(snap => {
+                const { type, children, theme } = snap.data();
+                const setupFetch = getChildRefs(type, children, snap.id).map((source) => {
+                    fetchRepeatObjs(source, { parentTheme: theme, parentId: snap.id });
+                    fetchSingleObjs(source, { parentTheme: theme, parentId: snap.id });
+                })
+                Promise.all(setupFetch).then(() => resolve(true))
             })
         })
     }
     const newChunk = () => {
-        console.log("start chunk")
+        console.log("creating new chunk...")
+        finshed(0)
         map = {}
         // dispatch({ type: 'change', id, content: [] })
         let obj = {};
         obj[id] = [];
         setRender(prev => ({ ...prev, ...obj }))
-        sources && sources.forEach(source => fetchSources(source));
+        const setupFetch = sources ? sources.map(source => fetchSources(source)) : [];
+        Promise.all(setupFetch).then(e => setSetupDone(true))
     }
 
 

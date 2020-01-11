@@ -1,33 +1,30 @@
 const buildCalendar = (essdoc, minView, maxView) => {
   return new Promise((resolve, reject) => {
-    // console.log(essdoc, minView, maxView)
+
     let placeholder = []; //return array
-    placeholder = [];
-    // console.log(essdoc, minView, maxView)
+
     minView &&
       essdoc.forEach((doc, index, arr) => {
-        let min = new Date(minView);
-        let max = new Date(maxView);
-        let diff = new Date(max) - new Date(min);
+        let diff = new Date(maxView) - new Date(minView);
         let oneDay = 1000 * 60 * 60 * 24;
         let offset = Math.floor(diff / oneDay);
         if (!doc.repeat && doc.zipcode) {
           placeholder = [...placeholder, doc];
         } else {
           if (doc.date.daily) {
-            daily(doc, min, offset).then(ghosts =>
+            daily(doc, minView, offset).then(ghosts =>
               ghosts.forEach(doc => placeholder.push(doc))
             );
           } else if (doc.date.ww != undefined) {
-            weekly(doc, min, offset, max).then(ghosts =>
+            weekly(doc, minView, offset, maxView).then(ghosts =>
               ghosts.forEach(doc => placeholder.push(doc))
             );
           } else if (doc.date.dd && !doc.date.mm)
-            monthly(doc, min, max).then(ghosts =>
+            monthly(doc, minView, maxView).then(ghosts =>
               ghosts.forEach(doc => placeholder.push(doc))
             );
           else if (doc.date.dd && doc.date.mm) {
-            yearly(doc, min, max).then(ghosts => {
+            yearly(doc, minView, maxView).then(ghosts => {
               ghosts.forEach(doc => placeholder.push(doc));
             });
           }
@@ -49,8 +46,8 @@ const daily = (doc, min, offset) => {
   return new Promise((resolve, reject) => {
     if (!doc) reject("Doc niet gevonden");
     let bucket = [];
-    for (let i = 0; i < offset; i++) {
-      const zipghost = min.setDate(min.getDate() + 1);
+    for (let i = 1; i <= offset; i++) {
+      const zipghost = new Date(min).setDate(new Date(min).getDate() + i);
       const zipcode = createZipcode(zipghost, doc);
       const zipcodeEnd = createZipcodeEnd(zipghost, doc);
       const newDoc = { ...doc, zipcode, zipcodeEnd, id: doc.id };
@@ -67,7 +64,7 @@ const weekly = (doc, min, offset, max) => {
     let bucket = [];
     let dayOffset = doc.date.ww - new Date(min).getDay() + 1;
     // console.log(dayOffset, min);
-    let minOffset = new Date(min).setDate(min.getDate() + dayOffset);
+    let minOffset = new Date(min).setDate(new Date(min).getDate() + dayOffset);
     for (let i = 0; i < offset / 7; i++) {
       const zipghost = new Date(minOffset).setDate(
         new Date(minOffset).getDate() + 7 * i
@@ -88,11 +85,11 @@ const monthly = (doc, min, max) => {
 
     let bucket = [];
     let offset =
-      (max.getMonth() - min.getMonth()) *
-      (max.getFullYear() - min.getFullYear() + 1);
+      (new Date(max).getMonth() - new Date(min).getMonth()) *
+      (new Date(max).getFullYear() - new Date(min).getFullYear() + 1);
     // console.log(offset);
     for (let i = 0; i < offset; i++) {
-      const zipghost = min.setDate(doc.dd);
+      const zipghost = new Date(min).setDate(doc.dd);
       const zipcode = createZipcode(zipghost, doc);
       const zipcodeEnd = createZipcodeEnd(zipghost, doc);
       const newDoc = { ...doc, zipcode, zipcodeEnd, id: doc.id };
@@ -108,7 +105,7 @@ const yearly = (doc, min, max) => {
     if (!doc) reject("Doc niet gevonden");
     let bucket = [];
     let check = dateInRange(min, max, doc.date);
-    let calOffset = max.getFullYear() - min.getFullYear();
+    let calOffset = new Date(max).getFullYear() - new Date(min).getFullYear();
     let offset = check ? calOffset >= 1 || 1 : 0;
 
     // console.log(offset);
@@ -140,7 +137,7 @@ const createZipcodeEnd = (zipghost, doc) => {
 };
 
 const dateInRange = (min, max, date) =>
-  min <= new Date(max.getFullYear(), date.mm - 1, date.dd, 0, 0, 0) &&
-  new Date(max.getFullYear(), date.mm - 1, date.dd, 0, 0, 0) <= max;
+  new Date(min) <= new Date(new Date(max).getFullYear(), date.mm - 1, date.dd, 0, 0, 0) &&
+  new Date(new Date(max).getFullYear(), date.mm - 1, date.dd, 0, 0, 0) <= new Date(max);
 
 export default buildCalendar;

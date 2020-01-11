@@ -12,9 +12,10 @@ position: relative;
   border-left: ${props => props.theme.secondaryBGC || "#f3f3f3"} 1px solid;
   grid-row: 2;
   width: 20vw;
+  max-width: 275px;
+  min-width: 225px;
   z-index: 5;
   backdrop-filter: blur(25px);
-  min-width: 225px;
   grid-column: 3;
   background: ${props => props.theme.floatBGC || "#f7f7f7da"};
 `

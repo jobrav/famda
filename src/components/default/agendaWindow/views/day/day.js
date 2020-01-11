@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Appointment from "./appointment"
 import Event from "./event";
 import Sign from "./sign";
 import styled from "styled-components"
+
 let storage = 0;
 const Container = styled.div`
 display: grid;
@@ -103,23 +104,23 @@ z-index: 7;
 `
 const ContainerWholeItem = styled.div`
 grid-row: 2;
-min-width: 250px;
+min-width: 200px;
 padding: 0 5px;
 margin: 2.5px;
 background: ${props => props.theme.secondaryBGC || "#f7f7f7"};
 `
 const ContainerDayItem = styled.div`
 overflow-x: hidden;
-min-width: 250px;
+min-width: 200px;
 display: grid;
 grid-template-rows: repeat(96, 14px);
 margin: 0 2.5px;
 scroll-snap-align: start;
 background: ${props => props.theme.secondaryBGC || "#f7f7f7"};
 `
-const DayView = React.memo(({ show, startingPoint, data, edge }) => {
-
-  const today = new Date(startingPoint).setHours(0, 0, 0, 0)
+let cache = [{ body: [], head: [] }];
+const DayView = React.memo(({ show, dataReady, data, edge, startPoint }) => {
+  const today = new Date(startPoint).setHours(0, 0, 0, 0)
   const AminView = new Date(today).setMonth(new Date(today).getMonth() - 1);
 
   const getRender = (render) => {
@@ -178,30 +179,37 @@ const DayView = React.memo(({ show, startingPoint, data, edge }) => {
   }
 
   const [render, setRender] = useState([]);
-  const [renderTime, setRenderTime] = useState(0);
-  let scrollToStartingPoint = false;
-
-  useEffect(() => {
-    setRenderTime(0)
-  }, [show])
-
   const currentTime = new Date().getHours() * 60 + new Date().getMinutes();
   useEffect(() => {
-    let timeline = document.getElementById("timeline"); // get timeline container
-    const currentScrollRight = timeline.scrollWidth - timeline.scrollLeft; // get current scroll from left
-    const currentScrollY = timeline.scrollTop; // get current scroll from left
-    getRender(data, today).then(render => { // create render
-      setRender(render); //push render
-      const startItem = document.getElementsByClassName(`sign_zipcode_${new Date(startingPoint).setHours(0, 0, 0, 0)}`)[0]; // get today element
-      if (!scrollToStartingPoint) {
-        scrollToStartingPoint = true
-        timeline.scrollLeft = startItem ? startItem.offsetLeft : 0;
-      } else timeline.scrollLeft = timeline.scrollWidth - currentScrollRight; // scroll to startingpoint or fix scroll bug
+    const timeline = document.getElementById("timeline"); // get timeline container
 
-      timeline.scrollTop = renderTime < 5 ? currentTime * 14 / 15 - 100 : currentScrollY; // scroll to startingpoint or fix scroll bug
-      setRenderTime(prev => prev += 1) // add rendertime
+    getRender(data, today).then(render => { // create render
+      if (dataReady) {
+        setRender(render); //push render
+        cache = render;
+      } else setRender(cache); //push cache
+
+      fixScroll(timeline.scrollWidth - timeline.scrollLeft, timeline.scrollTop, true);
     });
-  }, [data, startingPoint])
+  }, [data])
+
+  const fixScroll = (currentScrollRight, currentScrollTop, firstRender) => {
+    const timeline = document.getElementById("timeline"); // get timeline container
+    const startItem = document.getElementsByClassName(`sign_zipcode_${new Date(startPoint).setHours(0, 0, 0, 0)}`)[0]; // get today element
+    if (firstRender) {
+      timeline.scrollTop = currentTime * 14 / 15 - 100;
+    }
+    timeline.scrollLeft = startItem ? startItem.offsetLeft : 0;
+    // else {
+    //   timeline.scrollLeft = timeline.scrollWidth - currentScrollRight; // scroll to startPoint or fix scroll bug
+    //   timeline.scrollTop = currentScrollTop; // scroll to startPoint or fix scroll bug
+    // }
+  }
+
+  useEffect(() => {
+    fixScroll()
+  }, [startPoint])
+
 
   const scrolling = input => {
     const scroll = Math.round(input.target.scrollLeft);

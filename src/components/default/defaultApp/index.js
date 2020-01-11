@@ -41,7 +41,7 @@ overflow: hidden;
 background: ${props => props.theme.primaryBGC || "white"};
 display: grid;
 grid-template-columns: 190px 1fr auto;
-grid-template-rows: 65px auto;
+grid-template-rows: 50px auto;
 
 @media screen and (max-width: 920px) and (min-width: 600px){
   grid-template-columns: 190px 1fr;
