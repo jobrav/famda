@@ -19,7 +19,7 @@ const Item = styled.a`
     border-radius: 21px;
     color: ${props => props.theme.primaryFC || "#121212"};
     -webkit-text-fill-color: ${props => props.theme.primaryFC || "#121212"};
-    font-weight: 600;
+    font-weight: 500;
     font-size: ${props => props.theme.defaultFontSize};
     margin-right: 5px;
 

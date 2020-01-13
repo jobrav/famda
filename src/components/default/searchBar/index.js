@@ -18,6 +18,7 @@ all: unset;
 font-size: ${props => props.theme.defaultFontSize};
 grid-column: 2;
 height: 100%;
+font-weight: 300;
 color: ${props => props.theme.primaryFC || "#121212"};
 -webkit-text-fill-color: ${props => props.theme.primaryFC || "#121212"};
 &:placeholder {

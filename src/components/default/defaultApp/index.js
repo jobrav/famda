@@ -18,6 +18,8 @@ import MenuList from "../menuList"
 import DocFinder from "../docFinder"
 import ContextMenu from "../contextMenu"
 
+// Floatwindow items
+import EditForm from "../editForm";
 // controlers
 import MenuBar from "../menuBar";
 // windows
@@ -45,18 +47,18 @@ grid-template-rows: 50px auto;
 
 @media screen and (max-width: 920px) and (min-width: 600px){
   grid-template-columns: 190px 1fr;
-  grid-template-rows: 65px auto;
+  grid-template-rows: 50px auto;
 }
 @media screen and (max-width: 600px){
   grid-template-columns: 50px 1fr;
-  grid-template-rows: 65px auto;
+  grid-template-rows: 50px auto;
 }
 `
 const Text = styled.div`
 cursor: ${props => props.select ? "text" : "default"};
 align-self: ${props => props.align || "none"};
 justify-self: ${props => props.justify || "none"};
-font-weight: ${props => props.bold ? "600" : "300"};
+font-weight: ${props => props.bold ? "500" : "300"};
 color: ${props => props.theme.primaryFC || "#272727"};
 -webkit-text-fill-color: ${props => props.theme.primaryFC || "#272727"};
 `
@@ -201,7 +203,7 @@ const DefaultApp = React.memo(({ setAppSettings, auth, userData, newsData, remin
         <Route path={["/docs/", "/view/", "/profile/"]} render={route => <MenuBar route={route} />}></Route>
 
         <Route path={["/:sec/add"]} render={route => <FloatWindowDefault title={"Nieuwe activiteit"} route={route} >
-          <News user={userData} userData={newsData} />
+          <EditForm user={userData} userData={newsData} />
         </FloatWindowDefault>} />
 
         <Route path={["/:sec/card"]} render={route => <FloatWindowDefault title={"Afspraak"} route={route} >

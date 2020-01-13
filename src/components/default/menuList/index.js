@@ -31,13 +31,14 @@ const Section = styled.div`
 const Head = styled.div`
     margin: 5px 0;
     padding: 0 15px;
-    font-weight: 800;
+    font-weight: 500;
     font-size: ${props => props.theme.defaultFontSize};
     color: ${props => props.theme.primaryFC || "#121212da"};
     -webkit-text-fill-color: ${props => props.theme.primaryFC || "#121212da"};
     align-self: center;
-`
+    `
 const Item = styled.a`
+    font-weight: 400;
     height: 35px;
     font-size: ${props => props.theme.defaultFontSize};
     padding-left: 15px;

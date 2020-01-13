@@ -121,6 +121,7 @@ const App = props => {
     secondaryBGC: darkMode ? "#272727" : "#f3f3f3",
     floatBGC: darkMode ? "#121212da" : "#ffffffda",
     floatSecBGC: darkMode ? "#272727da" : "#f3f3f3da",
+    lineBGC: darkMode ? "#2f2e2e9a" : "#f3f3f3",
     //primary font color || default and hover
     primaryFC: darkMode ? "#e7e7e7" : "#b7b7b7",
     primaryFHC: darkMode ? "#e7e7e79a" : "#b7b7b79a",
@@ -128,6 +129,8 @@ const App = props => {
     //secondary font color || default and hover
     secondaryFC: darkMode ? "#e2e2e2" : "#b2b2b2",
     secondaryFHC: darkMode ? "#e2e2e29a" : "#b2b2b29a",
+    //float font color
+    floatFC: darkMode ? "#e7e7e7" : "#151515",
     //menu items
     menuIC: darkMode ? "#409fff" : "#409fff",
   }

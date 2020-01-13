@@ -35,7 +35,7 @@ const Title = styled.div`
   margin-left: 7.5px;
   justify-self: start;
   align-self: center;
-  font-weight: 600;
+  font-weight: 400;
   font-size: ${props => props.theme.defaultFontSize};
   color: #b7b7b7;
   -webkit-text-fill-color: #b7b7b7;

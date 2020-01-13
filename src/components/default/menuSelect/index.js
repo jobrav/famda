@@ -36,7 +36,7 @@ height: 25px;
 line-height: 25px;
 font-size: ${props => props.theme.defaultFontSize};
 text-align: center;
-font-weight: 600;
+font-weight: 400;
 color: ${props => props.theme.primaryFC};
 -webkit-text-fill-color: ${props => props.theme.primaryFC};
 transition: all 0.1s ease-in-out;

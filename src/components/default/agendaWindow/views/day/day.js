@@ -67,6 +67,7 @@ pointer-events: none;
   grid-template-rows: repeat(24, auto);
 `
 const Number = styled.p`
+font-weight: 300;
 cursor: default;
 pointer-events: none;
 justify-self: end;

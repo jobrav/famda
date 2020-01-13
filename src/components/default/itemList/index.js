@@ -32,7 +32,7 @@ const Text = styled.div`
     font-size: ${props => props.theme.defaultFontSize};
     color: ${props => props.theme.primaryFC || "#fff"};
     -webkit-text-fill-color: ${props => props.theme.primaryFC || "#fff"};
-    font-weight: 600;
+    font-weight: 400;
     justify-self: start;
     align-self: center;
 `
@@ -40,7 +40,7 @@ const Description = styled.div`
     padding: 2.5px 0;
     width: 100%;
     font-size: ${props => props.theme.subFontSize};
-    font-weight: 400;
+    font-weight: 300;
     justify-self: start;
     align-self: center;
     color: ${props => props.theme.secondaryFC || "#d3d3d3"};

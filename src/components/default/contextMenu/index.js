@@ -8,24 +8,24 @@ const Container = styled.div`
     left: ${props => props.posX || 0}px;
     width: 200px;
     padding: 5px
-    border-radius: 5px;
-    background: ${props => props.theme.floatBGC}
+    border-radius: 10px;
+    background: ${props => props.theme.secondaryBGC || "#fff"};
     z-index: 20;
-    box-shadow: 0 0 25px 0 #1212121a;
+    box-shadow: 0 0 5px 0 #1212121c;
 `
 const Text = styled.div`
     font-size: ${props => props.theme.defaultFontSize || "13px"};
     color: ${props => props.theme.primaryFC};
     -webkit-text-fill-color: ${props => props.theme.primaryFC};;
+    font-weight: 400;
 `
 const LinkBase = styled(Link)`
-    background: ${props => props.theme.secondaryBGC || "#fafafa"};
     display: flex;
     flex-flow: row;
     padding: 7.5px 5px;
-    &:hover{
-      opacity: 0.95;
-      transition: transform 150ms ease-in-out;
+    border-bottom: 1px solid ${props => props.theme.primaryBGC || "#fff"}1c;
+    &:hover div{
+        color: ${props => props.theme.primaryFHC};
     }
     & > svg{
         width: 12.5px;
@@ -39,6 +39,7 @@ const LinkBase = styled(Link)`
     &:last-child{
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
+        border-bottom: none;
     }
 `
 const add = (  <svg viewBox="0 0 491.86 491.86" xmlns="http://www.w3.org/2000/svg">

@@ -39,7 +39,7 @@ const LinkBase = styled(Link)`
 `
 const Text = styled.div`
     font-size: ${props => props.theme.defaultFontSize};
-    font-weight: 600;
+    font-weight: 400;
     justify-self: start;
     align-self: center;
     color: #b7b7b7;

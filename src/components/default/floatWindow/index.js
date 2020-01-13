@@ -48,20 +48,20 @@ const Container = styled.div`
     animation: ${slideIn} 250ms cubic-bezier(0.22, 0.61, 0.36, 1);
 `
 const Header = styled.div`
-    height: 100%;
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 100px 1fr 100px;
     padding: 0 15px;
-    background: ${props => props.theme.primaryBGC || "#fff"};
+    background: ${props => props.headBG || props.theme.secondaryBGC};
+    border-bottom: ${props => props.theme.lineBGC || "#fff"} 1px inset;
 `
 const Text = styled.div`
 cursor: ${props => props.cursor || "default"};
 align-self: ${props => props.align || "none"};
 justify-self: ${props => props.justify || "none"};
-font-weight: ${props => props.bold ? "600" : "300"};
-color: ${props => props.theme.primaryFC || "#272727"};
--webkit-text-fill-color: ${props => props.theme.primaryFC || "#272727"};
+font-weight: ${props => props.bold ? "500" : "300"};
+color: ${props => props.theme.floatFC || "#272727"};
+-webkit-text-fill-color: ${props => props.theme.floatFC || "#272727"};
 font-size: ${props => props.theme.defaultFontSize};
 `
 const Title = styled(Text)`
@@ -86,7 +86,7 @@ const Cancel = styled(Text)`
 const Submit = styled(Text)`
     justify-self:end;
     align-self:center;
-    font-weight: 800;
+    font-weight: 500;
     color: #007aff;
     -webkit-text-fill-color: #007aff;
 `
@@ -98,13 +98,13 @@ const Body = styled.div`
 
 
 
-const FloatWindowDefault = ({ route, title, children }) => {
+const FloatWindowDefault = ({ route, title, children, headBG }) => {
     const closeCard = () => {
         route.history.goBack();
     };
     return <Section>
         <Container>
-            <Header>
+            <Header headBG={headBG}>
                 <Cancel onClick={closeCard} cursor="pointer">Annuleer</Cancel>
                 {title ? <Title bold>{title}</Title> : <Handle />}
                 <Submit onClick={closeCard} cursor="pointer">Opslaan</Submit>

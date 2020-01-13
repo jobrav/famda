@@ -33,7 +33,7 @@ const Text = styled.a`
     color: ${props => props.theme.primaryFC || "#121212da"};
     -webkit-text-fill-color: ${props => props.theme.primaryFC || "#121212da"};
     font-size: ${props => props.theme.defaultFontSize};
-    font-weight: 600;
+    font-weight: 500;
 `
 const Move = styled.div`
     justify-self: ${props => props.justify || "start"};
@@ -109,6 +109,7 @@ const Day = styled.div`
     align-self: center;
     text-align: center;
     width: 20px;
+    font-weight: 400;
     padding: 2.5px;
     border-radius: 25px;
     color: ${props => (!props.today && !props.active) ? props.theme.primaryFC : props.theme.primaryFAC};

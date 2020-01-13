@@ -31,7 +31,7 @@ pointer-events: none;
 cursor: ${props => props.cursor || "default"};
 align-self: ${props => props.align || "none"};
 justify-self: ${props => props.justify || "none"};
-font-weight: ${props => props.bold ? "600" : "300"};
+font-weight: ${props => props.bold ? "400" : "300"};
 color: ${props => props.theme.primaryFC || "#272727"};
 -webkit-text-fill-color: ${props => props.theme.primaryFC || "#272727"};
 `

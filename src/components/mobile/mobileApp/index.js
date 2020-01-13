@@ -7,8 +7,11 @@ import styled, { ThemeProvider } from "styled-components"
 import { ViewContext, SelectContext, DateContext, ShowContext, DocRefContext } from "../../../contexts"
 // controlers
 import MenuBar from "../menuBar";
+
 // Floating windows
 import FloatWindowDefault from "../floatWindow";
+// Floatwindow items
+import EditForm from "../editForm";
 // app windows
 import ViewSize from "../viewSize";
 // app windowsagendaWindow
@@ -72,7 +75,7 @@ const MobileApp = React.memo(({ setAppSettings, auth, userData, newsData, remind
             <ThemeProvider theme={sizeStyle}>
 
                 <Route path={["/:sec/add"]} render={route =>
-                    <FloatWindowDefault title={"Nieuwe activiteit"} route={route}><div></div></FloatWindowDefault>
+                    <FloatWindowDefault title={"Nieuwe activiteit"} route={route}><EditForm /></FloatWindowDefault>
                 } />
                 <Route path={["/:sec/card"]} render={route =>
                     <FloatWindowDefault title={"Activiteit"} route={route}><div></div></FloatWindowDefault>

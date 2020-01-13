@@ -103,7 +103,7 @@ margin:0;
 padding:0;
 font-size: ${props => props.theme.defaultFontSize};
 justify-self: start;
-font-weight: 600;
+font-weight: 500;
 align-self: center;
 color: ${props =>  route && (props.active === route.match.path ? props.theme.menuIC : props.theme.primaryFC)}
 -webkit-text-fill-color: ${props =>  route && (props.active === route.match.path ? props.theme.menuIC : props.theme.primaryFC)}

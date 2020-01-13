@@ -19,7 +19,7 @@ const Title = styled.div`
   margin: 5px;
   color: #fff;
   font-size: ${props => props.theme.titleFontSize || "17px"};
-  font-weight: bold;
+  font-weight: 500;
 `
 
 const Appointment = ({ data }) => {

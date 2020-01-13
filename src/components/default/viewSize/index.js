@@ -31,7 +31,7 @@ const ListItem = styled.a`
   justify-self: center;
   align-self: center;
   font-size: ${props => props.theme.defaultFontSize};
-  font-weight: 600;
+  font-weight: 400;
   height: 21px;
   line-height: 21px;
   border-radius: 25px;

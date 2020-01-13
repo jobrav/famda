@@ -31,7 +31,7 @@ background: ${props => props.theme.primaryBGC || "#fff"};
 const Head = styled.div`
     margin: 5px 0;
     padding: 0 15px;
-    font-weight: 800;
+    font-weight: 500;
     font-size: ${props => props.theme.defaultFontSize};
     color: ${props => props.theme.primaryFC || "#121212da"};
     -webkit-text-fill-color: ${props => props.theme.primaryFC || "#121212da"};
@@ -46,7 +46,7 @@ const Icon = styled.div`
 `
 const Text = styled.div`
     font-size: ${props => props.theme.defaultFontSize};
-    font-weight: 600;
+    font-weight: 400;
     justify-self: start;
     align-self: center;
     color: #b7b7b7;
