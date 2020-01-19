@@ -32,16 +32,18 @@ const Section = styled.section`
     justify-content:center;
     align-items: flex-end;
     z-index: 15;
-    background: #1c1c1c9a;
-    animation: ${fadeIn} 250ms ease-in-out;
+    // background: #1c1c1c9a;
+    // animation: ${fadeIn} 250ms ease-in-out;
     `
 const Container = styled.div`
+    position: fixed;
+    top:25px;
+    height: calc(100vh - 25px);
     display: grid;
-    grid-template-rows: 50px 1fr;
+    grid-template-rows: 60px 1fr;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     max-width: 750px;
-    height: 90vh;
     width: 100vw;
     background: ${props => props.theme.primaryBGC || "#fff"};
     overflow: hidden;
@@ -98,12 +100,12 @@ const Body = styled.div`
 
 
 
-const FloatWindowDefault = ({ route, title, children, headBG }) => {
+const FloatWindowDefault = ({ route: { history, match: { params } }, title, children, headBG }) => {
     const closeCard = () => {
-        route.history.goBack();
+        history.goBack();
     };
     return <Section>
-        <Container>
+        <Container className={["pannel", "returnPannel", "nonePannel"][Object.values(params).length - 1]}>
             <Header headBG={headBG}>
                 <Cancel onClick={closeCard} cursor="pointer">Annuleer</Cancel>
                 {title ? <Title bold>{title}</Title> : <Handle />}

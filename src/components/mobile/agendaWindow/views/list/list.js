@@ -79,7 +79,7 @@ const ListView = ({ show, startingPoint, data }) => {
   }, [data, startingPoint])
 
   return <div style={{ display: show ? null : "none" }} className="listView view">
-    <div className="timeline">
+    <div style={{ overflowY: "scroll", height: "100vh" }} className="timeline">
       {render}
     </div>
   </div>

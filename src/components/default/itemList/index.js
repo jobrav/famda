@@ -29,10 +29,11 @@ const Icon = styled.div`
     background: #007aff;
 `
 const Text = styled.div`
-    font-size: ${props => props.theme.defaultFontSize};
-    color: ${props => props.theme.primaryFC || "#fff"};
-    -webkit-text-fill-color: ${props => props.theme.primaryFC || "#fff"};
-    font-weight: 400;
+    font-size: ${props => props.theme.titleFontSize};
+    // font-size: ${props => props.theme.defaultFontSize};
+    color: ${props => props.active ? "#fff" : (props.theme.primaryFC || "#fff")};
+    -webkit-text-fill-color: ${props => props.active ? "#fff" : (props.theme.primaryFC || "#fff")};
+    font-weight: 500;
     justify-self: start;
     align-self: center;
 `
@@ -49,9 +50,8 @@ const Description = styled.div`
 `
 
 const Link = styled(LinkBase)` 
-padding-left: ${props => props.active ? "calc(10% + 7.5px) !important" : null};
-background: ${props => props.active ? props.theme.secondaryBGC || "#f3f3f3 !important" : null};
-border-radius: ${props => props.active ? "0 !important" : null};
+background: ${props => props.active ? "#1377FF" || "#f3f3f3 !important" : null};
+// border-radius: ${props => props.active ? "0 !important" : null};
 transition: all 50ms ease-in-out;
 `
 
@@ -60,7 +60,7 @@ const ItemList = ({ items, active, click }) => {
         {items.map(item => (
             <Link active={active === item.title} onClick={() => click(item.title)}>
                 {item.icon ? <Icon /> : null}
-                <Text>{item.title}</Text>
+                <Text active={active === item.title}>{item.title}</Text>
                 {item.description ? <Description>{item.description}</Description> : null}
             </Link>)
         )}

@@ -6,9 +6,8 @@ const Container = styled(Link)`
   width: 100%;
   border-bottom: #efefef 0.1vh solid;
   background: ${props => props.bg || "rgba(78, 78, 78, 0.082)"};
-
   display: grid;
-  grid-column: 1;
+  grid-column: 2;
   grid-row: ${props => props.start}/${props => props.end};
   grid-template-columns: 1fr;
   grid-template-rows: auto;

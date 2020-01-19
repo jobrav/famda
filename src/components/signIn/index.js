@@ -11,7 +11,7 @@ const loginWithEmail = () => {
   firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .catch(function(error) {
+    .catch(function (error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -27,7 +27,7 @@ const loginWithGoogle = () => {
 
 const SignIn = props => {
   return (
-    <div className="backgroud">
+    <div className="backgroud app">
       <div className="headTitle">Welkom</div>
       <div className="form">
         <div className="other">

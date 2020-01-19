@@ -3,6 +3,7 @@ import Appointment from "./appointment"
 import Event from "./event";
 import Sign from "./sign";
 import styled from "styled-components"
+import ContextMenu from "../../../contextMenu"
 
 let storage = 0;
 const Container = styled.div`
@@ -74,6 +75,7 @@ justify-self: end;
 align-self: end;
 text-align: right;
 margin: 0;
+transform:translateY(7.5px);
 font-size: ${props => props.theme.defaultFontSize};
 color: ${props => props.theme.primaryFC || "#fff"};
 -webkit-text-fill-color: ${props => props.theme.primaryFC || "#fff"};
@@ -103,6 +105,15 @@ z-index: 7;
     border-radius: 8px;
 }
 `
+const HoverTimeLine = styled.div`
+grid-row: 20;
+display:none;
+grid-column:1;
+position: relative;
+background: ${props => props.theme.primaryFHC};
+height: 1px;
+width:100%;
+`
 const ContainerWholeItem = styled.div`
 grid-row: 2;
 min-width: 200px;
@@ -114,13 +125,21 @@ const ContainerDayItem = styled.div`
 overflow-x: hidden;
 min-width: 200px;
 display: grid;
-grid-template-rows: repeat(96, 14px);
+grid-template-rows: repeat(288, 4.5px);
 margin: 0 2.5px;
 scroll-snap-align: start;
 background: ${props => props.theme.secondaryBGC || "#f7f7f7"};
 `
 let cache = [{ body: [], head: [] }];
+
+
 const DayView = React.memo(({ show, dataReady, data, edge, startPoint }) => {
+  //states
+  const [contextPos, setContextPos] = useState({ x: 0, y: 0 })
+  const [contextMenuShow, setContextMenuShow] = useState(false)
+  const [render, setRender] = useState([]);
+
+
   const today = new Date(startPoint).setHours(0, 0, 0, 0)
   const AminView = new Date(today).setMonth(new Date(today).getMonth() - 1);
 
@@ -148,12 +167,19 @@ const DayView = React.memo(({ show, dataReady, data, edge, startPoint }) => {
               />
             );
             bucket.head.push(
-              <ContainerWholeItem key={`${obj.zipcode}_whole_day`}>
+              <ContainerWholeItem onContextMenu={showMenu} key={`${obj.zipcode}_whole_day`}>
                 {eventBucket}
               </ContainerWholeItem>
             )
             bucket.body.push(
-              <ContainerDayItem key={`${obj.zipcode}_container_day`}>
+              <ContainerDayItem
+                onMouseEnter={hoverTimeLineEnter}
+                onMouseLeave={hoverTimeLineLeave}
+                onMouseMove={hoverTimeLineMove}
+                onContextMenu={showMenu}
+                onClick={showMenu}
+                key={`${obj.zipcode}_container_day`}>
+                <HoverTimeLine className="hoverTimeLine" />
                 {dayBucket}
               </ContainerDayItem>
             )
@@ -179,38 +205,49 @@ const DayView = React.memo(({ show, dataReady, data, edge, startPoint }) => {
     })
   }
 
-  const [render, setRender] = useState([]);
   const currentTime = new Date().getHours() * 60 + new Date().getMinutes();
   useEffect(() => {
-    const timeline = document.getElementById("timeline"); // get timeline container
-
-    getRender(data, today).then(render => { // create render
-      if (dataReady) {
+    if (dataReady) {
+      getRender(data, today).then(render => { // create render
         setRender(render); //push render
         cache = render;
-      } else setRender(cache); //push cache
-
-      fixScroll(timeline.scrollWidth - timeline.scrollLeft, timeline.scrollTop, true);
-    });
+      });
+    } else setRender(cache);
+    scrollToStartPoint();
   }, [data])
 
-  const fixScroll = (currentScrollRight, currentScrollTop, firstRender) => {
+  const scrollToStartPoint = () => {
     const timeline = document.getElementById("timeline"); // get timeline container
     const startItem = document.getElementsByClassName(`sign_zipcode_${new Date(startPoint).setHours(0, 0, 0, 0)}`)[0]; // get today element
-    if (firstRender) {
-      timeline.scrollTop = currentTime * 14 / 15 - 100;
-    }
+    timeline.scrollTop = currentTime * 14 / 15 - 100;
     timeline.scrollLeft = startItem ? startItem.offsetLeft : 0;
-    // else {
-    //   timeline.scrollLeft = timeline.scrollWidth - currentScrollRight; // scroll to startPoint or fix scroll bug
-    //   timeline.scrollTop = currentScrollTop; // scroll to startPoint or fix scroll bug
-    // }
   }
 
+
   useEffect(() => {
-    fixScroll()
+    scrollToStartPoint()
   }, [startPoint])
 
+  const showMenu = (ev) => {
+    if (ev.target === ev.currentTarget) {
+      ev.preventDefault()
+      setContextPos({ "x": ev.clientX, "y": ev.clientY })
+      setContextMenuShow(true);
+      document.addEventListener('click', hideMenu)
+    }
+  }
+  const hideMenu = (ev) => {
+    setContextMenuShow(false);
+    document.removeEventListener('click', hideMenu)
+  }
+  const hoverTimeLineEnter = ({ currentTarget }) => currentTarget.getElementsByClassName("hoverTimeLine")[0].style.display = "block";
+  const hoverTimeLineMove = ({ target, currentTarget, clientY }) => {
+    const timeline = currentTarget.parentElement.parentElement;
+    const position = (clientY + timeline.scrollTop - 144) / 4.5;
+    const gridPos = Math.round(position);
+    currentTarget.getElementsByClassName("hoverTimeLine")[0].style.gridRow = gridPos;
+  }
+  const hoverTimeLineLeave = ({ currentTarget }) => currentTarget.getElementsByClassName("hoverTimeLine")[0].style.display = "none";
 
   const scrolling = input => {
     const scroll = Math.round(input.target.scrollLeft);
@@ -222,8 +259,9 @@ const DayView = React.memo(({ show, dataReady, data, edge, startPoint }) => {
 
   return <div style={{ display: show ? null : "none" }} className="dayView view">
     <Container onScroll={scrolling} id="timeline">
+      {contextMenuShow && <ContextMenu contextPos={contextPos} />}
       <Legenda><Number>Hele dag</Number></Legenda>
-      <CurrentTimeLine id="currentTimeLine" currentTime={currentTime} />
+      <CurrentTimeLine id="currentTimeLine" className="currentTimeLine" currentTime={currentTime} />
       <Timetable>
         <Number>1</Number>
         <Number>2</Number>

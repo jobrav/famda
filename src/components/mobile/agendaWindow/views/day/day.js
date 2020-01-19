@@ -7,12 +7,12 @@ let storage = 0;
 
 const Section = styled.div`
 height: 100%;
-overflow-y: auto;
+overflow: none;
 position: absolute;
 width: 100%;
 transform-origin: top center;
 display:grid;
-grid-template-rows: 75px 1fr;
+grid-template-rows: 65px 1fr;
 grid-template-columns: 1fr;
 display: ${props => props.show ? null : "none"};
 `
@@ -22,17 +22,15 @@ display: grid;
 width: 100vw;
 height: 100%;
 will-change: transform;
-overflow: auto;
+overflow: scroll;
 scroll-snap-type: x mandatory;
-scroll-padding: 25px;
-grid-gap: 0 2.5px;
-grid-template-columns: 25px 1fr;
+grid-template-columns: 1fr;
 grid-template-rows: auto 1fr;
 background: ${props => props.theme.primaryBGC || "#fff"};
 `
 const Head = styled.div`
   grid-row: 1;
-  grid-column: 2;
+  grid-column: 1;
   position: sticky;
   top: 0;
   z-index: 4;
@@ -41,22 +39,15 @@ const Head = styled.div`
   `
 const Body = styled.div`  
   grid-row: 2;
-  grid-column: 2;
+  grid-column: 1;
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: 1fr;
   background: ${props => props.theme.primaryBGC || "#fff"};
 `
-const Timetable = styled.div`
-  cursor: default;
-  pointer-events: none;
-  background: ${props => props.theme.primaryBGC || "#fff"}
-  width: 25px;
-  z-index:6;
-  display: grid;
-  grid-template-rows: repeat(24, auto);
-`
 const Number = styled.p`
+grid-column: 1;
+grid-row: ${props => props.start}/${props => props.start + 4};
 cursor: default;
 pointer-events: none;
 justify-self: center;
@@ -101,10 +92,11 @@ const ContainerWholeItem = styled.div`
 `
 const ContainerDayItem = styled.div`
   overflow-x: hidden;
-  width: calc(100vw - 25px);
+  width: 100vw;
   display: grid;
-  grid-template-rows: repeat(96,14px);
-  margin: 0 2.5px;
+  grid-template-columns: 25px 1fr;
+  grid-template-rows: repeat(100,14px);
+  margin: 0 1px;
   scroll-snap-align: start;
 `
 const WholeDayAbsolute = styled.div` 
@@ -117,6 +109,7 @@ height:100%;
 background: ${props => props.theme.secondaryBGC || "#f3f3f3"};
 border-bottom: 1px solid ${props => props.theme.secondaryBGC || "#f3f3f3"};
 `
+const hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
 const DayView = React.memo(({ show, startingPoint, data, edge }) => {
 
@@ -148,39 +141,14 @@ const DayView = React.memo(({ show, startingPoint, data, edge }) => {
               </ContainerWholeItem>
             )
             bucket.body.push(
-              <Timetable>
-                <Number>1</Number>
-                <Number>2</Number>
-                <Number>3</Number>
-                <Number>4</Number>
-                <Number>5</Number>
-                <Number>6</Number>
-                <Number>7</Number>
-                <Number>8</Number>
-                <Number>9</Number>
-                <Number>10</Number>
-                <Number>11</Number>
-                <Number>12</Number>
-                <Number>13</Number>
-                <Number>14</Number>
-                <Number>15</Number>
-                <Number>16</Number>
-                <Number>17</Number>
-                <Number>18</Number>
-                <Number>19</Number>
-                <Number>20</Number>
-                <Number>21</Number>
-                <Number>22</Number>
-                <Number>23</Number>
-                <Number>24</Number>
-              </Timetable>
             )
             bucket.body.push(
               <ContainerDayItem className={`sign_zipcode_${new Date(obj.zipcode).setHours(0, 0, 0, 0)}`} key={`${obj.zipcode}_container_day`}>
                 {dayBucket}
               </ContainerDayItem>
             )
-            dayBucket = []
+            dayBucket = hours.map(hour => <Number start={hour * 4 - 1}
+              key={`${hour}_number_${obj.zipcode}`}>{hour}</Number>)
             eventBucket = []
           }
           prev = obj.zipcode
@@ -239,7 +207,6 @@ const DayView = React.memo(({ show, startingPoint, data, edge }) => {
   return <Section show={show}>
     <Header>Hier komt de agenda op houd</Header>
     <Container onScroll={scrolling} id="timeline">
-      {/* <Legenda></Legenda> */}
       <CurrentTimeLine id="currentTimeLine" currentTime={currentTime} />
       <Head>{render.map(e => e.head)}</Head>
       <Body>{render.map(e => e.body)}</Body>

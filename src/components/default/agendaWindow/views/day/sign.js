@@ -41,7 +41,7 @@ const Sign = ({ zipcode }) => {
       key={`${isToday ? "today" : "sign"} ${zipcode}`}
       today={isToday}
       className={`sign_zipcode_${zipcode}`}
-    >{`${week[NewdateWeek]} ${NewdateDay}`}</Container>
+    >{`${week[NewdateWeek]} ${NewdateDay} ${NewdateMonth}`}</Container>
   );
 };
 

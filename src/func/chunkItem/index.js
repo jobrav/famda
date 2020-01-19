@@ -18,7 +18,6 @@ export const Chunk = React.memo(({ startZipcode, endZipcode, sources, query, set
 
     const update = () => {
         sortFetch().then(docs => {
-            // dispatch({ type: 'change', id, content: docs })
             let obj = {};
             obj[id] = docs;
             setRender(prev => ({ ...prev, ...obj }))
@@ -32,10 +31,9 @@ export const Chunk = React.memo(({ startZipcode, endZipcode, sources, query, set
         return new Promise(resolve => {
             let docsArr = Object.values(map);
             buildCalendar(docsArr, startZipcode, endZipcode).then(bucket => {
-                let sortedList = bucket.sort((a, b) =>
+                resolve(bucket.sort((a, b) =>
                     a.zipcode > b.zipcode ? 1 : b.zipcode > a.zipcode ? -1 : 0
-                );
-                resolve(sortedList)
+                ))
             })
         })
     }
@@ -103,7 +101,6 @@ export const Chunk = React.memo(({ startZipcode, endZipcode, sources, query, set
         })
     }
     const newChunk = () => {
-        console.log("creating new chunk...")
         finshed(0)
         map = {}
         // dispatch({ type: 'change', id, content: [] })

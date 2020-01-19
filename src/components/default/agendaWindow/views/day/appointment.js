@@ -27,17 +27,20 @@ const Appointment = ({ data }) => {
   const { id, parentTheme, title, feed, zipcodeEnd, zipcode } = data;
   const getStartHour = new Date(zipcode).getHours()
   const getStartQuarter = new Date(zipcode).getMinutes()
-  const startQuarter = Math.floor(getStartQuarter / 15)
+  const startQuarter = Math.floor(getStartQuarter / 5)
   const getEndHour = new Date(zipcodeEnd).getHours()
   const getEndQuarter = new Date(zipcodeEnd).getMinutes()
-  const endQuarter = Math.floor(getEndQuarter / 15)
+  const endQuarter = Math.floor(getEndQuarter / 5)
 
   return (
     <Container
-      to={`card/`}
+      to={{
+        pathname: 'card/',
+        state: data
+      }}
       bg={parentTheme}
-      start={getStartHour * 4 + startQuarter}
-      end={getEndHour * 4 + endQuarter}
+      start={getStartHour * 12 + startQuarter}
+      end={getEndHour * 12 + endQuarter}
       data-key={id}
       data-zipcode={zipcode}
       key={`${zipcode}_appointment_day_view`}

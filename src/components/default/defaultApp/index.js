@@ -16,10 +16,10 @@ import MenuSelect from "../menuSelect";
 import DatePicker from "../datePicker"
 import MenuList from "../menuList"
 import DocFinder from "../docFinder"
-import ContextMenu from "../contextMenu"
 
 // Floatwindow items
 import EditForm from "../editForm";
+import CardForm from "../card";
 // controlers
 import MenuBar from "../menuBar";
 // windows
@@ -139,27 +139,10 @@ const sizeStyle = {
 
 export let getGroupSources = () => groupSources;
 
-const DefaultApp = React.memo(({ setAppSettings, auth, userData, newsData, reminders, route }) => {
+const DefaultApp = React.memo(({ setAppSettings, userData, newsData }) => {
 
-  const [contextPos, setContextPos] = useState({ x: 0, y: 0 })
-  const [contextMenuShow, setContextMenuShow] = useState(false)
 
-  useEffect(() => {
-    const setup = () => {
-      document.addEventListener('contextmenu', showMenu)
-    };
-    setup()
-  }, [])
-  const showMenu = (ev) => {
-    ev.preventDefault()
-    setContextPos({ "x": ev.clientX, "y": ev.clientY })
-    setContextMenuShow(true);
-    document.addEventListener('click', hideMenu)
-  }
-  const hideMenu = (ev) => {
-    setContextMenuShow(false);
-    document.removeEventListener('click', hideMenu)
-  }
+
 
   const [srchContext, setSrchContext] = useState("");
   const changeSrchCtx = useCallback(value => { setSrchContext(value) }, [setSrchContext])
@@ -197,17 +180,13 @@ const DefaultApp = React.memo(({ setAppSettings, auth, userData, newsData, remin
     <Layout>
 
       <ThemeProvider theme={sizeStyle}>
-        {contextMenuShow && <ContextMenu contextPos={contextPos} />}
         <Redirect exact from='/' to='/view/' />
 
-        <Route path={["/docs/", "/view/", "/profile/"]} render={route => <MenuBar route={route} />}></Route>
+        <Route path={["/docs/", "/view/", "/profile/", "/studio/", "/statistics/"]} render={route => <MenuBar user={userData || {}} route={route} />}></Route>
 
-        <Route path={["/:sec/add"]} render={route => <FloatWindowDefault title={"Nieuwe activiteit"} route={route} >
-          <EditForm user={userData} userData={newsData} />
-        </FloatWindowDefault>} />
-
-        <Route path={["/:sec/card"]} render={route => <FloatWindowDefault title={"Afspraak"} route={route} >
-          <News user={userData} userData={newsData} />
+        <Route path={["/:sec/add", "/:sec/card"]} render={route => <FloatWindowDefault title={"Nieuwe activiteit"} route={route} >
+          <Route path={["/:sec/add"]} render={_ => <EditForm user={userData} userData={newsData} />} />
+          <Route path={["/:sec/card"]} render={_ => <CardForm user={userData} userData={newsData} />} />
         </FloatWindowDefault>} />
 
         <Route path={["/profile/edit"]} render={route => <FloatWindowDefault route={route} >

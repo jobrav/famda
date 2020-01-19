@@ -14,7 +14,7 @@ const Nav = styled.div`
   width: calc(100vw - 20px);
   height: 30px
   background: ${props => props.theme.floatSecBGC || "#f3f3f3da"};
-  backdrop-filter: blur(25px);
+  backdrop-filter: blur(50px) contrast(1.5);
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
@@ -23,7 +23,7 @@ const Backdrop = styled.div`
   position: absolute;
   top: calc(10px / 2);
   z-index: -1;
-  background: #b7b7b7da;
+  background: #b7b7b752;
   border-radius: 30px;
   height: calc(100% - 10px);
   width: calc(100% / 4 - 13px);
@@ -35,11 +35,11 @@ const ListItem = styled.a`
   justify-self: center;
   align-self: center;
   font-size: ${props => props.theme.defaultFontSize};
-  font-weight: 600;
+  font-weight: 500;
   height: 21px;
   line-height: 21px;
   border-radius: 25px;
-  color: #b7b7b7da;
+  color: #b7b7b7;
   -webkit-text-fill-color:  #b7b7b7da;
   max-width: 75px;
   width: calc(100vw / 4 - 10px);
@@ -47,8 +47,8 @@ const ListItem = styled.a`
   transition: all 0.1s ease-in-out;
   
   &:hover {
-    color: ${props => props.theme.primaryFHC || "#b7b7b7da"}
-    -webkit-text-fill-color: ${props => props.theme.primaryFHC || "#b7b7b7da"}
+    color: ${props => props.theme.primaryFHC || "#b7b7b7"}da;
+    -webkit-text-fill-color: ${props => props.theme.primaryFHC || "#b7b7b7"}da
     transition: all 0.1s ease-in-out;
   }
   

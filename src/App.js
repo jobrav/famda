@@ -1,31 +1,33 @@
 // import React from "react";
 import * as firebase from "firebase";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import { ThemeProvider } from "styled-components"
+import styled from "styled-components"
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 // import "./App.css";
 import loadUser, { userdata } from "./func/loadUser";
-import autoLoader from "./func/autoLoader";
-
 
 // sign in
-import SignIn from "./components/signIn";
 import SignUp from "./components/signUp";
+import Sign from "./components/default/agendaWindow/views/list/sign";
 
 // devices
-import MobileApp from "./components/mobile/mobileApp";
-import DefaultApp from "./components/default/defaultApp";
+const SignIn = lazy(() => import("./components/signIn"));
+const Display = lazy(() => window.innerWidth > 500 ?
+  import("./components/default/defaultApp") :
+  import("./components/mobile/mobileApp"))
 
 let groupSources = [];
 export let getGroupSources = () => groupSources;
 
+const LoadingWindow = styled.section`
+  width: 100vw;
+  height: 100vh;
+  background: ${props => props.theme.primaryBGC || "#fff"};
+`
+
 const App = props => {
   const db = firebase.firestore();
-  // db.enablePersistence().catch(function(err) {
-  //   if (err.code === "failed-precondition") {
-  //   } else if (err.code === "unimplemented") {
-  //   }
-  // });
 
   const today = new Date();
   const mm = today.getMonth();
@@ -34,7 +36,7 @@ const App = props => {
   let maxView = new Date(today).setMonth(mm + range).valueOf();
 
   const [auth, setAuth] = useState(false);
-  const [setup, setSetup] = useState(true);
+  const [user, setUser] = useState({});
   const [userData, setUserData] = useState();
   const [newsData, setNewsData] = useState();
   const [reminders, setReminder] = useState();
@@ -48,7 +50,6 @@ const App = props => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         loadUser(user).then(data => {
-          console.log(getCalendars(data));
           setUserData(data);
           groupSources = data.sources.alles;
           setAuth(true);
@@ -73,18 +74,6 @@ const App = props => {
     // setup();
   }, [props]);
 
-  const getReminders = user => {
-    return new Promise(resolve => {
-      fetchUserData(user.uid, "reminders").then(e => resolve(e));
-    });
-  };
-
-  const getUserData = user => {
-    return new Promise(resolve => {
-      fetchUserData(user.uid, "userData").then(e => resolve(e));
-    });
-  };
-
   const fetchUserData = (user, collection) => {
     return new Promise(resolve => {
       db.collection("users")
@@ -99,40 +88,25 @@ const App = props => {
     });
   };
 
-  const getCalendars = data => {
-    let cals = data.allSources;
-    cals.map(cal => {
-      return db
-        .collection("calendars")
-        .doc(cal)
-        .get()
-        .then(data => {
-          let doc = data.data();
-          //console.log(doc);
-          return doc;
-        });
-    });
-    return cals;
-  };
 
 
   const defaultColorStyles = {
     primaryBGC: darkMode ? "#121212" : "#fff",
     secondaryBGC: darkMode ? "#272727" : "#f3f3f3",
-    floatBGC: darkMode ? "#121212da" : "#ffffffda",
-    floatSecBGC: darkMode ? "#272727da" : "#f3f3f3da",
-    lineBGC: darkMode ? "#2f2e2e9a" : "#f3f3f3",
+    floatBGC: darkMode ? "#121212b7" : "#ffffffb7",
+    floatSecBGC: darkMode ? "#272727b7" : "#f3f3f3b7",
+    lineBGC: darkMode ? "#2f2e2e9a" : "#f3f3f39a",
     //primary font color || default and hover
-    primaryFC: darkMode ? "#e7e7e7" : "#b7b7b7",
-    primaryFHC: darkMode ? "#e7e7e79a" : "#b7b7b79a",
+    primaryFC: darkMode ? "#b7b7b7" : "#403D3E",
+    primaryFHC: darkMode ? "#e7e7e79a" : "#403D3E9a",
     primaryFAC: darkMode ? "#ffffff" : "#fff",
     //secondary font color || default and hover
     secondaryFC: darkMode ? "#e2e2e2" : "#b2b2b2",
     secondaryFHC: darkMode ? "#e2e2e29a" : "#b2b2b29a",
     //float font color
-    floatFC: darkMode ? "#e7e7e7" : "#151515",
+    floatFC: darkMode ? "#e5e5e5" : "#151515",
     //menu items
-    menuIC: darkMode ? "#409fff" : "#409fff",
+    menuIC: darkMode ? "#1377FF" : "#1377FF",
   }
   const setSettings = opt => {
     switch (opt) {
@@ -144,39 +118,25 @@ const App = props => {
 
   }
 
+
+
   return (
     <ThemeProvider theme={defaultColorStyles}>
-      <BrowserRouter>
-        {(setup && auth) ? (
+      <Suspense fallback={<LoadingWindow />}>
+        <BrowserRouter>
           <Switch>
-            <Route render={route => (
-              device == "mobile" ? (
-                <MobileApp
-                  route={route}
-                  userData={userData}
-                  auth={auth}
-                  newsData={newsData}
-                  reminders={reminders}
-                />
-              ) : (
-                  <DefaultApp
-                    route={route}
-                    userData={userData}
-                    auth={auth}
-                    newsData={newsData}
-                    reminders={reminders}
-                    setAppSettings={setSettings}
-                  />
-                )
-            )} />
+            {auth ? <Route render={route => (
+              <Display
+                route={route}
+                userData={userData}
+                auth={auth}
+                newsData={newsData}
+                reminders={reminders}
+                setAppSettings={setSettings} />
+            )} /> : <SignIn />}
           </Switch>
-        ) : (
-            <div className="App">
-              <Route exact path="/" component={SignIn} />
-              <Route exact path="/setup" component={SignUp} />
-            </div>
-          )}
-      </BrowserRouter>
+        </BrowserRouter>
+      </Suspense>
     </ThemeProvider>
   );
 };

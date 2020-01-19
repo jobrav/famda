@@ -1,8 +1,7 @@
 const buildCalendar = (essdoc, minView, maxView) => {
   return new Promise((resolve, reject) => {
-
+    let promiseBucket = [];
     let placeholder = []; //return array
-
     minView &&
       essdoc.forEach((doc, index, arr) => {
         let diff = new Date(maxView) - new Date(minView);
@@ -11,33 +10,17 @@ const buildCalendar = (essdoc, minView, maxView) => {
         if (!doc.repeat && doc.zipcode) {
           placeholder = [...placeholder, doc];
         } else {
-          if (doc.date.daily) {
-            daily(doc, minView, offset).then(ghosts =>
-              ghosts.forEach(doc => placeholder.push(doc))
-            );
-          } else if (doc.date.ww != undefined) {
-            weekly(doc, minView, offset, maxView).then(ghosts =>
-              ghosts.forEach(doc => placeholder.push(doc))
-            );
-          } else if (doc.date.dd && !doc.date.mm)
-            monthly(doc, minView, maxView).then(ghosts =>
-              ghosts.forEach(doc => placeholder.push(doc))
-            );
-          else if (doc.date.dd && doc.date.mm) {
-            yearly(doc, minView, maxView).then(ghosts => {
-              ghosts.forEach(doc => placeholder.push(doc));
-            });
-          }
-          else {
-            reject("Geen doc.date gevonden");
-          }
+          if (doc.date.daily) promiseBucket.push(daily(doc, minView, offset))
+          else if (doc.date.ww != undefined) promiseBucket.push(weekly(doc, minView, offset, maxView))
+          else if (doc.date.dd && !doc.date.mm) promiseBucket.push(monthly(doc, minView, maxView))
+          else if (doc.date.dd && doc.date.mm) promiseBucket.push(yearly(doc, minView, maxView))
+          else reject("Geen doc.date gevonden");
         }
-        setTimeout(_ => {
-          if (index === arr.length - 1) {
-            resolve(placeholder);
-          }
-        }, 100);
       });
+    Promise.all(promiseBucket).then(all => {
+      all.forEach(ghosts => ghosts.forEach(obj => placeholder.push(obj)))
+      resolve(placeholder);
+    })
   });
 };
 
@@ -63,7 +46,6 @@ const weekly = (doc, min, offset, max) => {
     if (!doc) reject("Doc niet gevonden");
     let bucket = [];
     let dayOffset = doc.date.ww - new Date(min).getDay() + 1;
-    // console.log(dayOffset, min);
     let minOffset = new Date(min).setDate(new Date(min).getDate() + dayOffset);
     for (let i = 0; i < offset / 7; i++) {
       const zipghost = new Date(minOffset).setDate(
@@ -87,7 +69,6 @@ const monthly = (doc, min, max) => {
     let offset =
       (new Date(max).getMonth() - new Date(min).getMonth()) *
       (new Date(max).getFullYear() - new Date(min).getFullYear() + 1);
-    // console.log(offset);
     for (let i = 0; i < offset; i++) {
       const zipghost = new Date(min).setDate(doc.dd);
       const zipcode = createZipcode(zipghost, doc);
@@ -108,11 +89,8 @@ const yearly = (doc, min, max) => {
     let calOffset = new Date(max).getFullYear() - new Date(min).getFullYear();
     let offset = check ? calOffset >= 1 || 1 : 0;
 
-    // console.log(offset);
-
     for (let i = 0; i < offset; i++) {
       const zipghost = new Date(max).setMonth(doc.date.mm - 1, doc.date.dd);
-      // console.log(zipghost);
       const zipcode = createZipcode(zipghost, doc);
       const zipcodeEnd = createZipcodeEnd(zipghost, doc);
       const newDoc = { ...doc, zipcode, zipcodeEnd, id: doc.id };

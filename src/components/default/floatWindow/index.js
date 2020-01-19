@@ -1,5 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from "styled-components"
+import { Link, useLocation } from "react-router-dom";
+
 
 //animation keyframes
 const fadeIn = keyframes`
@@ -36,12 +38,14 @@ const Section = styled.section`
     animation: ${fadeIn} 250ms ease-in-out;
     `
 const Container = styled.div`
+    position: fixed;
+    top:25px;
+    height: calc(100vh - 25px);
     display: grid;
     grid-template-rows: 45px 1fr;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    max-width: 750px;
-    height: 90vh;
+    max-width: 850px;
     width: 100vw;
     background: ${props => props.theme.primaryBGC || "#fff"};
     overflow: hidden;
@@ -77,37 +81,45 @@ const Handle = styled.div`
     border-radius: 3px;
     background: ${props => props.theme.secondaryBGC || "#f3f3f3"};
     `
-const Cancel = styled(Text)`
+const Cancel = styled(Link)`
+    cursor: ${props => props.cursor || "default"};
+    align-self: ${props => props.align || "none"};
+    justify-self: ${props => props.justify || "none"};
+    font-weight: ${props => props.bold ? "500" : "300"};
+    color: ${props => props.theme.floatFC || "#272727"};
+    -webkit-text-fill-color: ${props => props.theme.floatFC || "#272727"};
+    font-size: ${props => props.theme.defaultFontSize};
     justify-self:start;
     align-self:center;
     color: #007aff;
     -webkit-text-fill-color: #007aff;
 `
-const Submit = styled(Text)`
+const Submit = styled(Cancel)`
     justify-self:end;
     align-self:center;
     font-weight: 500;
-    color: #007aff;
-    -webkit-text-fill-color: #007aff;
 `
 const Body = styled.div`
     width: 100%;
     height: 100%;
     overflow: auto;
+    display: flex;
+    justify-content: center;
 `
 
 
 
-const FloatWindowDefault = ({ route, title, children, headBG }) => {
+const FloatWindowDefault = ({ route, title, children, headBG, cancel, compleet }) => {
+    const { state } = useLocation();
     const closeCard = () => {
         route.history.goBack();
     };
     return <Section>
         <Container>
             <Header headBG={headBG}>
-                <Cancel onClick={closeCard} cursor="pointer">Annuleer</Cancel>
-                {title ? <Title bold>{title}</Title> : <Handle />}
-                <Submit onClick={closeCard} cursor="pointer">Opslaan</Submit>
+                <Cancel to={{ hash: "" }} onClick={closeCard} cursor="pointer">{cancel ? cancel.title : "Annuleer"}</Cancel>
+                {title ? <Title bold>{state ? state.title : title}</Title> : <Handle />}
+                <Submit to={compleet ? compleet.link || "./" : "./"} cursor="pointer">{compleet ? compleet.title : "Opslaan"}</Submit>
             </Header>
             <Body>{children}</Body>
         </Container>

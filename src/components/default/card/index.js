@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components"
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+import TimeCard from "./timecard";
 
 const Section = styled.section`
 height: 100%;
 display: grid;
 grid-template-columns: 100%;
-grid-template-rows: 100px;
+grid-template-rows: max-content;
 grid-auto-flow: row;
 grid-auto-rows: max-content;
 padding: 0 15px;
+width: 100%;
+max-width: 620px;
 `
 const Text = styled.div`
 pointer-events: none;
@@ -21,7 +24,7 @@ color: ${props => props.theme.floatFC || "#272727"};
 -webkit-text-fill-color: ${props => props.theme.floatFC || "#272727"};
 `
 
-const Name = styled.input`
+const Name = styled(Link)`
 font-size: 40px;
 font-weight: 500;
 width: 100%;
@@ -44,19 +47,18 @@ const Container = styled.div`
     justify-self:center;
     align-self:start;
     width: calc(100% - 20px);
-    padding-left: 10px;
+    padding-left: 15px;
     max-width: 600px;
     margin-bottom: 15px;
     border-radius: 10px;
     overflow:hidden;
     background: ${props => props.theme.secondaryBGC};
 `
-const Li = styled(Link)`
+const Li = styled.div`
 display:grid;
 grid-template-columns: 1fr 1fr;
 grid-auto-rows: auto;
 padding-right: 15px;
-padding-left: 5px;
 border-bottom: 1px solid ${props => props.theme.primaryFC || "#fff"}40;
 &:last-child{
     border-bottom: none;
@@ -73,7 +75,7 @@ align-self: center;
 color: ${props => props.theme.floatFC || "#272727"};
 -webkit-text-fill-color: ${props => props.theme.floatFC || "#272727"};
 `
-const Input = styled.input`
+const Input = styled.div`
 width:100%;
 padding: 11px 0;
 font-size: ${props => props.theme.defaultFontSize};
@@ -85,34 +87,21 @@ text-align: ${props => props.align === 'left' ? "left" : "right"};
 `
 
 
-const EditForm = () => {
+const CardForm = () => {
+    const { state } = useLocation();
+    const { title, feed, zipcode, zipcodeEnd, repeatType, date } = state || {};
 
     return (
         <Section>
-            <Name placeholder="Nieuwe activiteit" />
+            <Name to="/view/add">{title || "undefind"}</Name>
+            <TimeCard zipcode={zipcode || null} zipcodeEnd={zipcodeEnd || null} repeatType={repeatType || null} date={date || null} />
             <Container>
-                <Li to="test">
-                    <InputTitle>Locatie</InputTitle>
-                    <Input placeholder="Thuis" />
-                </Li>
-                <Li to="test">
-                    <InputTitle>Kalender</InputTitle>
-                    <Input placeholder="Privé" />
-                </Li>
-            </Container>
-            <Container>
-                <Li to="test">
-                    <InputTitle>Start</InputTitle>
-                    <Input placeholder="11-01-2020 10:20" />
-                </Li><Li to="test">
-                    <InputTitle>Eind</InputTitle>
-                    <Input placeholder="10:45" />
-                </Li><Li to="test">
-                    <InputTitle>Herhaal</InputTitle>
-                    <Input placeholder="Niet" />
+                <Li>
+                    <InputTitle>{"feed"}</InputTitle>
+                    <Input >{feed || "undefind"}</Input>
                 </Li>
             </Container>
         </Section>
     );
 };
-export default EditForm;
+export default CardForm;

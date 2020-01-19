@@ -12,6 +12,9 @@ input {
   font-family: "Roboto", sans-serif !important;
   font-weight: 500;
 }
+div {
+  user-select: none;
+}
 body {
   overflow: hidden;
 }
@@ -29,4 +32,27 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.nonePannel {
+  top: 0 !important;
+  transform: scale(0.8);
+  transform-origin: center;
+  border-radius: 10px;
+  filter: contrast(0.9) grayscale(1);
+  transition: all 300ms ease-in-out;
+}
+.returnPannel {
+  top: 0 !important;
+  transform: scale(0.955);
+  border-radius: 10px;
+  transform-origin: center;
+  filter: contrast(0.9) grayscale(1);
+  transition: all 300ms ease-in-out;
+}
+.pannel {
+  transform: scale(1);
+  transform-origin: center;
+  filter: grayscale(0);
+  transition: all 300ms ease-in-out;
 }

@@ -89,14 +89,15 @@ const News = React.memo(({ user, userData, reminders }) => {
 
   return (
     <Section>
+      {profileFinished || <FinishProfile />}
+      <Invites />
+
       <Head>Volgende activiteit</Head>
       <Link>
         <Icon className="icon" />
         <Text>Deadline Nederlands PO3</Text>
       </Link>
 
-      {profileFinished || <FinishProfile />}
-      {hasInvites ? <Invites input={userData && invites} /> : <div />}
 
       <Image src="https://images.unsplash.com/photo-1491147334573-44cbb4602074?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"></Image>
       <Head>Recent gebruikt</Head>

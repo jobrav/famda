@@ -55,12 +55,6 @@ const ContextMenu = ({ contextPos }) => {
             {add}
             <Text>Maak afspraak</Text>
         </LinkBase>
-        <LinkBase>
-            <Text>Nog een optie</Text>
-        </LinkBase>
-        <LinkBase>
-            <Text>Nog een optie</Text>
-        </LinkBase>
     </Container>
 }
 export default ContextMenu;

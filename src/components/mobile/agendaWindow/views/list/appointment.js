@@ -7,24 +7,24 @@ const Appointment = props => {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result
       ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16)
-        }
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      }
       : null;
   }
   const cs = props.data.theme || null;
   const appColorStyle = props.data.theme
     ? {
-        backgroundImage: `linear-gradient(
+      backgroundImage: `linear-gradient(
         0,
         rgb(${hexToRgb(cs).r + 50},${hexToRgb(cs).g + 50},${hexToRgb(cs).b +
-          50}),
+        50}),
         rgb(${hexToRgb(cs).r},${hexToRgb(cs).g},${hexToRgb(cs).b}),
         rgb(${hexToRgb(cs).r + 50},${hexToRgb(cs).g + 50},${hexToRgb(cs).b +
-          50})
+        50})
         )`
-      }
+    }
     : null;
 
   const activity = props.data;
@@ -33,7 +33,7 @@ const Appointment = props => {
 
   return (
     <Link
-      to={`/card/${activity.id}`}
+      to={`card/`}
       className="appointment"
       key={`${activity.id}_${props.zipcode}_obj`}
       data-key={activity.id}

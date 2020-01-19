@@ -18,7 +18,7 @@ width: 100vw;
 `
 
 
-const Agenda = React.memo(({ route, view, source, listArr, startingPoint }) => {
+const Agenda = React.memo(({ route: { match: { params } }, view, source, listArr, startingPoint }) => {
 
   const today = new Date(startingPoint).setHours(0, 0, 0, 0);
   const startPoint = new Date(today).setMonth(new Date(today).getMonth() - 1);
@@ -56,9 +56,8 @@ const Agenda = React.memo(({ route, view, source, listArr, startingPoint }) => {
     for (let i = offsetStart; i <= offsetEnd; i++) setOffsetArr(prev => [...prev, i])
   }, [startBorders, endBorders])
 
-  console.log(view, listArr[1])
   return (
-    <Section>
+    <Section className={["pannel", "returnPannel", "nonePannel"][Object.values(params).length]}>
       <ListView edge={edge} show={view === listArr[0] && fetchFinshed} startingPoint={startingPoint} data={data} />
       <DayView edge={edge} show={view === listArr[1] && fetchFinshed} startingPoint={startingPoint} data={data} />
 
