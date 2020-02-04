@@ -12,7 +12,8 @@ grid-row: 2;
 padding: 10px 20px;
 display: grid;
 grid-template-columns: auto;
-grid-template-rows: 50px;
+// grid-template-rows: 50px;
+padding-top: 25px;
 grid-auto-flow: row;
 grid-auto-rows: 30px;
 grid-gap: 0px;
@@ -138,21 +139,21 @@ ${NavTitle}:hover & > svg{
     { icon: blocks, title: "Agenda", link: "/view/" },
     { icon: news, title: "Documenten", link: "/docs/" },
     // acountRank.famdaPro && {icon: blocks, title: "Statistieken", link: "/statistics/" },
-    acountRank.famdaPro && {icon: blocks, title: "Studio", link: "/studio/" },
+    acountRank.famdaPro && {icon: blocks, title: "Projecten", link: "/projects/" },
     { icon: menu, title: "Acount", link: "/profile/" },
   ]
 
 
   return (
     <Nav>
-      <Link
+      {/* <Link
           to={"add/"}
         >
           <Button>
             <NavIcon>{add}</NavIcon>
             <NavTitle to="/view/day" className="title link">Toevoegen</NavTitle>
           </Button>
-        </Link>
+        </Link> */}
       {navListItems.map(({ link, icon, title }, i) => {
         return <NavLink
           to={link}

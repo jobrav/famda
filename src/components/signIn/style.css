@@ -73,7 +73,7 @@ body {
   height: 40vh; */
   grid-row: 2;
   justify-self: center;
-  align-self: end;
+  align-self: center;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(3, auto);

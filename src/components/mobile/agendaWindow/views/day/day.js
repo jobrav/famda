@@ -19,11 +19,11 @@ display: ${props => props.show ? null : "none"};
 
 const Container = styled.div`
 display: grid;
-width: 100vw;
-height: 100%;
+justify-self:stretch;
+align-self: stretch;
 will-change: transform;
 overflow: scroll;
-scroll-snap-type: x mandatory;
+scroll-snap-type: x proximity;
 grid-template-columns: 1fr;
 grid-template-rows: auto 1fr;
 background: ${props => props.theme.primaryBGC || "#fff"};
@@ -41,6 +41,7 @@ const Body = styled.div`
   grid-row: 2;
   grid-column: 1;
   display: grid;
+  height:100%;
   grid-auto-flow: column;
   grid-template-rows: 1fr;
   background: ${props => props.theme.primaryBGC || "#fff"};
@@ -55,7 +56,7 @@ transform: translateY(-5px);
 align-self: end;
 text-align: right;
 margin: 0;
-font-size: ${props => props.theme.defaultFontSize};
+font-size: 0.65em;
 color: ${props => props.theme.primaryFC || "#fff"};
 -webkit-text-fill-color: ${props => props.theme.primaryFC || "#fff"};
 `
@@ -104,8 +105,8 @@ position: absolute;
 width: 100%;
 `
 const Header = styled.div`
-width: 100vw;
-height:100%;
+justify-self:stretch;
+align-self: stretch;
 background: ${props => props.theme.secondaryBGC || "#f3f3f3"};
 border-bottom: 1px solid ${props => props.theme.secondaryBGC || "#f3f3f3"};
 `

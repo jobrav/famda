@@ -67,7 +67,7 @@ const Agenda = React.memo(({ route, view, source, listArr, startingPoint }) => {
 
   return (
     <Section>
-      <ListView edge={edge} show={view === listArr[0] && fetchFinshed} startPoint={startingPoint} data={data} />
+      {/* <ListView edge={edge} show={view === listArr[0] && fetchFinshed} startPoint={startingPoint} data={data} /> */}
       <DayView edge={edge} show={view === listArr[1]} startPoint={startingPoint} dataReady={dataReady} data={data} />
 
       {/* agenda data */}

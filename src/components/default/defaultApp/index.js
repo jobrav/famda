@@ -24,6 +24,8 @@ import CardForm from "../card";
 import MenuBar from "../menuBar";
 // windows
 import Agenda from "../agendaWindow";
+import ProjectWindow from "../projects";
+import ProjectList from "../projectList";
 // import Menu from "../menuWindow";
 import Profile from "../profileWindow";
 import News from "../newsWindow";
@@ -180,9 +182,9 @@ const DefaultApp = React.memo(({ setAppSettings, userData, newsData }) => {
     <Layout>
 
       <ThemeProvider theme={sizeStyle}>
-        <Redirect exact from='/' to='/view/' />
+        <Redirect exact from='/' to='/projects/' />
 
-        <Route path={["/docs/", "/view/", "/profile/", "/studio/", "/statistics/"]} render={route => <MenuBar user={userData || {}} route={route} />}></Route>
+        <Route path={["/docs/", "/view/", "/profile/", "/projects/", "/statistics/"]} render={route => <MenuBar user={userData || {}} route={route} />}></Route>
 
         <Route path={["/:sec/add", "/:sec/card"]} render={route => <FloatWindowDefault title={"Nieuwe activiteit"} route={route} >
           <Route path={["/:sec/add"]} render={_ => <EditForm user={userData} userData={newsData} />} />
@@ -251,6 +253,10 @@ const DefaultApp = React.memo(({ setAppSettings, userData, newsData }) => {
             <Docs route={route} />
           </DocRefContext.Provider>
         } />
+        <DocRefContext.Provider value={providerDocRef}>
+          <Route exact path={["/projects/"]} render={route => <ProjectWindow user={userData} route={route} />} />
+          <Route path={["/projects/:id"]} render={route => <ProjectList user={userData} route={route} />} />
+        </DocRefContext.Provider>
 
         <Route
           exact

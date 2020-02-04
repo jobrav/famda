@@ -15,6 +15,7 @@ grid-column: 1;
 grid-row: 1/4;
 overflow: hidden;
 width: 100vw;
+height: 100vh;
 `
 
 

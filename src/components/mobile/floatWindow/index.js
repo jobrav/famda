@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components"
 
 //animation keyframes
@@ -36,6 +37,7 @@ const Section = styled.section`
     // animation: ${fadeIn} 250ms ease-in-out;
     `
 const Container = styled.div`
+    box-shadow: 0px -5px 20px 0px #12121266;
     position: fixed;
     top:25px;
     height: calc(100vh - 25px);
@@ -54,14 +56,14 @@ const Header = styled.div`
     grid-template-rows: 1fr;
     grid-template-columns: 100px 1fr 100px;
     padding: 0 15px;
-    background: ${props => props.headBG || props.theme.secondaryBGC};
-    border-bottom: ${props => props.theme.lineBGC || "#fff"} 1px inset;
+    background: ${props => props.colortag ? props.theme[props.colortag] : props.theme.secondaryBGC};
+    border-bottom: inset ${props => props.theme.lineBGC || "#fff"} ${props => props.border === false ? "0px" : "1px"};
 `
 const Text = styled.div`
 cursor: ${props => props.cursor || "default"};
 align-self: ${props => props.align || "none"};
 justify-self: ${props => props.justify || "none"};
-font-weight: ${props => props.bold ? "500" : "300"};
+font-weight: ${props => props.bold ? "600" : "300"};
 color: ${props => props.theme.floatFC || "#272727"};
 -webkit-text-fill-color: ${props => props.theme.floatFC || "#272727"};
 font-size: ${props => props.theme.defaultFontSize};
@@ -79,16 +81,30 @@ const Handle = styled.div`
     border-radius: 3px;
     background: ${props => props.theme.secondaryBGC || "#f3f3f3"};
     `
-const Cancel = styled(Text)`
+const Cancel = styled(Link)`
+cursor: ${props => props.cursor || "default"};
+align-self: ${props => props.align || "none"};
+justify-self: ${props => props.justify || "none"};
+font-weight: ${props => props.bold ? "600" : "300"};
+color: ${props => props.theme.floatFC || "#272727"};
+-webkit-text-fill-color: ${props => props.theme.floatFC || "#272727"};
+font-size: ${props => props.theme.defaultFontSize};
     justify-self:start;
     align-self:center;
     color: #007aff;
     -webkit-text-fill-color: #007aff;
 `
-const Submit = styled(Text)`
+const Submit = styled(Link)`
+cursor: ${props => props.cursor || "default"};
+align-self: ${props => props.align || "none"};
+justify-self: ${props => props.justify || "none"};
+font-weight: ${props => props.bold ? "600" : "300"};
+color: ${props => props.theme.floatFC || "#272727"};
+-webkit-text-fill-color: ${props => props.theme.floatFC || "#272727"};
+font-size: ${props => props.theme.defaultFontSize};
     justify-self:end;
     align-self:center;
-    font-weight: 500;
+    font-weight: 700;
     color: #007aff;
     -webkit-text-fill-color: #007aff;
 `
@@ -100,16 +116,17 @@ const Body = styled.div`
 
 
 
-const FloatWindowDefault = ({ route: { history, match: { params } }, title, children, headBG }) => {
+const FloatWindowDefault = ({ header, route: { history, match: { params } }, left, right, title, children }) => {
     const closeCard = () => {
         history.goBack();
     };
+    const { colortag, border } = header || {};
     return <Section>
         <Container className={["pannel", "returnPannel", "nonePannel"][Object.values(params).length - 1]}>
-            <Header headBG={headBG}>
-                <Cancel onClick={closeCard} cursor="pointer">Annuleer</Cancel>
-                {title ? <Title bold>{title}</Title> : <Handle />}
-                <Submit onClick={closeCard} cursor="pointer">Opslaan</Submit>
+            <Header border={border} colortag={colortag}>
+                <Cancel to={(left && left.link) || "./"} cursor="pointer">{left ? left.title : "Annuleer"}</Cancel>
+                {title ? <Title bold>{title}</Title> : !title.handle || <Handle />}
+                <Submit to={(right && right.link) || "./"} cursor="pointer">{right ? right.title : "Opslaan"}</Submit>
             </Header>
             <Body>{children}</Body>
         </Container>

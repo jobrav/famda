@@ -14,7 +14,8 @@ display: grid;
 grid-template-rows: 1fr;
 grid-auto-flow: column;
 grid-auto-columns: 1fr;
-backdrop-filter: blur(50px) contrast(1.5);
+border-top: #b7b7b766 1px solid;
+backdrop-filter: blur(20px) saturate(180%);
 z-index: 10;
 background: ${props => props.theme.floatSecBGC || "#f3f3f3da"};
 `
@@ -23,30 +24,46 @@ background: transparent;
 display: grid;
 grid-template-rows: 35px 15px;
 grid-template-columns: 1fr;
+
+@media only screen and (min-width: 600px) {
+  grid-template-rows: 1fr;
+  height: 100%;
+  grid-gap: 5px;
+  grid-template-columns: 1fr 1fr;
+}
 `
 const NavTitle = styled.div`
-font-size: ${props => props.theme.menuFontSize};
+font-size: 0.65em;
 justify-self: center;
 align-self: start;
-filter: ${props =>  props.route && (props.active === props.route.match.path ?  "contrast(1) opacity(1)" :  "contrast(1.5) opacity(0.5)")};
-color: ${props =>  props.route && (props.active === props.route.match.path ? props.theme.menuIC : props.theme.primaryFC)}
--webkit-text-fill-color: ${props =>  props.route && (props.active === props.route.match.path ? props.theme.menuIC : props.theme.primaryFC)}
+filter: ${({active,route}) => route && (active[route.match.params.active]  ?  "contrast(1) opacity(1)" :  "contrast(1.5) opacity(0.5)")};
+color: ${({theme,active,route}) => route && (active[route.match.params.active] ? theme.menuIC : theme.primaryFC)}
+-webkit-text-fill-color: ${({theme,active,route}) => route && (active[route.match.params.active]  ? theme.menuIC : theme.primaryFC)}
+@media only screen and (min-width: 600px) {
+  font-size: 1em;
+  justify-self: start;
+  align-self: center;
+}
 `
 
 const NavIcon = styled.div`
-width: 20px;
-height: 20px;
+width: 22.5px;
+height: 22.5px;
 justify-self: center;
 align-self: center;
 grid-template-rows: 1fr;
 
+@media only screen and (min-width: 600px) {
+  justify-self: end;
+}
+
 ${NavTitle}:hover & > svg{
-  fill: ${props =>  props.route && (props.active === props.route.match.path ? props.theme.menuIC : props.theme.primaryFHC)}
+  fill: ${({theme,active,route}) => route && (active[route.match.params.active] ?  theme.menuIC : theme.primaryFC)}
 }
 
 & > svg {
-  filter: ${props =>  props.route && (props.active === props.route.match.path ?  "contrast(1) opacity(1)" :  "contrast(1.5) opacity(0.5)")};
-  fill: ${props => props.route && (props.active === props.route.match.path ?  props.theme.menuIC : props.theme.primaryFC)};
+  filter: ${({active,route}) => route && (active[route.match.params.active] ?  "contrast(1) opacity(1)" :  "contrast(1.5) opacity(0.5)")};
+  fill: ${({theme,active,route}) => route && (active[route.match.params.active] ?  theme.menuIC : theme.primaryFC)};
 }
 `
 
@@ -102,29 +119,50 @@ const menu = (  <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
 </svg>)
 
 
+const overview = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" >
+<path  d="M410,13.5H90c-35.8,0-65,29.3-65,65v345c0,35.8,29.3,65,65,65h320c35.8,0,65-29.3,65-65v-345
+	C475,42.8,445.8,13.5,410,13.5z M94.6,73.6C107.3,60.9,124.8,53,144,53s36.8,7.9,49.4,20.6C206.1,86.3,214,103.8,214,123
+	s-7.9,36.8-20.6,49.4C180.8,185.1,163.3,193,144,193c-38.5,0-70-31.5-70-70C74,103.8,81.9,86.3,94.6,73.6z M266,412.5
+	c0,6.6-5.4,12-12,12H86c-6.6,0-12-5.4-12-12v-11c0-6.6,5.4-12,12-12h168c6.6,0,12,5.4,12,12V412.5z M407,345c0,6.6-5.4,12-12,12H86
+	c-6.6,0-12-5.4-12-12v-11c0-6.6,5.4-12,12-12h309c6.6,0,12,5.4,12,12V345z"/>
+</svg>
+
+
+const explore = <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" >
+<path d="M185,240H65c-30.3,0-55-24.8-55-55V65c0-30.3,24.8-55,55-55h120c30.3,0,55,24.8,55,55v120C240,215.3,215.3,240,185,240z"/>
+<path d="M435,240H315c-30.3,0-55-24.8-55-55V65c0-30.3,24.8-55,55-55h120c30.3,0,55,24.8,55,55v120C490,215.3,465.3,240,435,240z"/>
+<path d="M435,490H315c-30.3,0-55-24.8-55-55V315c0-30.3,24.8-55,55-55h120c30.3,0,55,24.8,55,55v120C490,465.3,465.3,490,435,490z"
+	/>
+<path d="M185,490H65c-30.3,0-55-24.8-55-55V315c0-30.3,24.8-55,55-55h120c30.3,0,55,24.8,55,55v120C240,465.3,215.3,490,185,490z"/>
+</svg>
+
+
+
 let MenuBar = React.memo(({route}) => {
 
 
 
 
   const navListItems = [
-    { icon: blocks, title: "Agenda", link: "/view/" },
-    { icon: add, title: "Toevoegen", link: "add/" },
-    { icon: news, title: "Documents", link: "/docs/" },
-    { icon: menu, title: "Acount", link: "/profile/" },
+    { icon: overview, title: "Overzicht", link: "/dashboard/",actives:{"dashboard":true} },
+    { icon: explore, title: "Ontdek", link: "/explore/",actives:{"explore":true,"view":true,"docs":true,"projects":true } },
+    // { icon: blocks, title: "Agenda", link: "/view/" },
+    // { icon: add, title: "Toevoegen", link: "add/" },
+    // { icon: news, title: "Documents", link: "/docs/" },
+    // { icon: menu, title: "Acount", link: "/profile/" },
   ]
 
 
   return (
     <Nav>
-      {navListItems.map(({ link, icon, title }, i) => {
+      {navListItems.map(({ link, icon, title,actives }, i) => {
         return <NavLink
           to={link}
           key={`${link}_${title}`}
         >
           <NavItem>
-            <NavIcon route={route} active={link}>{icon}</NavIcon>
-            <NavTitle route={route} to="/view/day" active={link} className="title link">{title}</NavTitle>
+            <NavIcon route={route} active={actives}>{icon}</NavIcon>
+            <NavTitle route={route} to="/view/day" active={actives} className="title link">{title}</NavTitle>
           </NavItem>
         </NavLink>
 })}

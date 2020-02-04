@@ -6,6 +6,8 @@ import styled from "styled-components"
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 // import "./App.css";
 import loadUser, { userdata } from "./func/loadUser";
+//loading
+import LoadingScreen from "./components/loading"
 
 // sign in
 import SignUp from "./components/signUp";
@@ -35,7 +37,7 @@ const App = props => {
   let minView = new Date(today).setMonth(mm - range).valueOf();
   let maxView = new Date(today).setMonth(mm + range).valueOf();
 
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(null);
   const [user, setUser] = useState({});
   const [userData, setUserData] = useState();
   const [newsData, setNewsData] = useState();
@@ -49,6 +51,7 @@ const App = props => {
     // const setup = () => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
+        setUser(user)
         loadUser(user).then(data => {
           setUserData(data);
           groupSources = data.sources.alles;
@@ -91,13 +94,42 @@ const App = props => {
 
 
   const defaultColorStyles = {
-    primaryBGC: darkMode ? "#121212" : "#fff",
-    secondaryBGC: darkMode ? "#272727" : "#f3f3f3",
+    //dark mode enabled
+    darkMode,
+    //black white
+    hue: darkMode ? "#000" : "#fff",
+    hueReverse: darkMode ? "#fff" : "#000",
+    //grays
+    gray1: darkMode ? "#8e8e93" : "#8e8e93",
+    gray2: darkMode ? "#636366" : "#aeaeb2",
+    gray3: darkMode ? "#48484a" : "#c7c7cc",
+    gray4: darkMode ? "#3a3a3c" : "#d1d1d6",
+    gray5: darkMode ? "#2c2c2e" : "#e5e5ea",
+    gray6: darkMode ? "#1c1c1e" : "#f2f2f7",
+    //Colors
+    blue: darkMode ? "#0a84ff" : "#007aff",
+    green: darkMode ? "#30d158" : "#34c759",
+    indigo: darkMode ? "#5e5ce6" : "#5856d6",
+    orange: darkMode ? "#ff9f0a" : "#ff9500",
+    pink: darkMode ? "#ff375f" : "#ff2d55",
+    purple: darkMode ? "#bf5af2" : "#af52de",
+    red: darkMode ? "#ff453a" : "#ff3b30",
+    teal: darkMode ? "#64d2ff" : "#5ac8fa",
+    yellow: darkMode ? "#ffd60a" : "#ffcc00",
+
+    name: darkMode ? "" : "",
+
+
+
+
+    primaryBGC: darkMode ? "#121212" : "#f2f2f7",
+    secondaryBGC: darkMode ? "#272727" : "#ffffff",
+    tertiaryBGC: darkMode ? "#3a3a3c" : "#e4e5ea",
     floatBGC: darkMode ? "#121212b7" : "#ffffffb7",
-    floatSecBGC: darkMode ? "#272727b7" : "#f3f3f3b7",
-    lineBGC: darkMode ? "#2f2e2e9a" : "#f3f3f39a",
+    floatSecBGC: darkMode ? "rgba(39, 39, 39, 0.8)" : "rgba(243, 243, 243, 0.8)",
+    lineBGC: darkMode ? "#2f2e2e9a" : "#f2f2f79a",
     //primary font color || default and hover
-    primaryFC: darkMode ? "#b7b7b7" : "#403D3E",
+    primaryFC: darkMode ? "#fff" : "#1c1c1e",
     primaryFHC: darkMode ? "#e7e7e79a" : "#403D3E9a",
     primaryFAC: darkMode ? "#ffffff" : "#fff",
     //secondary font color || default and hover
@@ -124,17 +156,20 @@ const App = props => {
     <ThemeProvider theme={defaultColorStyles}>
       <Suspense fallback={<LoadingWindow />}>
         <BrowserRouter>
-          <Switch>
-            {auth ? <Route render={route => (
-              <Display
-                route={route}
-                userData={userData}
-                auth={auth}
-                newsData={newsData}
-                reminders={reminders}
-                setAppSettings={setSettings} />
-            )} /> : <SignIn />}
-          </Switch>
+          {auth !== null ?
+            <Switch>
+              {auth === true ? <Route render={route => (
+                <Display
+                  route={route}
+                  userData={userData}
+                  auth={auth}
+                  user={user}
+                  newsData={newsData}
+                  reminders={reminders}
+                  setAppSettings={setSettings} />
+              )} /> : <SignIn />}
+            </Switch>
+            : <LoadingScreen />}
         </BrowserRouter>
       </Suspense>
     </ThemeProvider>

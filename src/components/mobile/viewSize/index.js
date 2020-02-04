@@ -14,7 +14,7 @@ const Nav = styled.div`
   width: calc(100vw - 20px);
   height: 30px
   background: ${props => props.theme.floatSecBGC || "#f3f3f3da"};
-  backdrop-filter: blur(50px) contrast(1.5);
+  backdrop-filter: blur(20px) saturate(180%);
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;

@@ -33,7 +33,10 @@ const Appointment = ({ data }) => {
 
   return (
     <Container
-      to={`card/`}
+      to={{
+        pathname: 'card/',
+        state: data
+      }}
       bg={parentTheme}
       start={getStartHour * 4 + startQuarter}
       end={getEndHour * 4 + endQuarter}

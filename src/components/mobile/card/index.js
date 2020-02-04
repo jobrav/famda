@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components"
-import SwitchButton from "../../buttons/switch"
+import { useLocation, Link } from "react-router-dom";
+import TimeCard from "./timecard";
 
 const Section = styled.section`
 height: 100%;
-width: calc(100% - 30px);
-max-width: 620px;
 display: grid;
 grid-template-columns: 100%;
-grid-template-rows: 100px;
+grid-template-rows: max-content;
 grid-auto-flow: row;
 grid-auto-rows: max-content;
 padding: 0 15px;
+width: calc(100% - 30px);
+max-width: 620px;
 `
 const Text = styled.div`
 pointer-events: none;
@@ -23,9 +24,9 @@ color: ${props => props.theme.floatFC || "#272727"};
 -webkit-text-fill-color: ${props => props.theme.floatFC || "#272727"};
 `
 
-const Name = styled.input`
+const Name = styled(Text)`
 font-size: 40px;
-font-weight: 500;
+font-weight: 700;
 width: 100%;
     max-width: 620px;
 color: ${props => props.theme.floatFC || "#272727"};
@@ -74,8 +75,8 @@ align-self: center;
 color: ${props => props.theme.floatFC || "#272727"};
 -webkit-text-fill-color: ${props => props.theme.floatFC || "#272727"};
 `
-const Input = styled.input`
-width:100%;
+const Input = styled.div`
+justify-self:stretch;
 padding: 11px 0;
 font-size: ${props => props.theme.defaultFontSize};
 font-weight: 400;
@@ -84,47 +85,23 @@ color: ${props => props.theme.primaryFC || "#272727"};
 align-self: center;
 text-align: ${props => props.align === 'left' ? "left" : "right"};
 `
-const SwitchInput = styled(SwitchButton)`
-`
 
-const EditForm = () => {
-    //states
-    const [fullDay, setFullDay] = useState(false);
+
+const CardForm = () => {
+    const { state } = useLocation();
+    const { title, feed, zipcode, zipcodeEnd, repeatType, date } = state || {};
 
     return (
         <Section>
-            <Name placeholder="Nieuwe activiteit" />
+            <Name>{title || "undefind"}</Name>
+            <TimeCard zipcode={zipcode || null} zipcodeEnd={zipcodeEnd || null} repeatType={repeatType || null} date={date || null} />
             <Container>
                 <Li>
-                    <InputTitle>Locatie</InputTitle>
-                    <Input placeholder="Thuis" />
+                    <InputTitle>{"feed"}</InputTitle>
+                    <Input >{feed || "undefind"}</Input>
                 </Li>
-                <Li>
-                    <InputTitle>Kalender</InputTitle>
-                    <Input placeholder="Privé" />
-                </Li>
-            </Container>
-            <Container>
-                <Li>
-                    <InputTitle>Hele dag</InputTitle>
-                    <SwitchInput clicked={() => setFullDay(e => !e)} active={fullDay} />
-                </Li>
-                <Li>
-                    <InputTitle>Begin</InputTitle>
-                    <Input placeholder="11-01-2020 10:20" />
-                </Li><Li>
-                    <InputTitle>Eind</InputTitle>
-                    <Input placeholder="10:45" />
-                </Li><Li>
-                    <InputTitle>Herhaal</InputTitle>
-                    <Input placeholder="Niet" />
-                </Li>
-                {!fullDay && <Li>
-                    <InputTitle>Reistijd</InputTitle>
-                    <Input placeholder="Niet" />
-                </Li>}
             </Container>
         </Section>
     );
 };
-export default EditForm;
+export default CardForm;
