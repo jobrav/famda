@@ -21,7 +21,7 @@ grid-row: 2;
 display: grid;
 grid-template-columns: 1fr;
 grid-auto-flow: row;
-grid-auto-rows: 50px;
+grid-auto-rows: 55px;
 `
 const Text = styled.div`
 pointer-events: none;
@@ -54,7 +54,7 @@ const UserInfoCard = styled(Link)`
 display: grid;
 position: relative;
 background: ${props => props.theme.secondaryBGC || "#f3f3f3"}
-border-radius: 5px;
+border-radius: 10px;
 width: 100%;
 height: 50px;
 grid-row: 1;
@@ -79,12 +79,12 @@ background: ${props => props.theme.secondaryBGC || "#f3f3f3"}
 padding: 0 15px;
 height: 100%;
 &:first-child{
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 &:last-child{
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 `
 const SettingBlockSwitch = styled(SettingBlock)`

@@ -15,7 +15,7 @@ const Container = styled.div`
   display:grid;
   background: ${props => props.theme.secondaryBGC};
   border-radius: 7.5px;
-  grid-template-rows: 35px 35px;
+  grid-template-rows: 40px 40px;
   grid-template-columns: 1fr max-content;
   padding-top:5px;
   transition:all 100ms ease-in-out;
@@ -51,7 +51,7 @@ grid-row:1;
   justify-self:start;
   align-self: end;
   color: ${props => props.theme.hueReverse};
-  webkit-text-fill-color:${props => props.theme.hueReverse};
+  -webkit-text-fill-color: ${props => props.theme.hueReverse};
   `
 const By = styled.div`
   grid-column:1/3;
@@ -61,7 +61,7 @@ const By = styled.div`
   justify-self:start;
   align-self: start;
   color: ${props => props.theme.gray1};
-  webkit-text-fill-color:${props => props.theme.gray1};
+  -webkit-text-fill-color:${props => props.theme.gray1};
 `
 
 const ButtonAccept = styled.button`
@@ -79,7 +79,7 @@ const ButtonAccept = styled.button`
   text-transform: uppercase;
   background: ${({ theme: { darkmode, hue, gray6 } }) => darkmode ? hue : gray6};
   color: ${props => props.theme.blue};
-  webkit-text-fill-color: ${props => props.theme.blue};
+  -webkit-text-fill-color: ${props => props.theme.blue};
   text-align:center;
 `
 

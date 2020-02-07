@@ -19,7 +19,7 @@ height: 100vh;
 `
 
 
-const Agenda = React.memo(({ route: { match: { params } }, view, source, listArr, startingPoint }) => {
+const Agenda = React.memo(({ route: { match: { params }, location }, view, source, listArr, startingPoint }) => {
 
   const today = new Date(startingPoint).setHours(0, 0, 0, 0);
   const startPoint = new Date(today).setMonth(new Date(today).getMonth() - 1);

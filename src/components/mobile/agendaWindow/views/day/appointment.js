@@ -34,7 +34,7 @@ const Appointment = ({ data }) => {
   return (
     <Container
       to={{
-        pathname: 'card/',
+        pathname: "/view/card",
         state: data
       }}
       bg={parentTheme}

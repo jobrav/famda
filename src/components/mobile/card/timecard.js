@@ -47,7 +47,7 @@ const TimeCard = ({ repeatType, zipcode, zipcodeEnd }) => {
 
     return <Container>
         {isSameDay && <Text>{today ? "Vandaag" : `${daysInWeek[start.getDay()]} ${start.getDate()} ${monthsInYear[start.getMonth()]} ${start.getFullYear()}`}</Text>}
-        {isSameDay && <Text>{`van ${start.getHours()}:${start.getMinutes()}${start.getMinutes() < 10 ? "0" : ""} tot ${end.getHours()}:${end.getMinutes()}${end.getMinutes() < 10 ? "0" : ""}`}</Text>}
+        {isSameDay && <Text>{`van ${start.getHours()}:${start.getMinutes() < 10 ? "0" : ""}${start.getMinutes()} tot ${end.getHours()}:${end.getMinutes() < 10 ? "0" : ""}${end.getMinutes()}`}</Text>}
         {repeatType && <Text>{`herhaal: ${repeatType}`}</Text>}
     </Container>
 }

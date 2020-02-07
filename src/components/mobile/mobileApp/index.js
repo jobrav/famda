@@ -20,8 +20,10 @@ import FloatWindowDefault from "../floatWindow";
 import EditForm from "../editForm";
 import CardForm from "../card"
 import Profile from '../profileWindow'
+import Tutorial from '../tutorial'
 // app windows
 import ViewSize from "../viewSize";
+import ViewToolbar from "../viewToolbar";
 // app windowsagendaWindow
 import Agenda from "../agendaWindow";
 import Explore from "../explore";
@@ -47,8 +49,8 @@ const Dashboard = styled.section`
    justify-self:stretch;
    align-self:stretch;
    padding: 0 20px;
-   background: ${props => props.theme.primaryBGC};
-
+   background: ${({ theme: { darkMode, hue, gray6 } }) => darkMode ? hue : gray6};
+    overflow-y:auto;
    display:grid;
    grid-template-column:1fr;
    grid-template-rows: 100px;
@@ -118,7 +120,7 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
     const [srchContext, setSrchContext] = useState("");
     const changeSrchCtx = useCallback(value => { setSrchContext(value) }, [setSrchContext])
     // view 
-    const [view, setView] = useState(listArr[1]);
+    const [view, setView] = useState(localStorage.getItem('startView') || listArr[0]);
     const providerView = useMemo(() => ({ view, setView }), [view, setView])
     // select
     let key = Object.keys(agendaSelects)[0]
@@ -133,8 +135,8 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
 
     return (
         <Layout>
-            <Redirect exact from='/' to='/dashboard/' />
-            {userData.tutorial === true || <Redirect exact from='/dashboard' to='/dashboard/tutorial' />}
+            <Redirect exact from='/' to={`/${localStorage.getItem('startScreen') || "dashboard"}`} />
+            {userData.tutorial === true || <Redirect exact from={`/dashboard`} to={`/dashboard/tutorial`} />}
             <ThemeProvider theme={sizeStyle}>
 
                 <Route path={["/:base/add/:float1/:float2/", "/:base/add/:float1/", "/:base/add/"]} render={route =>
@@ -143,7 +145,8 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                 <Route path={["/:base/add/test/:float1/:float2/", "/:base/add/test/:float1/", "/:base/add/test/"]} render={route =>
                     <FloatWindowDefault title={"test"} route={route}><div></div></FloatWindowDefault>
                 } />
-                <Route path={["/:base/tutorial"]} render={route => <FloatWindowDefault header={{ colortag: "primaryBGC", border: false }} title={""} left={{ title: null }} right={{ title: null }} route={route}><div></div></FloatWindowDefault>} />
+                <Route path={["/:base/tutorial"]} render={route => <FloatWindowDefault header={{ colortag: "primaryBGC", border: false }} title={""} left={{ title: null }} right={{ title: null }} route={route}>
+                    <Tutorial /></FloatWindowDefault>} />
                 <Route path={["/:base/profile/:float1/:float2/", "/:base/profile/:float1/", "/:base/profile/"]} render={route =>
                     <FloatWindowDefault left={{ title: null }} right={{ title: "Gereed" }} title={"Profiel"} route={route}>
                         <Profile settings={setAppSettings} route={route} user={userData} />
@@ -160,14 +163,14 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                 <Route path={"/:active"} render={route => <MenuBar route={route} />}></Route>
 
                 {/* Explore */}
-                <Route path={["/explore/:float1/:float2/", "/explore/:float1/", "/explore/"]} render={route => <Explore route={route} />}></Route>
+                <Route path={["/explore/:float1/:float2/", "/explore/:float1/", "/explore/"]} render={route => <Explore route={route} userData={userData} />}></Route>
 
 
                 <ViewContext.Provider value={providerView}>
                     <SelectContext.Provider value={providerSelect}>
                         <DateContext.Provider value={providerDate}>
                             <Route path={["/view/:float1/:float2/", "/view/:float1/", "/view/"]} render={route => <Agenda source={sources} listArr={listArr} startingPoint={startPoint} view={view} source={select.id} route={route} />}></Route>
-                            <Route path={["/view/"]} render={route => <ViewSize listArr={listArr} />}></Route>
+                            <Route path={["/view/"]} render={route => <ViewToolbar listArr={listArr} />}></Route>
                         </DateContext.Provider>
                     </SelectContext.Provider>
                 </ViewContext.Provider>

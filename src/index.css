@@ -45,9 +45,9 @@ code {
 }
 .returnPannel {
   top: 0 !important;
-  transform: scale(0.955);
+  transform: scale(0.952);
   border-radius: 10px;
-  transform-origin: center;
+  transform-origin: center center;
   filter: contrast(0.9) grayscale(1);
   transition: all 300ms ease-in-out;
 }

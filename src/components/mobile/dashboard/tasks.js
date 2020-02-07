@@ -3,8 +3,8 @@ import * as firebase from "firebase";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const getActivitiesForDate = firebase.functions().httpsCallable('getActivitiesForDate');
-const cache = (uid, date) => JSON.parse(localStorage.getItem(`${uid}_activitiesForDate`)) || [];
+// const getActivitiesForDate = firebase.functions().httpsCallable('getActivitiesForDate');
+// const cache = (uid, date) => JSON.parse(localStorage.getItem(`${uid}_activitiesForDate`)) || [];
 
 const Section = styled.div`
     grid-column:1;
@@ -51,9 +51,11 @@ const Title = styled.h4`
     margin:0;
     justify-self:start;
     align-self:end;
-    color: ${props => props.theme.primaryFHC};
+    color: ${props => props.theme.gray1};
+    -webkit-text-fill-color:${props => props.theme.gray1};
     ${Project}:hover & {
         color: #fff;
+        -webkit-text-fill-color: #fff;
     }
 `
 const Stats = styled.div`
@@ -87,24 +89,26 @@ const Numbers = styled.h2`
     margin-right: 10px;
     margin-left: 5px;
     align-self:start;
-    color: ${props => props.theme.primaryFC}
+    color: ${props => props.theme.hueReverse}
+    -webkit-text-fill-color:${props => props.theme.hueReverse};
     ${Project}:hover & {
         color: #fff;
+        -webkit-text-fill-color: #fff;
     }
 `
 const clock = <path xmlns="http://www.w3.org/2000/svg" d="m437.02 74.98c-48.353-48.351-112.64-74.98-181.02-74.98s-132.667 26.629-181.02 74.98c-48.351 48.353-74.98 112.64-74.98 181.02s26.629 132.667 74.98 181.02c48.353 48.351 112.64 74.98 181.02 74.98s132.667-26.629 181.02-74.98c48.351-48.353 74.98-112.64 74.98-181.02s-26.629-132.667-74.98-181.02zm34.96 166.02v30h-40.032v-30zm-351.001-98.808-28.307-28.307 21.213-21.213 28.307 28.307zm21.213 248.829-28.307 28.307-21.213-21.213 28.307-28.307zm219.7-150.021v30h-120.892v-120.892h30v90.892zm-90.892-160.948h-30v-40.032h30zm-30 351.896h30v40.032h-30zm128.808-40.927 21.213-21.213 28.307 28.307-21.213 21.213zm21.213-248.829-21.213-21.213 28.307-28.307 21.213 21.213zm-310.969 98.808v30h-40.032v-30z" />
 
 
 const TasksOverView = React.memo(({ date, user: { uid } }) => {
-    const [activities, setActivities] = useState(cache(uid, date))
-    useEffect(() => {
-        getActivitiesForDate({ date })
-            .then(({ data }) => {
-                setActivities(data)
-                localStorage.setItem(`${uid}_activitiesForDate`, JSON.stringify(data));
-                return true;
-            }).catch(err => { return true });
-    }, [date])
+    // const [activities, setActivities] = useState(cache(uid, date))
+    // useEffect(() => {
+    //     getActivitiesForDate({ date })
+    //         .then(({ data }) => {
+    //             setActivities(data)
+    //             localStorage.setItem(`${uid}_activitiesForDate`, JSON.stringify(data));
+    //             return true;
+    //         }).catch(err => { return true });
+    // }, [date])
 
     return <Section>
         <Project key={1} bg={"#1377FF"} to={location => location}>

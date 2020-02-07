@@ -20,7 +20,7 @@ const Event = props => {
   return (
     <Container
       to={{
-        pathname: 'card/',
+        pathname: "/view/card",
         state: activity
       }}
       key={`${activity.id}_${props.zipcode}_obj`}

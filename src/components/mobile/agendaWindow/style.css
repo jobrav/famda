@@ -101,8 +101,9 @@
 .sign_list {
   display: inline-block;
   /* margin: 1vw; */
-  width: 90%;
-  padding: 5px 5%;
+  width: calc(100% - 45px);
+  margin: 0 2.5px;
+  padding: 5px 20px;
   background: rgb(226, 226, 226);
   border-radius: 0.5vh;
 

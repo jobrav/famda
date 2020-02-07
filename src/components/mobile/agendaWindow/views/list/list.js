@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Chunk } from "../../../../../func/chunkItem"
+import styled from "styled-components"
 import Appointment from "./appointment";
 import Event from "./event";
 import Sign from "./sign";
+
 let storage = 0;
+
+const Section = styled.div`
+height: 100%;
+overflow: none;
+position: absolute;
+width: 100%;
+transform-origin: top center;
+overflow-x:hidden;
+overflow-y:scroll;
+background: ${({ theme: { hue, darkMode, gray6 } }) => darkMode ? hue : gray6}
+display: ${props => props.show ? null : "none"};
+`
 
 const ListView = ({ show, startingPoint, data }) => {
 
   const today = new Date().setHours(0, 0, 0, 0)
+  const [render, setRender] = useState([]);
   const getRender = (render, today) => {
     return new Promise(resolve => {
       const chunkList = Object.values(render)
@@ -67,7 +81,9 @@ const ListView = ({ show, startingPoint, data }) => {
       resolve(test)
     })
   }
-  const [render, setRender] = useState([]);
+
+
+
   useEffect(() => {
     const timeline = document.getElementsByClassName("timeline")[0];
     const currentScroll = timeline.scrollTop;
@@ -78,11 +94,9 @@ const ListView = ({ show, startingPoint, data }) => {
     })
   }, [data, startingPoint])
 
-  return <div style={{ display: show ? null : "none" }} className="listView view">
-    <div style={{ overflowY: "scroll", height: "100vh" }} className="timeline">
-      {render}
-    </div>
-  </div>
+  return <Section show={show} className="timeline">
+    {render}
+  </Section>
 };
 
 export default ListView;

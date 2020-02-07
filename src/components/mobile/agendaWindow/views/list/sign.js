@@ -1,19 +1,44 @@
 import React from "react";
+import styled from "styled-components"
 
 const month = [
-  "Januari",
-  "Febuari",
-  "Maart",
-  "April",
-  "Mei",
-  "Juni",
-  "Juli",
-  "Augustus",
-  "September",
-  "Oktober",
-  "November",
-  "December"
+  "januari",
+  "febuari",
+  "maart",
+  "april",
+  "mei",
+  "juni",
+  "juli",
+  "augustus",
+  "september",
+  "oktober",
+  "november",
+  "december"
 ];
+const Container = styled.div`
+width: calc(100% - 45px);
+margin: 3px 2.5px;
+position: sticky;
+padding: 0 20px;
+top: 0px;
+z-index: 5;
+overflow: hidden;
+border-radius: 5px;
+background: ${({ theme: { gray4 } }) => gray4};
+`
+const Item = styled.h4`
+margin:0;
+display: inline-block;
+padding: 5px 0;
+
+text-align: left;
+font-size: 14px;
+// line-height: 15px;
+color: ${({ today, theme: { hueReverse, darkMode, blue, orange } }) => today ? darkMode ? orange : blue : hueReverse};
+-webkit-text-fill-color: ${({ today, theme: { hueReverse, darkMode, blue, orange } }) => today ? darkMode ? orange : blue : hueReverse};
+`
+
+
 const Sign = props => {
   const date = new Date();
   const tmm = date.getMonth();
@@ -25,25 +50,15 @@ const Sign = props => {
   const NewdateDay = Newdate.getDate();
   const NewdateYear = Newdate.getFullYear();
 
-  if (tmm === NewdateMonth && tdd === NewdateDay) classType = "sign_list today";
-
-  // prevDate = props.input || {
-  //   mm: NewdateMonth,
-  //   dd: NewdateDay,
-  //   yy: NewdateYear
-  // };
   return (
-    <div
+    <Container
       data-sign={"type" in props && props.type}
-      className="container_list"
       key={`${props.zipcode}_sign`}
       sign-date={props.zipcode}
     >
-      <div
-        key={`${classType} ${props.zipcode}`}
-        className={classType}
-      >{`${NewdateDay} ${month[NewdateMonth]} ${NewdateYear}`}</div>
-    </div>
+      <Item today={tmm === NewdateMonth && tdd === NewdateDay}>
+        {`${NewdateDay} ${month[NewdateMonth]}`}</Item>
+    </Container>
   );
 };
 

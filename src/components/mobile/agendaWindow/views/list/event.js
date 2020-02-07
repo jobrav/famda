@@ -5,7 +5,10 @@ const Event = props => {
   const activity = props.data;
   return (
     <Link
-      to={`card/`}
+      to={{
+        pathname: "/view/card",
+        state: activity
+      }}
       className="event"
       key={`${activity.id}_${props.zipcode}_obj`}
       data-key={activity.id}

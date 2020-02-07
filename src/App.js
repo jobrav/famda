@@ -97,8 +97,8 @@ const App = props => {
     //dark mode enabled
     darkMode,
     //black white
-    hue: darkMode ? "#000" : "#fff",
-    hueReverse: darkMode ? "#fff" : "#000",
+    hue: darkMode ? "#121212" : "#fff",
+    hueReverse: darkMode ? "#fff" : "#121212",
     //grays
     gray1: darkMode ? "#8e8e93" : "#8e8e93",
     gray2: darkMode ? "#636366" : "#aeaeb2",

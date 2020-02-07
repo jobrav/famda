@@ -21,13 +21,13 @@ width: calc(100% - 30px);
 display: grid;
 grid-template-columns: repeat(2,max-content) 1fr;
 grid-template-rows: 1fr;
-height: 50px;
+height: 55px;
 border-bottom: 1px #b7b7b766 solid;
 
 
 &:last-child{
     margin-top: 10px;
-    height: 40px;
+    height: 45px;
     border-radius: 10px;
     border:none;
 }
