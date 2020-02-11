@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components"
 import Appointment from "./appointment";
 import Event from "./event";
+import ViewToolbar from "../../../viewToolbar"
 import Sign from "./sign";
 
 let storage = 0;
@@ -18,7 +19,7 @@ background: ${({ theme: { hue, darkMode, gray6 } }) => darkMode ? hue : gray6}
 display: ${props => props.show ? null : "none"};
 `
 
-const ListView = ({ show, startingPoint, data }) => {
+const ListView = ({ show, startingPoint, data, listArr }) => {
 
   const today = new Date().setHours(0, 0, 0, 0)
   const [render, setRender] = useState([]);

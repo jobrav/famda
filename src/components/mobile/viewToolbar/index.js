@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components"
 
@@ -12,22 +12,34 @@ const Nav = styled.div`
   border-radius: 15px;
   padding: 2.5px 5px;
   width: calc(100vw - 30px);
-  background: ${props => props.theme.floatSecBGC || "#f3f3f3da"};
+  // background: ${props => props.theme.floatSecBGC || "#f3f3f3da"};
+  background: ${({ theme: { darkMode, hue, gray6 } }) => darkMode ? gray6 : hue}da;
   backdrop-filter: blur(20px) saturate(180%);
   display: grid;
+  grid-template-columns:1fr;
+  grid-template-rows: repeat(2,max-content);
+  overflow:hidden;
+`
+const DayRow = styled.div`
+  justify-self: stretch;
+  align-self: stretch;
+  // transition: all 0.1s ease-in-out;
+  display:grid;
+  grid-template-rows: 15px;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  grid-template-rows: max-content;
-`
-const ListItem = styled.a`
-  justify-self: center;
+  padding-top: 2.5px;
+`;
+const DateRow = styled.div`
+position: relative;
+  justify-self: stretch;
   align-self: stretch;
-  transition: all 0.1s ease-in-out;
+  // transition: all 0.1s ease-in-out;
   display:grid;
-  grid-template-columns: 25px;
-  grid-template-rows: 15px 25px;
-  grid-gap:3px;
-  padding: 2.5px 0;
+  grid-template-rows: 35px;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  padding-bottom: 2.5px;
 `;
 const Text = styled.h4`
 justify-self:center;
@@ -40,47 +52,118 @@ color: ${({ theme: { hueReverse } }) => hueReverse};
 text-align: center;
 `
 const Number = styled(Text)`
-align-self:stretch;
-justify-self:stretch;
-line-height: 25px;
-border-radius: 25px;
-${({ active }) => active ? "color: #fff !important;" : null};
-${({ active }) => active ? "-webkit-text-fill-color: #fff !important;" : null};
-background: ${({ active, theme: { blue } }) => active ? blue : 'transparent'};
+width: 35px;
+width: 35px;
+justify-self:center;
+align-self:center;
+line-height: 35px;
+transition: all 100ms ease-in-out;
+border-radius: 35px;
+color: ${({ today, active, theme: { blue, hue, hueReverse } }) => today ? active ? "#fff" : blue : active ? hue : hueReverse};
+-webkit-text-fill-color: ${({ today, active, theme: { blue, hue, hueReverse } }) => today ? active ? "#fff" : blue : active ? hue : hueReverse};
+background: ${({ today, active, theme: { blue, hueReverse } }) => active ? today ? blue : hueReverse : 'transparent'};
 
+&:active{
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+}
 `
 const Day = styled(Text)`
 align-self:start;
 font-size: 8px;
 `
 
-const Add = styled(Link)`
-  padding:5px;
-  justify-self: center;
-  align-self: center;
-`
-const AddIcon = styled.svg`
-  background: ${({ theme: { blue } }) => blue};
-width: 20px;
-height: 20px;
-`
+let clientX = 0;
+const windowWidth = window.outerWidth;
+const touchStart = ({ touches, currentTarget: { style } }) => {
+  style.transition = "transform 0ms ease-in-out";
+  clientX = touches[0].clientX;
+}
+const touchMove = ({ touches, currentTarget: { style } }) => style.transform = `translateX(${touches[0].clientX - clientX}px)`;
+
+const moveFor = (style) => {
+  style.transition = "transform 0ms ease-in-out";
+  style.transform = `translateX(100vw)`;
+  setTimeout(() => {
+    style.transition = "transform 200ms ease-in-out";
+    style.transform = `translateX(0vw)`;
+  }, 10)
+}
+const moveBack = (style) => {
+  style.transition = "transform 0ms ease-in-out";
+  style.transform = `translateX(-100vw)`;
+  setTimeout(() => {
+    style.transition = "transform 200ms ease-in-out";
+    style.transform = `translateX(0vw)`;
+  }, 50)
+}
+
+const days = ['Z', 'M', 'D', 'W', 'D', 'V', 'Z']
 
 
-const days = ['M', 'D', 'W', 'D', 'V', 'Z', 'Z']
 
-const ViewToolbar = React.memo(({ givenDate }) => {
-  const startDate = givenDate ? new Date(givenDate) : new Date()
+const ViewToolbar = React.memo(({ givenDate, changeDate }) => {
+  const [startDate, setStateDate] = useState(givenDate ? new Date(givenDate).setHours(0, 0, 0, 0) : new Date().setHours(0, 0, 0, 0))
+  const [activeDate, setActiveDate] = useState(givenDate ? new Date(givenDate).setHours(0, 0, 0, 0) : startDate)
+  const startDateDate = new Date(startDate).getDate();
+  const activeDateDate = new Date(activeDate).getDate();
+
+  const touchEnd = ({ changedTouches, currentTarget: { style } }) => {
+    const change = changedTouches[0].clientX - clientX
+    style.transition = "transform 200ms ease-in-out";
+
+    if (change > windowWidth / 3) {
+      style.transform = `translateX(100vw)`;
+      setTimeout(() => {
+        moveBack(style);
+        setStateDate(new Date(startDate).setDate(startDateDate - 7))
+        setActiveDate(new Date(activeDate).setDate(activeDateDate - 7))
+      }, 200)
+    }
+    else if (change < -windowWidth / 3) {
+      style.transform = `translateX(-100vw)`;
+      setTimeout(() => {
+        moveFor(style);
+        setStateDate(new Date(startDate).setDate(startDateDate + 7))
+        setActiveDate(new Date(activeDate).setDate(activeDateDate + 7))
+      }, 200)
+    }
+    else style.transform = `translateX(0px)`;
+  }
+
+  const move = (itemsDate) => {
+    setStateDate(itemsDate)
+    changeDate(itemsDate)
+    setActiveDate(itemsDate)
+  }
+  useEffect(() => {
+    setStateDate(setStateDate)
+    setActiveDate(givenDate)
+  }, [givenDate])
+
+  const startDay = new Date(startDate).getDate()
+  const dayInWeek = new Date(startDate).getDay();
+  if (givenDate < new Date(startDate).setDate(startDay - dayInWeek)) {
+    setStateDate(new Date(startDate).setDate(startDateDate - 7))
+    setActiveDate(new Date(activeDate).setDate(activeDateDate - 7))
+  }
+  else if (givenDate > new Date(startDate).setDate(startDay + 6 - dayInWeek)) {
+    setStateDate(new Date(startDate).setDate(startDateDate + 7))
+    setActiveDate(new Date(activeDate).setDate(activeDateDate + 7))
+  }
+
   return (
     <Nav>
-      {[0, 1, 2, 3, 4, 5, 6].map((bar, i) => {
-        const startDay = new Date(startDate).getDate()
-        const dayInWeek = new Date(startDate).getDay();
-        const itemsDate = new Date(startDate).setDate(startDay - dayInWeek + i + 1);
-        return <ListItem key={i}>
-          <Day>{days[i]}</Day>
-          <Number active={itemsDate === new Date(startDate).valueOf()}>{new Date(itemsDate).getDate()}</Number>
-        </ListItem>
-      })}
+      <DayRow>{[0, 1, 2, 3, 4, 5, 6].map(i => <Day key={i}>{days[i]}</Day>)}</DayRow>
+      <DateRow onTouchStart={touchStart} onTouchMove={touchMove} onTouchEnd={touchEnd}>
+        {[0, 1, 2, 3, 4, 5, 6].map((_, i) => {
+
+          const itemsDate = new Date(startDate).setDate(startDay - dayInWeek + i);
+          return <Number key={i} onClick={() => move(itemsDate)} today={itemsDate === new Date().setHours(0, 0, 0, 0)}
+            active={itemsDate === activeDate}>
+            {new Date(itemsDate).getDate()}</Number>
+        })}
+      </DateRow>
     </Nav >
   );
 })

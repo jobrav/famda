@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Appointment from "./appointment"
+import ViewToolbar from "../../../viewToolbar"
 import Event from "./event";
 import Sign from "./sign";
 import styled from "styled-components"
@@ -12,7 +13,7 @@ position: absolute;
 width: 100%;
 transform-origin: top center;
 display:grid;
-grid-template-rows: 65px 1fr;
+grid-template-rows: 1fr;
 grid-template-columns: 1fr;
 display: ${props => props.show ? null : "none"};
 `
@@ -44,6 +45,7 @@ const Body = styled.div`
   height:100%;
   grid-auto-flow: column;
   grid-template-rows: 1fr;
+  column-gap: 15px;
   background: ${props => props.theme.primaryBGC || "#fff"};
 `
 const Number = styled.p`
@@ -112,7 +114,7 @@ border-bottom: 1px solid ${props => props.theme.secondaryBGC || "#f3f3f3"};
 `
 const hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
-const DayView = React.memo(({ show, startingPoint, data, edge }) => {
+const DayView = React.memo(({ show, startingPoint, data, edge, listArr }) => {
 
   const today = new Date(startingPoint).setHours(0, 0, 0, 0)
   const AminView = new Date(today).setMonth(new Date(today).getMonth() - 1);
@@ -206,7 +208,7 @@ const DayView = React.memo(({ show, startingPoint, data, edge }) => {
 
 
   return <Section show={show}>
-    <Header>Hier komt de agenda op houd</Header>
+    <ViewToolbar listArr={listArr} />
     <Container onScroll={scrolling} id="timeline">
       <CurrentTimeLine id="currentTimeLine" currentTime={currentTime} />
       <Head>{render.map(e => e.head)}</Head>

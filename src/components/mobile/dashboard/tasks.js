@@ -11,7 +11,7 @@ const Section = styled.div`
     display:grid;
     grid-template-columns: repeat(2,1fr);
     grid-template-rows: 1fr;
-    height: 75px;
+    height: 80px;
     justify-self:stretch;
     grid-gap: 10px;
     margin-top: 15px;

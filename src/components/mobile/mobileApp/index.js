@@ -10,9 +10,10 @@ import MenuBar from "../menuBar";
 import SearchBar from "../searchBar";
 
 //dashbord
-import ActivitiesForDate from "../dashboard/activitiesForDate";
 import TasksOverView from "../dashboard/tasks";
 import Invites from "../dashboard/invites";
+import ActivitiesForDate from "../dashboard/activitiesForDate";
+import History from "../dashboard/history";
 
 // Floating windows
 import FloatWindowDefault from "../floatWindow";
@@ -57,6 +58,9 @@ const Dashboard = styled.section`
 //    grid-template-rows: 100px 42.5px;
    grid-auto-flow:row;
    grid-auto-rows: max-content;
+   & > div:last-child{
+       margin-bottom: 100px;
+   }
 `
 const Title = styled.h1`
     margin:0;
@@ -135,7 +139,7 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
 
     return (
         <Layout>
-            <Redirect exact from='/' to={`/${localStorage.getItem('startScreen') || "dashboard"}`} />
+            <Redirect exact from='/' to={`/${localStorage.getItem('startScreen') || "dashboard"}/`} />
             {userData.tutorial === true || <Redirect exact from={`/dashboard`} to={`/dashboard/tutorial`} />}
             <ThemeProvider theme={sizeStyle}>
 
@@ -145,8 +149,9 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                 <Route path={["/:base/add/test/:float1/:float2/", "/:base/add/test/:float1/", "/:base/add/test/"]} render={route =>
                     <FloatWindowDefault title={"test"} route={route}><div></div></FloatWindowDefault>
                 } />
-                <Route path={["/:base/tutorial"]} render={route => <FloatWindowDefault header={{ colortag: "primaryBGC", border: false }} title={""} left={{ title: null }} right={{ title: null }} route={route}>
-                    <Tutorial /></FloatWindowDefault>} />
+                <Route path={["/:base/tutorial"]} render={route =>
+                    <FloatWindowDefault header={{ colortag: "primaryBGC", border: false }} title={""} left={{ title: null }} right={{ title: null }} route={route}>
+                        <Tutorial /></FloatWindowDefault>} />
                 <Route path={["/:base/profile/:float1/:float2/", "/:base/profile/:float1/", "/:base/profile/"]} render={route =>
                     <FloatWindowDefault left={{ title: null }} right={{ title: "Gereed" }} title={"Profiel"} route={route}>
                         <Profile settings={setAppSettings} route={route} user={userData} />
@@ -154,7 +159,7 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                 } />
 
 
-                <Route path={["/:sec/edit", "/:sec/card"]} render={route => <FloatWindowDefault right={{ title: "Wijzig", link: "./edit" }} title={"Details afspraak"} route={route} >
+                <Route path={["/:sec/edit", "/:sec/card"]} render={route => <FloatWindowDefault left={{ title: "Annuleer", link: "./" }} right={{ title: "Wijzig", link: "./edit/" }} title={"Details afspraak"} route={route} >
                     <Route path={["/:sec/edit"]} render={_ => <EditForm user={userData} userData={newsData} />} />
                     <Route path={["/:sec/card"]} render={_ => <CardForm user={userData} userData={newsData} />} />
                 </FloatWindowDefault>} />
@@ -170,7 +175,7 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                     <SelectContext.Provider value={providerSelect}>
                         <DateContext.Provider value={providerDate}>
                             <Route path={["/view/:float1/:float2/", "/view/:float1/", "/view/"]} render={route => <Agenda source={sources} listArr={listArr} startingPoint={startPoint} view={view} source={select.id} route={route} />}></Route>
-                            <Route path={["/view/"]} render={route => <ViewToolbar listArr={listArr} />}></Route>
+                            {/* <Route path={["/view/"]} render={route => <ViewToolbar listArr={listArr} />}></Route> */}
                         </DateContext.Provider>
                     </SelectContext.Provider>
                 </ViewContext.Provider>
@@ -179,7 +184,7 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                     <Dashboard className={["pannel", "returnPannel", "nonePannel"][Object.values(params).length]}>
                         {/* //Header */}
                         <PageTitle>Overzicht</PageTitle>
-                        <ProfilePic to="profile" img={`url("data:image/jpeg;base64,${userData ? userData.picture : null}")`} />
+                        <ProfilePic to="profile/" img={`url("data:image/jpeg;base64,${userData ? userData.picture : null}")`} />
                         {/* Search when enable fix dashboard grid layout to 42.5px */}
                         {/* <SearchBar srchCtx={srchContext} changeSrchCtx={changeSrchCtx} /> */}
 
@@ -194,6 +199,10 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                         {/* Todays apointments */}
                         <SubTitle>Afspraken</SubTitle>
                         <ActivitiesForDate user={user} date={new Date().setHours(0, 0, 0, 0)} />
+
+                        {/* History */}
+                        <SubTitle>Geschiedenis</SubTitle>
+                        <History user={user} />
                     </Dashboard>
                 } />
 

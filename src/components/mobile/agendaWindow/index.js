@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ListView from "./views/list/list";
+import ListPerDayView from "./views/listPerDay";
+import ViewToolbar from "../viewToolbar"
 import DayView from "./views/day/day";
 import WeekView from "./views/week";
 import MonthView from "./views/month";
@@ -22,8 +24,10 @@ height: 100vh;
 const Agenda = React.memo(({ route: { match: { params }, location }, view, source, listArr, startingPoint }) => {
 
   const today = new Date(startingPoint).setHours(0, 0, 0, 0);
-  const startPoint = new Date(today).setMonth(new Date(today).getMonth() - 1);
+  const [startTestPoint, setStartTestPoint] = useState(today);
+  const [currentDate, setCurrentDate] = useState(today);
   const todayEnd = new Date(startingPoint).setHours(23, 59, 59, 99);
+  const [startPoint, setStartPoint] = useState(new Date(today).setMonth(new Date(today).getMonth() - 1));
   const startPointEnd = new Date(todayEnd)
   // .setDate(new Date(todayEnd).getDate() - 1)
 
@@ -57,9 +61,12 @@ const Agenda = React.memo(({ route: { match: { params }, location }, view, sourc
     for (let i = offsetStart; i <= offsetEnd; i++) setOffsetArr(prev => [...prev, i])
   }, [startBorders, endBorders])
 
+
   return (
     <Section className={["pannel", "returnPannel", "nonePannel"][Object.values(params).length]}>
-      <ListView edge={edge} show={view === listArr[0] && fetchFinshed} startingPoint={startingPoint} data={data} />
+      <ViewToolbar changeDate={setStartTestPoint} givenDate={currentDate} />
+      <ListPerDayView edge={edge} show={view === listArr[0] && fetchFinshed} currentDate={currentDate} setCurrentDate={setCurrentDate} startingPoint={startTestPoint} data={data} />
+      {/* <ListView edge={edge} show={view === listArr[0] && fetchFinshed} startingPoint={startingPoint} data={data} /> */}
       <DayView edge={edge} show={view === listArr[1] && fetchFinshed} startingPoint={startingPoint} data={data} />
 
       {/* agenda data */}

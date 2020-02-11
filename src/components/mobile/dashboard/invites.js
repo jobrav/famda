@@ -20,6 +20,15 @@ const Container = styled.div`
   padding-top:5px;
   transition:all 100ms ease-in-out;
   padding: 0 15px;
+
+  &:active p {
+    color: #fff;
+    -webkit-text-fill-color: #fff;
+}
+&:active{
+    background: ${props => props.theme.tertiaryBGC};
+    transition: transform 50ms ease-in-out;
+}
   
   // ${Section}:active &{
   //   transform-origin: bottom;
@@ -43,7 +52,9 @@ const ContainerAfter = styled.div`
   //   border-bottom-right-radius: 5px;
   // }
 `
-const Title = styled.div`
+const Title = styled.p`
+margin:0;
+padding:0;
 grid-column:1/3;
 grid-row:1;
   font-size: ${props => props.theme.defaultFontSize};
@@ -53,7 +64,9 @@ grid-row:1;
   color: ${props => props.theme.hueReverse};
   -webkit-text-fill-color: ${props => props.theme.hueReverse};
   `
-const By = styled.div`
+const By = styled.p`
+margin:0;
+padding:0;
   grid-column:1/3;
   grid-row:2;
   font-size: ${props => props.theme.subFontSize};

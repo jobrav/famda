@@ -68,6 +68,7 @@ align-self: start;
 font-weight: 500;
 cursor:pointer;
 color:#fff;
+-webkit-text-fill-color:#fff;
 text-align:center;
 padding: 12.5px 0;
 background: ${props => props.theme.blue};

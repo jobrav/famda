@@ -104,11 +104,11 @@ const Explore = ({ userData, route: { match: { params } } }) => {
     return <Section className={["pannel", "returnPannel", "nonePannel"][Object.values(params).length]}>
         {/* Header */}
         <PageTitle>Ontdekken</PageTitle>
-        <ProfilePic to="profile" img={`url("data:image/jpeg;base64,${userData ? userData.picture : null}")`} />
+        <ProfilePic to="profile/" img={`url("data:image/jpeg;base64,${userData ? userData.picture : null}")`} />
 
 
         <ListContainer>
-            {[{ title: "Agenda", link: "/view" }, { title: "Documenten", link: "/docs/" }, { title: "Projecten", link: "/projects/" }].map(({ title, link }, i) => <ListItem to={link} key={i}>
+            {[{ title: "📅 Agenda", link: "/view" }, { title: "📄 Documenten", link: "/docs/" }, { title: "🗃️ Projecten", link: "/projects/" }, { title: "⚙️ Opties", link: "/settings/" }].map(({ title, link }, i) => <ListItem to={link} key={i}>
                 {/* <Theme color={e.theme} /> */}
                 <Name>{title}</Name>
                 <Arrow viewBox="0 0 451.846 451.847" xmlns="http://www.w3.org/2000/svg">

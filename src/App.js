@@ -8,10 +8,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import loadUser, { userdata } from "./func/loadUser";
 //loading
 import LoadingScreen from "./components/loading"
-
-// sign in
-import SignUp from "./components/signUp";
-import Sign from "./components/default/agendaWindow/views/list/sign";
+import smoothscroll from 'smoothscroll-polyfill';
 
 // devices
 const SignIn = lazy(() => import("./components/signIn"));
@@ -29,6 +26,7 @@ const LoadingWindow = styled.section`
 `
 
 const App = props => {
+  smoothscroll.polyfill();
   const db = firebase.firestore();
 
   const today = new Date();
@@ -97,8 +95,8 @@ const App = props => {
     //dark mode enabled
     darkMode,
     //black white
-    hue: darkMode ? "#121212" : "#fff",
-    hueReverse: darkMode ? "#fff" : "#121212",
+    hue: darkMode ? "#121212" : "#ffffff",
+    hueReverse: darkMode ? "#ffffff" : "#121212",
     //grays
     gray1: darkMode ? "#8e8e93" : "#8e8e93",
     gray2: darkMode ? "#636366" : "#aeaeb2",

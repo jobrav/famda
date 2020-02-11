@@ -17,7 +17,8 @@ grid-auto-columns: 1fr;
 border-top: #b7b7b766 1px solid;
 backdrop-filter: blur(20px) saturate(180%);
 z-index: 10;
-background: ${props => props.theme.floatSecBGC || "#f3f3f3da"};
+// background: ${props => props.theme.floatSecBGC || "#f3f3f3da"};
+background: ${({ theme: { darkMode, hue, gray6 } }) => darkMode ? gray6 : hue}da;
 `
 const NavItem = styled.div`
 background: transparent;

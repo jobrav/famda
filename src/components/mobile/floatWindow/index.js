@@ -124,9 +124,9 @@ const FloatWindowDefault = ({ header, route: { history, match: { params } }, lef
     return <Section>
         <Container className={["pannel", "returnPannel", "nonePannel"][Object.values(params).length - 1]}>
             <Header border={border} colortag={colortag}>
-                <Cancel to={(left && left.link) || "./"} cursor="pointer">{left ? left.title : "Annuleer"}</Cancel>
+                <Cancel to={(left && left.link) || "../"} cursor="pointer">{left ? left.title : "Annuleer"}</Cancel>
                 {title ? <Title bold>{title}</Title> : !title.handle || <Handle />}
-                <Submit to={(right && right.link) || "./"} cursor="pointer">{right ? right.title : "Opslaan"}</Submit>
+                <Submit to={(right && right.link) || "../"} cursor="pointer">{right ? right.title : "Opslaan"}</Submit>
             </Header>
             <Body>{children}</Body>
         </Container>
