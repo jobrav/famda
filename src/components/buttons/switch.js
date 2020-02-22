@@ -4,9 +4,9 @@ import styled from "styled-components"
 const Container = styled.div`
     cursor: pointer;
     position: relative;
-    width: 32.5px;
-    height: 18.5px;
-    border-radius: 18.5px;
+    width: 40px;
+    height: 22.5px;
+    border-radius: 22.5px;
     justify-self:end;
     align-self:center;
     background: ${props => props.active ? "#409fff" : props.theme.primaryBGC || "#fff"};
@@ -15,8 +15,8 @@ const Container = styled.div`
     justify-content:${props => props.active ? "flex-end" : "flex-start"};
     `
 const Handle = styled.div`
-    width: 18.5px;
-    height: 18.5px;
+    width: 22.5px;
+    height: 22.5px;
     background: ${props => props.theme.secondaryBGC || "#f3f3f3"};
     border-radius: 18.5px;
 `

@@ -8,7 +8,7 @@ let storage = 0;
 
 const Section = styled.div`
 height: 100%;
-overflow: none;
+overflow: hidden;
 position: absolute;
 width: 100%;
 transform-origin: top center;
@@ -22,9 +22,11 @@ const Container = styled.div`
 display: grid;
 justify-self:stretch;
 align-self: stretch;
+width: 100vw;
 will-change: transform;
-overflow: scroll;
-scroll-snap-type: x proximity;
+overflow-x: hidden;
+overflow-y:scroll;
+// scroll-snap-type: x proximity;
 grid-template-columns: 1fr;
 grid-template-rows: auto 1fr;
 background: ${props => props.theme.primaryBGC || "#fff"};
@@ -114,7 +116,19 @@ border-bottom: 1px solid ${props => props.theme.secondaryBGC || "#f3f3f3"};
 `
 const hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
-const DayView = React.memo(({ show, startingPoint, data, edge, listArr }) => {
+let clientX = 0;
+let clientY = 0;
+let startPos = 0;
+const windowWidth = window.outerWidth;
+const touchStart = ({ touches, currentTarget }) => {
+  clientX = touches[0].clientX;
+  clientY = touches[0].clientY;
+  startPos = currentTarget.scrollLeft;
+}
+const touchMove = ({ touches, currentTarget }) => currentTarget.scrollLeft = true ? (startPos + clientX - touches[0].clientX) : currentTarget.scrollLeft;
+
+
+const DayView = React.memo(({ scrollTo, show, startingPoint, data, setCurrentDate, currentDate }) => {
 
   const today = new Date(startingPoint).setHours(0, 0, 0, 0)
   const AminView = new Date(today).setMonth(new Date(today).getMonth() - 1);
@@ -173,6 +187,24 @@ const DayView = React.memo(({ show, startingPoint, data, edge, listArr }) => {
     })
   }
 
+  const touchEnd = ({ changedTouches, currentTarget }) => {
+
+    const changeX = changedTouches[0].clientX - clientX
+    // const changeY = changedTouches[0].clientY - clientY
+    // currentTarget.style.scrollBehavior = "smooth";
+    const currentDateDate = new Date(currentDate).getDate();
+    if (changeX > windowWidth / 3) {
+      currentTarget.scroll({ left: startPos - windowWidth - 15, behavior: 'smooth' })//15px for the margins
+      setCurrentDate(current => new Date(current).setDate(currentDateDate - 1))
+    }
+    else if (changeX < -windowWidth / 3) {
+      currentTarget.scroll({ left: startPos + windowWidth + 15, behavior: 'smooth' })//15px for the margins
+      setCurrentDate(current => new Date(current).setDate(currentDateDate + 1))
+    }
+    else currentTarget.scroll({ left: startPos, behavior: 'smooth' })
+  }
+
+
   const [render, setRender] = useState([]);
   const [renderTime, setRenderTime] = useState(0);
   let scrollToStartingPoint = false;
@@ -182,34 +214,46 @@ const DayView = React.memo(({ show, startingPoint, data, edge, listArr }) => {
   }, [show])
 
   const currentTime = new Date().getHours() * 60 + new Date().getMinutes();
-  useEffect(() => {
-    let timeline = document.getElementById("timeline"); // get timeline container
-    const currentScrollRight = timeline.scrollWidth - timeline.scrollLeft; // get current scroll from left
-    const currentScrollY = timeline.scrollTop; // get current scroll from left
-    getRender(data, today).then(render => { // create render
-      setRender(render); //push render
-      const startItem = document.getElementsByClassName(`sign_zipcode_${new Date(startingPoint).setHours(0, 0, 0, 0)}`)[0]; // get today element
-      if (!scrollToStartingPoint) {
-        scrollToStartingPoint = true
-        timeline.scrollLeft = startItem ? startItem.offsetLeft + 25 : 0;
-      } else timeline.scrollLeft = timeline.scrollWidth - currentScrollRight; // scroll to startingpoint or fix scroll bug
+  // useEffect(() => {
+  //   let timeline = document.getElementById("timeline"); // get timeline container
+  //   const currentScrollRight = timeline.scrollWidth - timeline.scrollLeft; // get current scroll from left
+  //   const currentScrollY = timeline.scrollTop; // get current scroll from left
+  //   getRender(data, today).then(render => { // create render
+  //     setRender(render); //push render
+  //     const startItem = document.getElementsByClassName(`sign_zipcode_${new Date(startingPoint).setHours(0, 0, 0, 0)}`)[0]; // get today element
+  //     if (!scrollToStartingPoint) {
+  //       scrollToStartingPoint = true
+  //       timeline.scrollLeft = startItem ? startItem.offsetLeft + 25 : 0;
+  //     } else timeline.scrollLeft = timeline.scrollWidth - currentScrollRight; // scroll to startingpoint or fix scroll bug
 
-      timeline.scrollTop = renderTime < 5 ? currentTime * 14 / 15 - 100 : currentScrollY; // scroll to startingpoint or fix scroll bug
-      setRenderTime(prev => prev += 1) // add rendertime
-    });
-  }, [data, startingPoint])
+  //     timeline.scrollTop = renderTime < 5 ? currentTime * 14 / 15 - 100 : currentScrollY; // scroll to startingpoint or fix scroll bug
+  //     setRenderTime(prev => prev += 1) // add rendertime
+  //   });
+  // }, [data, startingPoint])
+
+  useEffect(() => {
+    const timeline = document.getElementsByClassName("timeline")[0];
+    const currentScroll = timeline.scrollLeft;
+    getRender(data, today).then(render => {
+      setRender(render);
+      const scrollItem = document.getElementsByClassName(`sign_zipcode_${new Date(scrollTo).setHours(0, 0, 0, 0)}`)[0];
+      timeline.scrollLeft = scrollItem ? scrollItem.offsetLeft : currentScroll;
+      // timeline.scrollTop = renderTime < 5 ? currentTime * 14 / 15 - 100
+      setCurrentDate(new Date(startingPoint).setHours(0, 0, 0, 0))
+
+    })
+  }, [data, scrollTo])
 
   const scrolling = input => {
-    const scroll = Math.round(input.target.scrollLeft);
-    const width = Math.round(input.target.scrollWidth - input.target.offsetWidth);
-    if (scroll <= 305 && scroll >= 295) edge("start")
-    else if (scroll >= width - 305 && scroll <= width - 295) edge("end")
+    // const scroll = Math.round(input.target.scrollLeft);
+    // const width = Math.round(input.target.scrollWidth - input.target.offsetWidth);
+    // if (scroll <= 305 && scroll >= 295) edge("start")
+    // else if (scroll >= width - 305 && scroll <= width - 295) edge("end")
   }
 
 
   return <Section show={show}>
-    <ViewToolbar listArr={listArr} />
-    <Container onScroll={scrolling} id="timeline">
+    <Container onTouchStart={touchStart} onTouchMove={touchMove} onTouchEnd={touchEnd} onScroll={scrolling} className="timeline">
       <CurrentTimeLine id="currentTimeLine" currentTime={currentTime} />
       <Head>{render.map(e => e.head)}</Head>
       <Body>{render.map(e => e.body)}</Body>

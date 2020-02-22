@@ -19,7 +19,7 @@ background: ${({ theme: { hue, darkMode, gray6 } }) => darkMode ? hue : gray6}
 display: ${props => props.show ? null : "none"};
 `
 
-const ListView = ({ show, startingPoint, data, listArr }) => {
+const ListView = ({ scrollTo, show, startingPoint, data, listArr }) => {
 
   const today = new Date().setHours(0, 0, 0, 0)
   const [render, setRender] = useState([]);
@@ -90,10 +90,10 @@ const ListView = ({ show, startingPoint, data, listArr }) => {
     const currentScroll = timeline.scrollTop;
     getRender(data, today).then(render => {
       setRender(render);
-      const todayItem = document.querySelectorAll(`[sign-date="${new Date(startingPoint).setHours(0, 0, 0, 0)}"]`)[0];
-      timeline.scrollTop = todayItem ? todayItem.offsetTop : currentScroll;
+      const scrollItem = document.getElementsByClassName(`sign_zipcode_${new Date(scrollTo).setHours(0, 0, 0, 0)}`)[0];
+      timeline.scrollTop = scrollItem ? scrollItem.offsetTop : currentScroll;
     })
-  }, [data, startingPoint])
+  }, [data, scrollTo])
 
   return <Section show={show} className="timeline">
     {render}

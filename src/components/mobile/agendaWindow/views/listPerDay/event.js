@@ -6,7 +6,7 @@ const Event = props => {
   return (
     <Link
       to={{
-        pathname: "/view/card",
+        pathname: "/view/card/",
         state: activity
       }}
       className="event"

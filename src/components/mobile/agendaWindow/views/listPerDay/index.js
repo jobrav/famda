@@ -9,7 +9,7 @@ let storage = 0;
 
 const Section = styled.div`
 height: 100%;
-overflow: none;
+overflow: hidden;
 position: absolute;
 width: 100%;
 overflow-x:hidden;
@@ -39,7 +39,7 @@ const touchStart = ({ touches, currentTarget }) => {
 const touchMove = ({ touches, currentTarget }) => currentTarget.scrollLeft = startPos + clientX - touches[0].clientX;
 
 
-const ListPerDayView = ({ show, startingPoint, data, setCurrentDate, currentDate }) => {
+const ListPerDayView = ({ scrollTo, show, startingPoint, data, setCurrentDate, currentDate }) => {
 
   const today = new Date(startingPoint).setHours(0, 0, 0, 0)
   const AminView = new Date(today).setMonth(new Date(today).getMonth() - 1);
@@ -119,11 +119,12 @@ const ListPerDayView = ({ show, startingPoint, data, setCurrentDate, currentDate
     const currentScroll = timeline.scrollLeft;
     getRender(data, today).then(render => {
       setRender(render);
-      const todayItem = document.getElementsByClassName(`sign_zipcode_${new Date(startingPoint).setHours(0, 0, 0, 0)}`)[0];
-      timeline.scrollLeft = todayItem ? todayItem.offsetLeft : currentScroll;
+      const scrollItem = document.getElementsByClassName(`sign_zipcode_${new Date(scrollTo).setHours(0, 0, 0, 0)}`)[0];
+      timeline.scrollLeft = scrollItem ? scrollItem.offsetLeft : currentScroll;
       setCurrentDate(new Date(startingPoint).setHours(0, 0, 0, 0))
+
     })
-  }, [data, startingPoint])
+  }, [data, scrollTo])
 
   return <Section onTouchStart={touchStart} onTouchMove={touchMove} onTouchEnd={touchEnd} show={show} className="timeline">
     {render}

@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 const month = [
   "januari",
-  "febuari",
+  "februari",
   "maart",
   "april",
   "mei",
@@ -55,6 +55,7 @@ const Sign = props => {
       data-sign={"type" in props && props.type}
       key={`${props.zipcode}_sign`}
       sign-date={props.zipcode}
+      className={`sign_zipcode_${new Date(props.zipcode).setHours(0, 0, 0, 0)}`}
     >
       <Item today={tmm === NewdateMonth && tdd === NewdateDay}>
         {`${NewdateDay} ${month[NewdateMonth]}`}</Item>

@@ -153,22 +153,21 @@ const App = props => {
   return (
     <ThemeProvider theme={defaultColorStyles}>
       <Suspense fallback={<LoadingWindow />}>
-        <BrowserRouter>
-          {auth !== null ?
-            <Switch>
-              {auth === true ? <Route render={route => (
-                <Display
-                  route={route}
-                  userData={userData}
-                  auth={auth}
-                  user={user}
-                  newsData={newsData}
-                  reminders={reminders}
-                  setAppSettings={setSettings} />
-              )} /> : <SignIn />}
-            </Switch>
-            : <LoadingScreen />}
-        </BrowserRouter>
+        {auth !== null ?
+          <div>
+            {auth === true ?
+              // <Route render={route => (
+              <Display
+                userData={userData}
+                auth={auth}
+                user={user}
+                newsData={newsData}
+                reminders={reminders}
+                setAppSettings={setSettings} />
+              // )} />
+              : <SignIn />}
+          </div>
+          : <LoadingScreen />}
       </Suspense>
     </ThemeProvider>
   );

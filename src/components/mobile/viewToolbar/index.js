@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components"
 
 //styling 
@@ -68,18 +68,19 @@ background: ${({ today, active, theme: { blue, hueReverse } }) => active ? today
   -webkit-text-fill-color: #fff;
 }
 `
+
 const Day = styled(Text)`
 align-self:start;
 font-size: 8px;
 `
-
+let pressTimeOut;
 let clientX = 0;
 const windowWidth = window.outerWidth;
-const touchStart = ({ touches, currentTarget: { style } }) => {
-  style.transition = "transform 0ms ease-in-out";
-  clientX = touches[0].clientX;
+
+const touchMove = ({ touches, currentTarget: { style } }) => {
+  clearTimeout(pressTimeOut);
+  style.transform = `translateX(${touches[0].clientX - clientX}px)`;
 }
-const touchMove = ({ touches, currentTarget: { style } }) => style.transform = `translateX(${touches[0].clientX - clientX}px)`;
 
 const moveFor = (style) => {
   style.transition = "transform 0ms ease-in-out";
@@ -103,12 +104,20 @@ const days = ['Z', 'M', 'D', 'W', 'D', 'V', 'Z']
 
 
 const ViewToolbar = React.memo(({ givenDate, changeDate }) => {
+  let history = useHistory();
+  const touchStart = ({ touches, currentTarget: { style } }) => {
+    style.transition = "transform 0ms ease-in-out";
+    clientX = touches[0].clientX;
+    pressTimeOut = setTimeout(() => history.push("datepicker/"), 600)
+  }
+
   const [startDate, setStateDate] = useState(givenDate ? new Date(givenDate).setHours(0, 0, 0, 0) : new Date().setHours(0, 0, 0, 0))
   const [activeDate, setActiveDate] = useState(givenDate ? new Date(givenDate).setHours(0, 0, 0, 0) : startDate)
   const startDateDate = new Date(startDate).getDate();
   const activeDateDate = new Date(activeDate).getDate();
 
   const touchEnd = ({ changedTouches, currentTarget: { style } }) => {
+    clearTimeout(pressTimeOut);
     const change = changedTouches[0].clientX - clientX
     style.transition = "transform 200ms ease-in-out";
 
@@ -116,16 +125,15 @@ const ViewToolbar = React.memo(({ givenDate, changeDate }) => {
       style.transform = `translateX(100vw)`;
       setTimeout(() => {
         moveBack(style);
-        setStateDate(new Date(startDate).setDate(startDateDate - 7))
-        setActiveDate(new Date(activeDate).setDate(activeDateDate - 7))
+
+        move(new Date(startDate).setDate(startDateDate - 7))
       }, 200)
     }
     else if (change < -windowWidth / 3) {
       style.transform = `translateX(-100vw)`;
       setTimeout(() => {
         moveFor(style);
-        setStateDate(new Date(startDate).setDate(startDateDate + 7))
-        setActiveDate(new Date(activeDate).setDate(activeDateDate + 7))
+        move(new Date(startDate).setDate(startDateDate + 7))
       }, 200)
     }
     else style.transform = `translateX(0px)`;
@@ -137,27 +145,17 @@ const ViewToolbar = React.memo(({ givenDate, changeDate }) => {
     setActiveDate(itemsDate)
   }
   useEffect(() => {
-    setStateDate(setStateDate)
+    setStateDate(givenDate)
     setActiveDate(givenDate)
   }, [givenDate])
 
   const startDay = new Date(startDate).getDate()
   const dayInWeek = new Date(startDate).getDay();
-  if (givenDate < new Date(startDate).setDate(startDay - dayInWeek)) {
-    setStateDate(new Date(startDate).setDate(startDateDate - 7))
-    setActiveDate(new Date(activeDate).setDate(activeDateDate - 7))
-  }
-  else if (givenDate > new Date(startDate).setDate(startDay + 6 - dayInWeek)) {
-    setStateDate(new Date(startDate).setDate(startDateDate + 7))
-    setActiveDate(new Date(activeDate).setDate(activeDateDate + 7))
-  }
-
   return (
     <Nav>
       <DayRow>{[0, 1, 2, 3, 4, 5, 6].map(i => <Day key={i}>{days[i]}</Day>)}</DayRow>
       <DateRow onTouchStart={touchStart} onTouchMove={touchMove} onTouchEnd={touchEnd}>
         {[0, 1, 2, 3, 4, 5, 6].map((_, i) => {
-
           const itemsDate = new Date(startDate).setDate(startDay - dayInWeek + i);
           return <Number key={i} onClick={() => move(itemsDate)} today={itemsDate === new Date().setHours(0, 0, 0, 0)}
             active={itemsDate === activeDate}>

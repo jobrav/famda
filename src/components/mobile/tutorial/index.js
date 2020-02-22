@@ -163,7 +163,7 @@ const AgendaView = ({ stage }) => {
         <Title>AgendaView</Title>
 
         <ListContainer>
-            {[{ title: "Lijst", link: "Lijst" }, { title: "Index", link: "Index" }].map(({ title, link }, i) =>
+            {[{ title: "Lijst", link: "list" }, { title: "Index", link: "swipelist" }].map(({ title, link }, i) =>
                 <ListItem onClick={() => localStorage.setItem('startView', link)} key={i}>
                     <Name>{title}</Name>
                 </ListItem>)}

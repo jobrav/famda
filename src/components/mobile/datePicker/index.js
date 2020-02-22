@@ -5,20 +5,15 @@ import { DateContext, ShowContext } from "../../../contexts";
 
 
 const Container = styled.div`
-    position: absolute;
-    overflow: hidden;
-    top: 55px;
-    right: 15px;
-    width: 250px;
-    min-height: 300px;
-    border-radius: 5px;
-    backdrop-filter: blur(25px);
+background: ${props => props.theme.primaryBGC || "#fff"};
+border-radius: 0;
+
+
+
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 40px auto 1fr;
-    background: ${props => props.theme.floatBGC || "#fafafada"};
-    box-shadow: 0 0 25px 0 #1212121a;
-    z-index: 10;
+    height: 100%;
 `
 const Header = styled.div`
     display: grid;
@@ -55,7 +50,8 @@ const Picker = styled.div`
     grid-template-columns: 1fr;
     grid-auto-flow: row;
     grid-auto-rows: auto;
-    height: 375px;
+    // height: 375px;
+    align-self:stretch;
     overflow: auto;
     scroll-behavior: ${props => props.firstScroll ? "inherit" : "smooth"};};
 `
@@ -153,11 +149,12 @@ const createMonthRange = () => {
 let sectionsCache = [];
 
 const arrow = (
+
     <path d="M345.441,248.292L151.154,442.573c-12.359,12.365-32.397,12.365-44.75,0c-12.354-12.354-12.354-32.391,0-44.744L278.318,225.92L106.409,54.017c-12.354-12.359-12.354-32.394,0-44.748c12.354-12.359,32.391-12.359,44.75,0l194.287,194.284c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,248.292z" />
+
 )
 
 const DatePicker = React.memo(({ }) => {
-    const { show, setShow } = useContext(ShowContext)
     const { startPoint, setStartPoint } = useContext(DateContext)
     const [date, setDate] = useState(new Date(today));
     const [objCount, setObjCount] = useState({ count: 12 });
@@ -177,7 +174,7 @@ const DatePicker = React.memo(({ }) => {
         // scroll
         const container = document.getElementById("datePicker")
         if (container.children[objCount.count]) {
-            container.scrollTop = container.children[objCount.count].offsetTop;
+            container.scroll({ top: container.children[objCount.count].offsetTop, behavior: 'smooth' });
             setFirstScroll(false);
         }
     }, [objCount, sections])
@@ -206,25 +203,16 @@ const DatePicker = React.memo(({ }) => {
         return bucket
     }
     useEffect(() => {
-        window.addEventListener("click", clicked) //set event listener
+        // window.addEventListener("click", clicked) //set event listener
         if (!sections[2]) {
             setSections(() => createMonthRange().map((zipcodeMonth, i) =>
                 <Section id={i} key={`${zipcodeMonth}_section`}>
                     {getDays(zipcodeMonth)}
                 </Section>))
         }
-    }, [show])
+    }, [startPoint])
 
-    const clicked = e => {
-        const key = Container.componentStyle.componentId; //get id container element
-        const isKey = e.path.map(i => i.classList && i.classList[0] === key) //loop through path array
-        if (!isKey.includes(true)) showhide(); // if doensn't inlcude "true" then hide
-    }
 
-    const showhide = _ => {
-        setShow({ datePicker: false })//hide container
-        window.removeEventListener("click", clicked)//remove event listener
-    }
 
 
     return (

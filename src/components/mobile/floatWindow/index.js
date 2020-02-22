@@ -57,7 +57,7 @@ const Header = styled.div`
     grid-template-columns: 100px 1fr 100px;
     padding: 0 15px;
     background: ${props => props.colortag ? props.theme[props.colortag] : props.theme.secondaryBGC};
-    border-bottom: inset ${props => props.theme.lineBGC || "#fff"} ${props => props.border === false ? "0px" : "1px"};
+    border-bottom: inset ${props => props.theme.lineBGC || "#ffffff"}da ${props => props.border === false ? "0px" : "1px"};
 `
 const Text = styled.div`
 cursor: ${props => props.cursor || "default"};

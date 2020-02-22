@@ -1,7 +1,7 @@
 // import React from "react";
 import * as firebase from "firebase";
 import React, { useState, useCallback, useMemo, useEffect } from "react";
-import { Route, Redirect, Link } from "react-router-dom";
+import { Route, Redirect, Link, BrowserRouter } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components"
 //context
 import { ViewContext, SelectContext, DateContext, ShowContext, DocRefContext } from "../../../contexts"
@@ -22,6 +22,7 @@ import EditForm from "../editForm";
 import CardForm from "../card"
 import Profile from '../profileWindow'
 import Tutorial from '../tutorial'
+import DatePicker from '../datePicker'
 // app windows
 import ViewSize from "../viewSize";
 import ViewToolbar from "../viewToolbar";
@@ -118,7 +119,7 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
     let agendaSelects = userData ? userData.sources : {};
     let sources = userData ? userData.sources : [];
     // agenda array
-    let listArr = ["Lijst", "Index", "Dag", "Week"]
+    let listArr = ["list", "swipeList", "swipeGrid"]
 
 
     const [srchContext, setSrchContext] = useState("");
@@ -138,77 +139,90 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
     const providerShow = useMemo(() => ({ show, setShow }), [show, setShow])
 
     return (
-        <Layout>
-            <Redirect exact from='/' to={`/${localStorage.getItem('startScreen') || "dashboard"}/`} />
-            {userData.tutorial === true || <Redirect exact from={`/dashboard`} to={`/dashboard/tutorial`} />}
-            <ThemeProvider theme={sizeStyle}>
+        <BrowserRouter>
+            <Layout>
+                <ThemeProvider theme={sizeStyle}>
+                    {userData.tutorial === true || <Redirect exact from={`/dashboard`} to={`/dashboard/tutorial`} />}
+                    <Route exact path="/">
+                        <Redirect exact from='/' to={`/view/add/`} />
+                        {/* <Redirect exact from='/' to={`/${localStorage.getItem('startScreen') || "dashboard"}/`} /> */}
+                    </Route>
 
-                <Route path={["/:base/add/:float1/:float2/", "/:base/add/:float1/", "/:base/add/"]} render={route =>
-                    <FloatWindowDefault title={"Nieuwe activiteit"} route={route}><EditForm /></FloatWindowDefault>
-                } />
-                <Route path={["/:base/add/test/:float1/:float2/", "/:base/add/test/:float1/", "/:base/add/test/"]} render={route =>
-                    <FloatWindowDefault title={"test"} route={route}><div></div></FloatWindowDefault>
-                } />
-                <Route path={["/:base/tutorial"]} render={route =>
-                    <FloatWindowDefault header={{ colortag: "primaryBGC", border: false }} title={""} left={{ title: null }} right={{ title: null }} route={route}>
-                        <Tutorial /></FloatWindowDefault>} />
-                <Route path={["/:base/profile/:float1/:float2/", "/:base/profile/:float1/", "/:base/profile/"]} render={route =>
-                    <FloatWindowDefault left={{ title: null }} right={{ title: "Gereed" }} title={"Profiel"} route={route}>
-                        <Profile settings={setAppSettings} route={route} user={userData} />
-                    </FloatWindowDefault>
-                } />
+                    <Route path={["/:base/add/:float1/:float2/", "/:base/add/:float1/", "/:base/add/"]} render={route =>
+                        <FloatWindowDefault title={"Nieuwe activiteit"} route={route}><EditForm /></FloatWindowDefault>
+                    } />
+                    <Route path={["/:base/add/test/:float1/:float2/", "/:base/add/test/:float1/", "/:base/add/test/"]} render={route =>
+                        <FloatWindowDefault title={"test"} route={route}><div></div></FloatWindowDefault>
+                    } />
+                    <Route path={["/:base/tutorial"]} render={route =>
+                        <FloatWindowDefault header={{ colortag: "primaryBGC", border: false }} title={""} left={{ title: null }} right={{ title: null }} route={route}>
+                            <Tutorial /></FloatWindowDefault>} />
 
+                    <DateContext.Provider value={providerDate}>
+                        <Route path={["/:base/datepicker"]} render={route =>
+                            <FloatWindowDefault left={{ title: null }} right={{ title: "Gereed" }} title={"Overzicht"} route={route}>
+                                <DatePicker /></FloatWindowDefault>} />
+                    </DateContext.Provider>
 
-                <Route path={["/:sec/edit", "/:sec/card"]} render={route => <FloatWindowDefault left={{ title: "Annuleer", link: "./" }} right={{ title: "Wijzig", link: "./edit/" }} title={"Details afspraak"} route={route} >
-                    <Route path={["/:sec/edit"]} render={_ => <EditForm user={userData} userData={newsData} />} />
-                    <Route path={["/:sec/card"]} render={_ => <CardForm user={userData} userData={newsData} />} />
-                </FloatWindowDefault>} />
-
-                {/* Menubar */}
-                <Route path={"/:active"} render={route => <MenuBar route={route} />}></Route>
-
-                {/* Explore */}
-                <Route path={["/explore/:float1/:float2/", "/explore/:float1/", "/explore/"]} render={route => <Explore route={route} userData={userData} />}></Route>
-
-
-                <ViewContext.Provider value={providerView}>
-                    <SelectContext.Provider value={providerSelect}>
-                        <DateContext.Provider value={providerDate}>
-                            <Route path={["/view/:float1/:float2/", "/view/:float1/", "/view/"]} render={route => <Agenda source={sources} listArr={listArr} startingPoint={startPoint} view={view} source={select.id} route={route} />}></Route>
-                            {/* <Route path={["/view/"]} render={route => <ViewToolbar listArr={listArr} />}></Route> */}
-                        </DateContext.Provider>
-                    </SelectContext.Provider>
-                </ViewContext.Provider>
-
-                <Route path={["/dashboard/:float1/:float2/", "/dashboard/:float1/", "/dashboard"]} render={({ match: { params } }) =>
-                    <Dashboard className={["pannel", "returnPannel", "nonePannel"][Object.values(params).length]}>
-                        {/* //Header */}
-                        <PageTitle>Overzicht</PageTitle>
-                        <ProfilePic to="profile/" img={`url("data:image/jpeg;base64,${userData ? userData.picture : null}")`} />
-                        {/* Search when enable fix dashboard grid layout to 42.5px */}
-                        {/* <SearchBar srchCtx={srchContext} changeSrchCtx={changeSrchCtx} /> */}
+                    <Route path={["/:base/profile/:float1/:float2/", "/:base/profile/:float1/", "/:base/profile/"]} render={route =>
+                        <FloatWindowDefault left={{ title: null }} right={{ title: "Gereed" }} title={"Profiel"} route={route}>
+                            <Profile settings={setAppSettings} route={route} user={userData} />
+                        </FloatWindowDefault>
+                    } />
 
 
-                        {/* Updates */}
-                        <TasksOverView user={userData} date={new Date().setHours(0, 0, 0, 0)} />
+                    <Route path={["/:sec/edit", "/:sec/card"]} render={route => <FloatWindowDefault left={{ title: "Annuleer", link: "../" }} right={{ title: "Wijzig", link: "./edit/" }} title={"Details afspraak"} route={route} >
+                        <Route path={["/:sec/edit"]} render={_ => <EditForm user={userData} userData={newsData} />} />
+                        <Route path={["/:sec/card"]} render={_ => <CardForm user={userData} userData={newsData} />} />
+                    </FloatWindowDefault>} />
 
-                        {/* Invites */}
-                        <SubTitle>Uitnodigingen</SubTitle>
-                        <Invites user={user} />
+                    {/* Menubar */}
+                    <Route path={"/:active"} render={route => <MenuBar route={route} />}></Route>
 
-                        {/* Todays apointments */}
-                        <SubTitle>Afspraken</SubTitle>
-                        <ActivitiesForDate user={user} date={new Date().setHours(0, 0, 0, 0)} />
+                    {/* Explore */}
+                    <Route path={["/explore/:float1/:float2/", "/explore/:float1/", "/explore/"]} render={route => <Explore route={route} userData={userData} />}></Route>
 
-                        {/* History */}
-                        <SubTitle>Geschiedenis</SubTitle>
-                        <History user={user} />
-                    </Dashboard>
-                } />
+                    <Route path={["/view/:float1/:float2/", "/view/:float1/", "/view/"]} render={route =>
+                        <ViewContext.Provider value={providerView}>
+                            <SelectContext.Provider value={providerSelect}>
+                                <DateContext.Provider value={providerDate}>
+                                    <Agenda source={sources} listArr={listArr} startingPoint={startPoint} view={view} source={select.id} route={route} />
+                                </DateContext.Provider>
+                            </SelectContext.Provider>
+                        </ViewContext.Provider>
+                    } />
+
+                    <Route path={["/dashboard/:float1/:float2/", "/dashboard/:float1/", "/dashboard"]} render={({ match: { params } }) =>
+                        <Dashboard className={["pannel", "returnPannel", "nonePannel"][Object.values(params).length]}>
+                            {/* //Header */}
+                            <PageTitle>Overzicht</PageTitle>
+                            <ProfilePic to="profile/" img={`url("data:image/jpeg;base64,${userData ? userData.picture : null}")`} />
+                            {/* Search when enable fix dashboard grid layout to 42.5px */}
+                            {/* <SearchBar srchCtx={srchContext} changeSrchCtx={changeSrchCtx} /> */}
 
 
-            </ThemeProvider>
-        </Layout>
+                            {/* Updates */}
+                            <TasksOverView user={userData} date={new Date().setHours(0, 0, 0, 0)} />
+
+                            {/* Invites */}
+                            <SubTitle>Uitnodigingen</SubTitle>
+                            <Invites user={user} />
+
+                            {/* Todays apointments */}
+                            <SubTitle>Afspraken</SubTitle>
+                            <ActivitiesForDate user={user} date={new Date().setHours(0, 0, 0, 0)} />
+
+                            {/* History */}
+                            <SubTitle>Geschiedenis</SubTitle>
+                            <History user={user} />
+                        </Dashboard>
+                    } />
+
+                    <Route path="/">Niks gevonden!</Route>
+
+                </ThemeProvider>
+            </Layout>
+        </BrowserRouter>
     );
 });
 

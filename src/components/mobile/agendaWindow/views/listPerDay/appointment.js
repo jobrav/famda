@@ -76,7 +76,7 @@ const Appointment = ({ data, beforeToday }) => {
   return (
     <Container
       to={{
-        pathname: "/view/card",
+        pathname: "/view/card/",
         state: data
       }}
       key={`${id}_${zipcode}_obj`}

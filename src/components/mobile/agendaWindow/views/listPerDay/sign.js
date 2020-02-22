@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components"
+import { Link } from "react-router-dom";
 
 const month = [
   "januari",
-  "febuari",
+  "februari",
   "maart",
   "april",
   "mei",
@@ -16,23 +17,24 @@ const month = [
   "december"
 ];
 const Container = styled.div`
-width: calc(100% - 45px);
-margin: 3px 2.5px;
+width: calc(100% - 40px);
+// margin: 3px 2.5px;
+margin-bottom:3px;
 position: sticky;
 padding: 0 20px;
 top: 0px;
 z-index: 5;
 overflow: hidden;
-border-radius: 5px;
+// border-radius: 5px;
 background: ${({ theme: { gray4 } }) => gray4};
 `
 const Item = styled.h4`
 margin:0;
 display: inline-block;
-padding: 5px 0;
-
+padding: 7.5px 0;
+// padding-top:15px;
 text-align: left;
-font-size: 14px;
+font-size: 1.25em;
 // line-height: 15px;
 color: ${({ today, theme: { hueReverse, darkMode, blue, orange } }) => today ? darkMode ? orange : blue : hueReverse};
 -webkit-text-fill-color: ${({ today, theme: { hueReverse, darkMode, blue, orange } }) => today ? darkMode ? orange : blue : hueReverse};
