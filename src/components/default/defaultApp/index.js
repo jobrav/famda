@@ -1,7 +1,7 @@
 // import React from "react";
 import * as firebase from "firebase";
 import React, { useState, useCallback, useMemo, useEffect } from "react";
-import { Route, Switch, Link, Redirect } from "react-router-dom";
+import { Route, BrowserRouter, Link, Redirect } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./defaultApp.css";
 import styled, { ThemeProvider } from "styled-components"
@@ -183,7 +183,9 @@ const DefaultApp = React.memo(({ setAppSettings, userData, newsData }) => {
       <Layout>
 
         <ThemeProvider theme={sizeStyle}>
-          <Redirect exact from='/' to='/projects/' />
+          <Route exact path="/">
+            <Redirect exact from='/' to='/projects/' />
+          </Route>
 
           <Route path={["/docs/", "/view/", "/profile/", "/projects/", "/statistics/"]} render={route => <MenuBar user={userData || {}} route={route} />}></Route>
 

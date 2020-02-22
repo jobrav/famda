@@ -144,8 +144,8 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                 <ThemeProvider theme={sizeStyle}>
                     {userData.tutorial === true || <Redirect exact from={`/dashboard`} to={`/dashboard/tutorial`} />}
                     <Route exact path="/">
-                        <Redirect exact from='/' to={`/view/add/`} />
-                        {/* <Redirect exact from='/' to={`/${localStorage.getItem('startScreen') || "dashboard"}/`} /> */}
+                        {/* <Redirect exact from='/' to={`/view/add/`} /> */}
+                        <Redirect exact from='/' to={`/${localStorage.getItem('startScreen') || "dashboard"}/`} />
                     </Route>
 
                     <Route path={["/:base/add/:float1/:float2/", "/:base/add/:float1/", "/:base/add/"]} render={route =>
