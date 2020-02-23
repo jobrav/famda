@@ -93,7 +93,9 @@ grid-template-rows: 1fr;
 grid-gap: 0 5px;
 `
 const Profile = ({ user, settings }) => {
-  const [showDarkmodeSwitch, setShowDarkmodeSwitch] = useState(true)
+  const [darkMode, setDarkMode] = useState('true' == localStorage.getItem('darkmodeThemeEnabled') || false)
+  const [showDarkmodeSwitch, setShowDarkmodeSwitch] = useState('false' != localStorage.getItem('autoDarkmodeDisabled') || false)
+
   return (
     <Section>
       <UserInfoCard to={location => location.pathname}>
@@ -113,11 +115,11 @@ const Profile = ({ user, settings }) => {
       <SettingContainer>
         <SettingBlockSwitch>
           <TextM justify="start" align="center" bold>Auto thema</TextM>
-          <SwitchButton clicked={() => setShowDarkmodeSwitch(e => !e)} active={!showDarkmodeSwitch} />
+          <SwitchButton clicked={() => setShowDarkmodeSwitch(e => settings({ type: "autoDarkmode", val: !e }))} active={!showDarkmodeSwitch} />
         </SettingBlockSwitch>
         {showDarkmodeSwitch ? (<SettingBlockSwitch>
           <TextM justify="start" align="center" bold>Darkmode</TextM>
-          <SwitchButton clicked={() => settings("darkmode")} active={'true' == localStorage.getItem('darkmodeThemeEnabled') || false} />
+          <SwitchButton clicked={() => setDarkMode(e => settings({ type: "darkmode", val: !e }))} active={darkMode} />
         </SettingBlockSwitch>) : null}
       </SettingContainer>
     </Section>

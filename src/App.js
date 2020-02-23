@@ -41,11 +41,16 @@ const App = props => {
   const [newsData, setNewsData] = useState();
   const [reminders, setReminder] = useState();
 
-  const autoDarkmodeDisabled = 'true' == localStorage.getItem('autoDarkmodeDisabled')
-  const deviceUseDarkmode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  const mode = autoDarkmodeDisabled ? 'true' == localStorage.getItem('darkmodeThemeEnabled') : deviceUseDarkmode;
-  console.log(autoDarkmodeDisabled, deviceUseDarkmode, mode)
-  const [darkMode, setDarkMode] = useState(mode || false);
+  const [autoDarkMode, setAutoDarkMode] = useState('true' == localStorage.getItem('autoDarkmodeDisabled') || false);
+  const [darkMode, setDarkMode] = useState(false);
+  useEffect(() => {
+
+    const deviceUseDarkmode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    if (!autoDarkMode) setDarkMode(deviceUseDarkmode || false)
+    else setDarkMode('true' == localStorage.getItem('darkmodeThemeEnabled') || false)
+
+  }, [autoDarkMode])
+
   const [device, setDevice] = useState("default");
 
 
@@ -143,16 +148,18 @@ const App = props => {
     menuIC: darkMode ? "#1377FF" : "#1377FF",
   }
   const setSettings = opt => {
-    switch (opt) {
+    switch (opt.type) {
       case "darkmode":
-        localStorage.setItem('darkmodeThemeEnabled', !darkMode);
-        setDarkMode(p => !p);
+        localStorage.setItem('darkmodeThemeEnabled', opt.val);
+        setDarkMode(() => opt.val);
+        break;
+      case "autoDarkmode":
+        localStorage.setItem('autoDarkmodeDisabled', opt.val);
+        setAutoDarkMode(() => opt.val);
         break;
     }
-
+    return opt.val
   }
-
-
 
   return (
     <ThemeProvider theme={defaultColorStyles}>
