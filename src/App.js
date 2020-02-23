@@ -41,17 +41,19 @@ const App = props => {
   const [newsData, setNewsData] = useState();
   const [reminders, setReminder] = useState();
 
+  let deviceUseDarkmode = window.matchMedia('(prefers-color-scheme: dark)');
   const [autoDarkMode, setAutoDarkMode] = useState('true' == localStorage.getItem('autoDarkmodeDisabled') || false);
+  const [deviceDarkMode, setDeviceDarkMode] = useState(deviceUseDarkmode.matches)
   const [darkMode, setDarkMode] = useState(false);
+
+  deviceUseDarkmode.addListener(e => setDeviceDarkMode(e.matches))
+
   useEffect(() => {
 
-    const deviceUseDarkmode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    if (!autoDarkMode) setDarkMode(deviceUseDarkmode || false)
+    if (!autoDarkMode) setDarkMode(deviceDarkMode || false)
     else setDarkMode('true' == localStorage.getItem('darkmodeThemeEnabled') || false)
 
-  }, [autoDarkMode])
-
-  const [device, setDevice] = useState("default");
+  }, [autoDarkMode, deviceDarkMode])
 
 
   useEffect(() => {
@@ -72,11 +74,6 @@ const App = props => {
 
         // getUserData(user).then(val => setNewsData(val));
         // getReminders(user).then(val => setReminder(val));
-        let width = window.innerWidth;
-        let deviceType = width > 600 ? "default" : "mobile";
-        setDevice(deviceType);
-
-
 
       } else setAuth(false);
     });
