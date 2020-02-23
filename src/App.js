@@ -105,7 +105,7 @@ const App = props => {
     gray5: darkMode ? "#2c2c2e" : "#e5e5ea",
     gray6: darkMode ? "#1c1c1e" : "#f2f2f7",
     //Colors
-    blue: darkMode ? "#0a84ff" : "#007aff",
+    blue: darkMode ? "rgba(10, 132, 255,1)" : "rgba(0, 122, 255,1)",
     green: darkMode ? "#30d158" : "#34c759",
     indigo: darkMode ? "#5e5ce6" : "#5856d6",
     orange: darkMode ? "#ff9f0a" : "#ff9500",
