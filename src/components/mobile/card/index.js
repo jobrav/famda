@@ -25,7 +25,7 @@ color: ${props => props.theme.floatFC || "#272727"};
 `
 
 const Name = styled(Text)`
-font-size: 40px;
+font-size: 30px;
 font-weight: 700;
 width: 100%;
     max-width: 620px;

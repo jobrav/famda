@@ -22,7 +22,7 @@ display: grid;
 grid-template-columns: repeat(2,max-content) 1fr;
 grid-template-rows: 1fr;
 height: 55px;
-border-bottom: 1px #b7b7b766 solid;
+border-bottom: 1px solid ${({ theme: { darkMode, gray4, hue } }) => darkMode ? gray4 : hue}99;
 
 
 &:last-child{
@@ -78,12 +78,12 @@ color: ${props => props.theme.blue};;
 -webkit-text-fill-color: ${props => props.theme.blue};
 padding: 5px 10px;
 border-radius: 15px;
-background: ${({ theme: { darkmode, hue, gray6 } }) => darkmode ? hue : gray6};
+background: ${({ theme: { hue } }) => hue};
 margin-right: 10px;
 `
 
 const Arrow = styled.svg`
-fill: #b7b7b7;
+fill:  ${({ theme: { gray2 } }) => gray2};
 justify-self: end;
 align-self: center;
 grid-column:3;

@@ -17,6 +17,7 @@ import History from "../dashboard/history";
 
 // Floating windows
 import FloatWindowDefault from "../floatWindow";
+import FloatHeader from "../floatHeader";
 // Floatwindow items
 import EditForm from "../editForm";
 import CardForm from "../card"
@@ -82,8 +83,8 @@ const ProfilePic = styled(Link)`
 overflow:hidden;
 grid-row: 1;
 grid-column:1;
- width: 2em;
- height: 2em;
+width: 32.5px;
+height: 32.5px;;
  border-radius: 25px;
  justify-self: end;
  align-self: end;
@@ -149,31 +150,41 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                     </Route>
 
                     <Route path={["/:base/add/:float1/:float2/", "/:base/add/:float1/", "/:base/add/"]} render={route =>
-                        <FloatWindowDefault title={"Nieuwe activiteit"} route={route}><EditForm /></FloatWindowDefault>
+                        <FloatWindowDefault route={route}>
+                            <FloatHeader title={"Nieuwe activiteit"} />
+                            <EditForm /></FloatWindowDefault>
                     } />
                     <Route path={["/:base/add/test/:float1/:float2/", "/:base/add/test/:float1/", "/:base/add/test/"]} render={route =>
-                        <FloatWindowDefault title={"test"} route={route}><div></div></FloatWindowDefault>
+                        <FloatWindowDefault route={route}>
+                            <FloatHeader title={"Test"} />
+                            <div></div></FloatWindowDefault>
                     } />
                     <Route path={["/:base/tutorial"]} render={route =>
-                        <FloatWindowDefault header={{ colortag: "primaryBGC", border: false }} title={""} left={{ title: null }} right={{ title: null }} route={route}>
-                            <Tutorial /></FloatWindowDefault>} />
+                        <FloatWindowDefault route={route}>
+                            <FloatHeader header={{ colortag: "primaryBGC", border: false }} title={""} left={{ title: null }} right={{ title: null }} />
+                            <Tutorial />
+                        </FloatWindowDefault>} />
 
                     <DateContext.Provider value={providerDate}>
                         <Route path={["/:base/datepicker"]} render={route =>
-                            <FloatWindowDefault left={{ title: null }} right={{ title: "Gereed" }} title={"Overzicht"} route={route}>
-                                <DatePicker /></FloatWindowDefault>} />
+                            <FloatWindowDefault route={route}>
+                                <FloatHeader left={{ title: null }} right={{ title: "Gereed" }} title={"Overzicht"} />
+                                <DatePicker />
+                            </FloatWindowDefault>} />
                     </DateContext.Provider>
 
                     <Route path={["/:base/profile/:float1/:float2/", "/:base/profile/:float1/", "/:base/profile/"]} render={route =>
-                        <FloatWindowDefault left={{ title: null }} right={{ title: "Gereed" }} title={"Profiel"} route={route}>
+                        <FloatWindowDefault route={route}>
+                            <FloatHeader left={{ title: null }} right={{ title: "Gereed" }} title={"Profiel"} />
                             <Profile settings={setAppSettings} route={route} user={userData} />
                         </FloatWindowDefault>
                     } />
 
 
-                    <Route path={["/:sec/edit", "/:sec/card"]} render={route => <FloatWindowDefault left={{ title: "Annuleer", link: "../" }} right={{ title: "Wijzig", link: "./edit/" }} title={"Details afspraak"} route={route} >
-                        <Route path={["/:sec/edit"]} render={_ => <EditForm user={userData} userData={newsData} />} />
-                        <Route path={["/:sec/card"]} render={_ => <CardForm user={userData} userData={newsData} />} />
+                    <Route path={["/:sec/edit", "/:sec/card"]} render={route => <FloatWindowDefault route={route} >
+                        <FloatHeader left={{ title: "Annuleer", link: "../" }} right={{ title: "Wijzig", link: "../edit/" }} title={"Details afspraak"} />
+                        <div><Route path={["/:sec/edit"]} render={_ => <EditForm user={userData} userData={newsData} />} />
+                            <Route path={["/:sec/card"]} render={_ => <CardForm user={userData} userData={newsData} />} /></div>
                     </FloatWindowDefault>} />
 
                     {/* Menubar */}

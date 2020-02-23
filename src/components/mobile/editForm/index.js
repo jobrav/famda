@@ -25,7 +25,7 @@ color: ${props => props.theme.floatFC || "#272727"};
 `
 
 const Name = styled.input`
-font-size: 40px;
+font-size: 30px;
 font-weight: 500;
 width: 100%;
     max-width: 620px;
@@ -44,11 +44,12 @@ transition: all 100ms ease-in-out;
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    justify-self:center;
+    justify-self:stretch;
     align-self:start;
-    width: calc(100% - 20px);
+
+    // width: calc(100% - 20px);
+    // max-width: 600px;
     padding-left: 15px;
-    max-width: 600px;
     // margin-bottom: 15px;
     border-radius: 10px;
     overflow:hidden;

@@ -36,8 +36,8 @@ const ProfilePic = styled(Link)`
     overflow:hidden;
     grid-row: 1;
     grid-column:1;
-    width: 2em;
-    height: 2em;
+    width: 32.5px;
+    height: 32.5px;;
     border-radius: 25px;
     justify-self: end;
     align-self: end;
@@ -66,7 +66,7 @@ const ListItem = styled(Link)`
     grid-template-columns: repeat(2,max-content) 1fr;
     grid-template-rows: 1fr;
     height: 55px;
-    border-bottom: 1px #b7b7b766 solid;
+    border-bottom: 1px solid ${({ theme: { darkMode, gray4, hue } }) => darkMode ? gray4 : hue}99;
 
     &:last-child{
         border:none;

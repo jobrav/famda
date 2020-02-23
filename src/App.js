@@ -95,8 +95,8 @@ const App = props => {
     //dark mode enabled
     darkMode,
     //black white
-    hue: darkMode ? "#121212" : "#ffffff",
-    hueReverse: darkMode ? "#ffffff" : "#121212",
+    hue: darkMode ? "#000000" : "#ffffff",
+    hueReverse: darkMode ? "#ffffff" : "#000000",
     //grays
     gray1: darkMode ? "#8e8e93" : "#8e8e93",
     gray2: darkMode ? "#636366" : "#aeaeb2",
@@ -120,8 +120,8 @@ const App = props => {
 
 
 
-    primaryBGC: darkMode ? "#121212" : "#f2f2f7",
-    secondaryBGC: darkMode ? "#272727" : "#ffffff",
+    primaryBGC: darkMode ? "#000000" : "#f2f2f7",
+    secondaryBGC: darkMode ? "#1c1c1e" : "#ffffff",
     tertiaryBGC: darkMode ? "#3a3a3c" : "#e4e5ea",
     floatBGC: darkMode ? "#121212b7" : "#ffffffb7",
     floatSecBGC: darkMode ? "rgba(39, 39, 39, 0.8)" : "rgba(243, 243, 243, 0.8)",

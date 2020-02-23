@@ -90,7 +90,7 @@ const ButtonAccept = styled.button`
   font-size: 0.75em;
   font-weight: 700;
   text-transform: uppercase;
-  background: ${({ theme: { darkmode, hue, gray6 } }) => darkmode ? hue : gray6};
+  background: ${({ theme: { hue } }) => hue};
   color: ${props => props.theme.blue};
   -webkit-text-fill-color: ${props => props.theme.blue};
   text-align:center;
