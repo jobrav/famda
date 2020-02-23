@@ -154,19 +154,17 @@ const App = props => {
     <ThemeProvider theme={defaultColorStyles}>
       <Suspense fallback={<LoadingWindow />}>
         {auth !== null ?
-          <div>
-            {auth === true ?
-              // <Route render={route => (
-              <Display
-                userData={userData}
-                auth={auth}
-                user={user}
-                newsData={newsData}
-                reminders={reminders}
-                setAppSettings={setSettings} />
-              // )} />
-              : <SignIn />}
-          </div>
+          auth === true ?
+            // <Route render={route => (
+            <Display
+              userData={userData}
+              auth={auth}
+              user={user}
+              newsData={newsData}
+              reminders={reminders}
+              setAppSettings={setSettings} />
+            // )} />
+            : <SignIn />
           : <LoadingScreen />}
       </Suspense>
     </ThemeProvider>

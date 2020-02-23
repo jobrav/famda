@@ -57,3 +57,18 @@ code {
   filter: grayscale(0);
   transition: all 300ms ease-in-out;
 }
+
+.item-enter {
+  transform: translateY(100vh);
+}
+.item-enter-active {
+  transform: translateY(0vh);
+  transition: all 500ms ease-in;
+}
+.item-exit {
+  transform: translateY(0vh);
+}
+.item-exit-active {
+  transform: translateY(100vh);
+  transition: all 500ms ease-in;
+}

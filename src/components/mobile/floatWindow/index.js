@@ -48,7 +48,7 @@ const Container = styled.div`
     width: 100vw;
     background: ${props => props.theme.primaryBGC || "#fff"};
     overflow: hidden;
-    animation: ${slideIn} 250ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    animation: ${slideIn}  300ms  cubic-bezier(0.24, 0.53, 0.09, 1.01);
 `
 
 const Header = styled.div`
@@ -64,7 +64,6 @@ align-self:stretch;
 
 
 const FloatWindowDefault = ({ route: { history, match: { params } }, children }) => {
-  console.log(children)
   return <Section>
     <Container className={["pannel", "returnPannel", "nonePannel"][Object.values(params).length - 1]}>
       <Header>{children[0]}</Header>

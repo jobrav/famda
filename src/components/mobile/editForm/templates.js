@@ -16,7 +16,7 @@ const List = styled.div`
     grid-template-rows: 1fr;
     grid-auto-flow: column;
     grid-auto-columns: max-content;
-    overflow: auto hidden;
+    overflow: scroll hidden;
     `
 const Container = styled.button`
 font-size: 16.5px;
@@ -55,7 +55,7 @@ const Templates = React.memo(({ active, setActive }) => {
             <Container active={active.id === 'default'} onClick={() => setActive({ id: 'default' })}>Standaard</Container>
             {templates.map(tmp => <Container active={active.id === tmp.id} key={tmp.id} onClick={() => setActive(tmp)}>{tmp.name}</Container>)}
         </List>
-        <SeeAll to='templates'>Wijzig</SeeAll>
+        <SeeAll to='templates/'>Wijzig</SeeAll>
     </Section>
 })
 export default Templates;

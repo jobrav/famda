@@ -1,6 +1,9 @@
 // import React from "react";
 import * as firebase from "firebase";
 import React, { useState, useCallback, useMemo, useEffect } from "react";
+import {
+    CSSTransition
+} from 'react-transition-group';
 import { Route, Redirect, Link, BrowserRouter } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components"
 //context
@@ -8,7 +11,7 @@ import { ViewContext, SelectContext, DateContext, ShowContext, DocRefContext } f
 // controlers
 import MenuBar from "../menuBar";
 import SearchBar from "../searchBar";
-
+import '../../../index.css';
 //dashbord
 import TasksOverView from "../dashboard/tasks";
 import Invites from "../dashboard/invites";
@@ -122,7 +125,6 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
     // agenda array
     let listArr = ["list", "swipeList", "swipeGrid"]
 
-
     const [srchContext, setSrchContext] = useState("");
     const changeSrchCtx = useCallback(value => { setSrchContext(value) }, [setSrchContext])
     // view 
@@ -149,14 +151,18 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                         <Redirect exact from='/' to={`/${localStorage.getItem('startScreen') || "dashboard"}/`} />
                     </Route>
 
-                    <Route path={["/:base/add/:float1/:float2/", "/:base/add/:float1/", "/:base/add/"]} render={route =>
+
+                    <Route exact path={["/:base/add/:float1/:float2/", "/:base/add/:float1/", "/:base/add/"]} render={route => (
                         <FloatWindowDefault route={route}>
                             <FloatHeader title={"Nieuwe activiteit"} />
-                            <EditForm /></FloatWindowDefault>
+                            <EditForm />
+                        </FloatWindowDefault>
+
+                    )
                     } />
-                    <Route path={["/:base/add/test/:float1/:float2/", "/:base/add/test/:float1/", "/:base/add/test/"]} render={route =>
+                    <Route path={["/:base/add/templates/:float1/:float2/", "/:base/add/templates/:float1/", "/:base/add/templates/"]} render={route =>
                         <FloatWindowDefault route={route}>
-                            <FloatHeader title={"Test"} />
+                            <FloatHeader title={"templates"} />
                             <div></div></FloatWindowDefault>
                     } />
                     <Route path={["/:base/tutorial"]} render={route =>
@@ -186,6 +192,8 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                         <div><Route path={["/:sec/edit"]} render={_ => <EditForm user={userData} userData={newsData} />} />
                             <Route path={["/:sec/card"]} render={_ => <CardForm user={userData} userData={newsData} />} /></div>
                     </FloatWindowDefault>} />
+
+
 
                     {/* Menubar */}
                     <Route path={"/:active"} render={route => <MenuBar route={route} />}></Route>
@@ -228,8 +236,6 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                             <History user={user} />
                         </Dashboard>
                     } />
-
-                    <Route path="/">Niks gevonden!</Route>
 
                 </ThemeProvider>
             </Layout>
