@@ -92,7 +92,7 @@ const ButtonAccept = styled.button`
   text-transform: uppercase;
   background: ${({ theme: { hue } }) => hue};
   color: ${props => props.theme.blue};
-  // -webkit-text-fill-color: ${props => props.theme.blue};
+  -webkit-text-fill-color: ${props => props.theme.blue};
   text-align:center;
 `
 

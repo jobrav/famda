@@ -41,7 +41,11 @@ const App = props => {
   const [newsData, setNewsData] = useState();
   const [reminders, setReminder] = useState();
 
-  const [darkMode, setDarkMode] = useState('true' == localStorage.getItem('darkmodeThemeEnabled') || false);
+  const autoDarkmodeDisabled = 'true' == localStorage.getItem('autoDarkmodeDisabled')
+  const deviceUseDarkmode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  const mode = autoDarkmodeDisabled ? 'true' == localStorage.getItem('darkmodeThemeEnabled') : deviceUseDarkmode;
+  console.log(autoDarkmodeDisabled, deviceUseDarkmode, mode)
+  const [darkMode, setDarkMode] = useState(mode || false);
   const [device, setDevice] = useState("default");
 
 
@@ -105,7 +109,7 @@ const App = props => {
     gray5: darkMode ? "#2c2c2e" : "#e5e5ea",
     gray6: darkMode ? "#1c1c1e" : "#f2f2f7",
     //Colors
-    blue: darkMode ? "blue" : "blue",
+    blue: darkMode ? "#0a84ff" : "#007aff",
     green: darkMode ? "#30d158" : "#34c759",
     indigo: darkMode ? "#5e5ce6" : "#5856d6",
     orange: darkMode ? "#ff9f0a" : "#ff9500",
