@@ -112,6 +112,7 @@ height: 100%;
 const SearchHeader = styled(Header)`
 grid-row: 1;
 grid-column: 3;
+// padding: 0 15px;
 @media screen and (max-width: 920px) {
   display: none;
 }
@@ -246,7 +247,7 @@ const DefaultApp = React.memo(({ setAppSettings, userData, newsData }) => {
           </SearchHeader>
           {srchContext ? <SearchFeed srchCntx={srchContext} changeSrchCtx={changeSrchCtx} /> : null}
 
-          <News user={userData} userData={newsData} />
+          {/* <News user={userData} userData={newsData} /> */}
 
 
 

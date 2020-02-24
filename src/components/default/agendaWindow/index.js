@@ -13,7 +13,7 @@ let cache = [];
 
 const Section = styled.section`
 border-top: ${props => props.theme.secondaryBGC || "#f3f3f3"} 1px solid;
-grid-column: 2;
+grid-column: 2/4;
 grid-row: 2;
 overflow: hidden;
 width: 100%;

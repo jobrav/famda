@@ -8,6 +8,7 @@
   display: grid;
   grid-template-columns: 5% 20px auto 5%;
   grid-template-rows: 1fr;
+  padding: 0 15px;
   transition: all 300ms ease-in-out;
 }
 #searchCancel {

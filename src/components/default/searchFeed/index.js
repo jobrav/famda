@@ -11,12 +11,12 @@ position: relative;
   border-top: ${props => props.theme.secondaryBGC || "#f3f3f3"} 1px solid;
   border-left: ${props => props.theme.secondaryBGC || "#f3f3f3"} 1px solid;
   grid-row: 2;
-  width: 20vw;
-  max-width: 275px;
+  justify-self:stretch;
+  align-self:stretch;
   min-width: 225px;
-  z-index: 5;
+  z-index: 10;
   backdrop-filter: blur(25px);
-  grid-column: 3;
+  grid-column: 2/4;
   background: ${props => props.theme.floatBGC || "#f7f7f7da"};
 `
 const LinkBase = styled(Link)`
