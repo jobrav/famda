@@ -117,15 +117,15 @@ border-bottom: 1px solid ${props => props.theme.secondaryBGC || "#f3f3f3"};
 const hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
 let clientX = 0;
-let clientY = 0;
+// let clientY = 0;
 let startPos = 0;
 const windowWidth = window.outerWidth;
 const touchStart = ({ touches, currentTarget }) => {
   clientX = touches[0].clientX;
-  clientY = touches[0].clientY;
+  // clientY = touches[0].clientY;
   startPos = currentTarget.scrollLeft;
 }
-const touchMove = ({ touches, currentTarget }) => currentTarget.scrollLeft = true ? (startPos + clientX - touches[0].clientX) : currentTarget.scrollLeft;
+const touchMove = ({ touches, currentTarget }) => currentTarget.scrollLeft = startPos + clientX - touches[0].clientX;
 
 
 const DayView = React.memo(({ scrollTo, show, startingPoint, data, setCurrentDate, currentDate }) => {

@@ -9,22 +9,29 @@ const Section = styled.div`
   right: 15px;
   z-index: 10;
   display: grid;
-  grid-template-columns:repeat(2,1fr);
-  grid-template-rows: 1fr;
-  column-gap: 5px;
+  grid-template-columns:1fr;
+  grid-template-rows: repeat(2,1fr);
+  background: ${({theme:{darkMode, hue,gray5}}) => darkMode ? gray5 : hue}da;
+  box-shadow: 0 0 15px 0 #1212121f;
+    backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 7.5px;
 `
 const Container = styled(Link)`
     display:flex;
-  border-radius: 25px;
-  background: ${({ theme: { gray5 } }) => gray5}da;
-  backdrop-filter: blur(20px) saturate(180%);
+    justify-self:stretch;
+    align-self:stretch;
+    border-bottom: 0.5px ${({ theme: { darkMode,gray1,hueReverse } }) => darkMode ? hueReverse : gray1}da solid;
+    &:last-child {
+        border: none;
+    }
+    padding:2px;
 `
 const Icon = styled.svg`
   border-radius: 25px;
-  height: 12.5px;
-  width: 12.5px;
+  height: 15px;
+  width: 15px;
   padding: 10px;
-  fill: ${({ theme: { blue } }) => blue};
+  fill: ${({ theme: { darkMode,blue,hueReverse } }) => darkMode ? hueReverse : blue};
 `
 
 const Text = styled.h4`

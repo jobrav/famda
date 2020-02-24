@@ -62,7 +62,7 @@ grid-template-columns: 1fr 1fr;
 grid-auto-rows: auto;
 // height: 50px;
 padding-right: 15px;
-border-bottom: 1px solid ${({ theme: { darkMode, gray4, hue } }) => darkMode ? gray4 : hue}99;
+border-bottom: 1px solid  ${({ theme: { darkMode, gray4, gray6 } }) => darkMode ? gray4 : gray6}99;
 &:last-child{
     border-bottom: none;
 }

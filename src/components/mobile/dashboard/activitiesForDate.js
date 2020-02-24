@@ -22,7 +22,7 @@ display: grid;
 grid-template-columns: repeat(2,max-content) 1fr;
 grid-template-rows: 1fr;
 height: 55px;
-border-bottom: 1px solid ${({ theme: { darkMode, gray4, hue } }) => darkMode ? gray4 : hue}99;
+border-bottom: 1px solid  ${({ theme: { darkMode, gray4, gray6 } }) => darkMode ? gray4 : gray6}99;
 
 
 &:last-child{
@@ -78,7 +78,7 @@ color: ${props => props.theme.blue};;
 -webkit-text-fill-color: ${props => props.theme.blue};
 padding: 5px 10px;
 border-radius: 15px;
-background: ${({ theme: { hue } }) => hue};
+background: ${({ theme: { hue, gray6, darkMode } }) => darkMode ? hue : gray6};
 margin-right: 10px;
 `
 

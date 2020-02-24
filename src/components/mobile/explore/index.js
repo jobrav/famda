@@ -66,7 +66,7 @@ const ListItem = styled(Link)`
     grid-template-columns: repeat(2,max-content) 1fr;
     grid-template-rows: 1fr;
     height: 55px;
-    border-bottom: 1px solid ${({ theme: { darkMode, gray4, hue } }) => darkMode ? gray4 : hue}99;
+    border-bottom: 1px solid  ${({ theme: { darkMode, gray4, gray6 } }) => darkMode ? gray4 : gray6}99;
 
     &:last-child{
         border:none;

@@ -21,7 +21,7 @@ display: grid;
 grid-template-columns: repeat(2,max-content) 1fr;
 grid-template-rows: repeat(2,1fr);
 height: 65px;
-border-bottom: 1px solid ${({ theme: { darkMode, gray4, hue } }) => darkMode ? gray4 : hue}99;
+border-bottom: 1px solid  ${({ theme: { darkMode, gray4, gray6 } }) => darkMode ? gray4 : gray6}99;
 
 
 &:last-child{

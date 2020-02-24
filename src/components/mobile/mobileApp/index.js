@@ -160,11 +160,7 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
 
                     )
                     } />
-                    <Route path={["/:base/add/templates/:float1/:float2/", "/:base/add/templates/:float1/", "/:base/add/templates/"]} render={route =>
-                        <FloatWindowDefault route={route}>
-                            <FloatHeader title={"templates"} />
-                            <div></div></FloatWindowDefault>
-                    } />
+
                     <Route path={["/:base/tutorial"]} render={route =>
                         <FloatWindowDefault route={route}>
                             <FloatHeader header={{ colortag: "primaryBGC", border: false }} title={""} left={{ title: null }} right={{ title: null }} />
@@ -187,13 +183,18 @@ const MobileApp = React.memo(({ userData, setAppSettings, newsData, user }) => {
                     } />
 
 
-                    <Route path={["/:sec/edit", "/:sec/card"]} render={route => <FloatWindowDefault route={route} >
+                    <Route path={["/:sec/edit/:float1/:float2/", "/:sec/edit/:float1/", "/:sec/edit/", "/:sec/card"]} render={route => <FloatWindowDefault route={route} >
                         <FloatHeader left={{ title: "Annuleer", link: "../" }} right={{ title: "Wijzig", link: "../edit/" }} title={"Details afspraak"} />
                         <div><Route path={["/:sec/edit"]} render={_ => <EditForm user={userData} userData={newsData} />} />
                             <Route path={["/:sec/card"]} render={_ => <CardForm user={userData} userData={newsData} />} /></div>
                     </FloatWindowDefault>} />
 
 
+                    <Route path={["/:base/edit/templates/", "/:base/add/templates/", "/:base/historyevent/"]} render={route =>
+                        <FloatWindowDefault route={route}>
+                            <FloatHeader title={"test"} />
+                            <div></div></FloatWindowDefault>
+                    } />
 
                     {/* Menubar */}
                     <Route path={"/:active"} render={route => <MenuBar route={route} />}></Route>

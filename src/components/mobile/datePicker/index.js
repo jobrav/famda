@@ -72,7 +72,7 @@ const ListItem = styled.div`
     justify-self: center;
     align-self: center;
     padding: 1px;
-    font-size: ${props => props.theme.subFontSize};
+    font-size: 10px;
     text-align: center;
     color: ${props => props.theme.primaryFC || "#121212"}
     -webkit-text-fill-color: ${props => props.theme.primaryFC || "#121212"}
@@ -86,6 +86,7 @@ const Section = styled.div`
     grid-template-columns: repeat(7,auto);
     grid-auto-flow: row;
     grid-auto-rows: auto;
+    margin-bottom: 50px;
 `
 const DayContainer = styled.a`
     justify-self: center;
@@ -104,9 +105,10 @@ const Day = styled.div`
     justify-self: center;
     align-self: center;
     text-align: center;
-    width: 20px;
+    width: 25px;
+    font-size: 18px;
     font-weight: 400;
-    padding: 2.5px;
+    padding: 5px;
     border-radius: 25px;
     color: ${props => (!props.today && !props.active) ? props.theme.primaryFC : props.theme.primaryFAC};
     -webkit-text-fill-color: ${props => (!props.today && !props.active) ? props.theme.primaryFC : props.theme.primaryFAC};
@@ -220,8 +222,8 @@ const DatePicker = React.memo(({ }) => {
             <Header>
                 <Text>{`${monthNames[date ? new Date(date).getMonth() : undefined]} ${new Date(date).getFullYear()}`}</Text>
 
-                <Move justify="end" rotate="true" onClick={() => move(-1)} viewBox="0 0 451.846 451.847" xmlns="http://www.w3.org/2000/svg">{arrow}</Move>
-                <Move justify="start" onClick={() => move(1)} viewBox="0 0 451.846 451.847" xmlns="http://www.w3.org/2000/svg">{arrow}</Move>
+                {/* <Move justify="end" rotate="true" onClick={() => move(-1)} viewBox="0 0 451.846 451.847" xmlns="http://www.w3.org/2000/svg">{arrow}</Move>
+                <Move justify="start" onClick={() => move(1)} viewBox="0 0 451.846 451.847" xmlns="http://www.w3.org/2000/svg">{arrow}</Move> */}
             </Header>
 
             <List>{daysInWeek.map((day, i) => <ListItem key={`${day}_${i}_listitem`}>{day}</ListItem>)}</List>
