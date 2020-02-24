@@ -24,10 +24,11 @@ color: ${props => props.theme.floatFC || "#272727"};
 -webkit-text-fill-color: ${props => props.theme.floatFC || "#272727"};
 `
 
-const Name = styled.input`
+const Subject = styled.input`
 font-size: 30px;
 font-weight: 500;
 width: 100%;
+user-select: initial;
     max-width: 620px;
 color: ${props => props.theme.floatFC || "#272727"};
 -webkit-text-fill-color: ${props => props.theme.floatFC || "#272727"};
@@ -79,6 +80,7 @@ color: ${props => props.theme.floatFC || "#272727"};
 `
 const Input = styled.input`
 width:100%;
+user-select: initial;
 padding: 15px 0;
 font-size: ${props => props.theme.defaultFontSize};
 font-weight: 400;
@@ -97,7 +99,7 @@ const EditForm = () => {
 
     return (
         <Section>
-            <Name placeholder="Nieuwe activiteit" />
+            <Subject placeholder="Nieuwe activiteit" />
             <Templates active={templateActive} setActive={setTemplateActive} />
             <Container>
                 <Li>
