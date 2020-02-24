@@ -41,7 +41,7 @@ code {
   transform-origin: center;
   border-radius: 10px;
   filter: contrast(0.9) grayscale(1);
-  transition: all 300ms ease-in-out;
+  transition: all 150ms ease-in-out;
 }
 .returnPannel {
   top: 0 !important;
@@ -49,13 +49,13 @@ code {
   border-radius: 10px;
   transform-origin: center center;
   filter: contrast(0.9) grayscale(1);
-  transition: all 300ms ease-in-out;
+  transition: all 150ms ease-in-out;
 }
 .pannel {
   transform: scale(1);
   transform-origin: center;
   filter: grayscale(0);
-  transition: all 300ms ease-in-out;
+  transition: all 200ms ease-in-out;
 }
 
 .item-enter {

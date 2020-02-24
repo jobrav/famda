@@ -11,25 +11,31 @@ const Section = styled.div`
   display: grid;
   grid-template-columns:1fr;
   grid-template-rows: repeat(2,1fr);
+  `
+  const Container = styled(Link)`
+  display:flex;
+  justify-self:stretch;
+  align-self:stretch;
+
   background: ${({theme:{darkMode, hue,gray5}}) => darkMode ? gray5 : hue}da;
-  box-shadow: 0 0 15px 0 #1212121f;
-    backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 7.5px;
-`
-const Container = styled(Link)`
-    display:flex;
-    justify-self:stretch;
-    align-self:stretch;
-    border-bottom: 0.5px ${({ theme: { darkMode,gray1,hueReverse } }) => darkMode ? hueReverse : gray1}da solid;
-    &:last-child {
-        border: none;
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 0.5px ${({ theme: { darkMode,gray1,hueReverse } }) => darkMode ? hueReverse : gray1}da solid;
+
+  &:first-child {
+    border-top-left-radius: 7.5px;
+    border-top-right-radius: 7.5px;
     }
-    padding:2px;
+  &:last-child {
+      border-bottom-left-radius: 7.5px;
+      border-bottom-right-radius: 7.5px;
+      border: none;
+    }
+    padding:2.5px;
 `
 const Icon = styled.svg`
   border-radius: 25px;
-  height: 15px;
-  width: 15px;
+  height: 17.5px;
+  width: 17.5px;
   padding: 10px;
   fill: ${({ theme: { darkMode,blue,hueReverse } }) => darkMode ? hueReverse : blue};
 `
