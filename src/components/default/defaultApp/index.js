@@ -24,6 +24,7 @@ import CardForm from "../card";
 import MenuBar from "../menuBar";
 // windows
 import Agenda from "../agendaWindow";
+import Dashbaord from "../dashboardWindow";
 import ProjectWindow from "../projects";
 import ProjectList from "../projectList";
 // import Menu from "../menuWindow";
@@ -34,6 +35,7 @@ import Docs from "../docsWindow";
 import FloatWindowDefault from "../floatWindow";
 
 import { userdata } from "../../../func/loadUser";
+import Dashboard from "../dashboardWindow";
 
 let groupSources = [];
 
@@ -142,7 +144,7 @@ const sizeStyle = {
 
 export let getGroupSources = () => groupSources;
 
-const DefaultApp = React.memo(({ setAppSettings, userData, newsData }) => {
+const DefaultApp = React.memo(({ setAppSettings, userData, newsData, user }) => {
 
 
 
@@ -184,11 +186,14 @@ const DefaultApp = React.memo(({ setAppSettings, userData, newsData }) => {
       <Layout>
 
         <ThemeProvider theme={sizeStyle}>
+          {userData.tutorial === true || <Redirect exact from={`/dashboard`} to={`/dashboard/tutorial`} />}
           <Route exact path="/">
-            <Redirect exact from='/' to='/projects/' />
+            {/* <Redirect exact from='/' to={`/view/add/`} /> */}
+            <Redirect exact from='/' to={`/${localStorage.getItem('startScreen') || "dashboard"}/`} />
           </Route>
 
-          <Route path={["/docs/", "/view/", "/profile/", "/projects/", "/statistics/"]} render={route => <MenuBar user={userData || {}} route={route} />}></Route>
+
+          <Route path={["/docs/", "/view/", "/profile/", "/projects/", "/statistics/", "/dashboard/"]} render={route => <MenuBar user={userData || {}} route={route} />}></Route>
 
           <Route path={["/:sec/add", "/:sec/card"]} render={route => <FloatWindowDefault title={"Nieuwe activiteit"} route={route} >
             <Route path={["/:sec/add"]} render={_ => <EditForm user={userData} userData={newsData} />} />
@@ -266,6 +271,9 @@ const DefaultApp = React.memo(({ setAppSettings, userData, newsData }) => {
             exact
             path={["/profile", "/profile/:layer"]}
             render={route => <Profile settings={setAppSettings} route={route} user={userData} />}
+          />
+          <Route path={["/dashboard/:float1/:float2/", "/dashboard/:float1/", "/dashboard"]}
+            render={route => <Dashboard user={user} userData={userData} />}
           />
         </ThemeProvider>
       </Layout>

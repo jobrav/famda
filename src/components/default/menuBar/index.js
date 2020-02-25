@@ -136,6 +136,7 @@ ${NavTitle}:hover & > svg{
 
 
   const navListItems = [
+    { icon: blocks, title: "Overzicht", link: "/dashboard/" },
     { icon: blocks, title: "Agenda", link: "/view/" },
     { icon: news, title: "Documenten", link: "/docs/" },
     // acountRank.famdaPro && {icon: blocks, title: "Statistieken", link: "/statistics/" },

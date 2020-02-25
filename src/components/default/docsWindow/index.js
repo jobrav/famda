@@ -13,7 +13,7 @@ grid-auto-columns: 50%;
 grid-template-rows: 1fr;
 width: 100%;
 height: 100vh;
-grid-column: 2;
+grid-column: 2/4;
 grid-row: 2;
 scroll-behavior: smooth;
 scroll-snap-type: x mandatory;
