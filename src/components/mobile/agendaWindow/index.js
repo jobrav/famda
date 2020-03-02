@@ -15,6 +15,9 @@ let renderList = [];
 let cache = [];
 
 const Section = styled.section`
+// position: fixed;
+// top: -15px;
+// border-top: solid 15px #fff;
 grid-column: 1;
 grid-row: 1/4;
 overflow: hidden;

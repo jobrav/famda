@@ -10,27 +10,35 @@ const Section = styled.div`
   z-index: 10;
   display: grid;
   grid-template-columns:1fr;
-  grid-template-rows: repeat(2,1fr);
+  grid-template-rows: 1fr 1px 1fr;
+  box-shadow: 0 0 10px 5px #0000001c;
+  border-radius: 10px;
   `
   const Container = styled(Link)`
   display:flex;
   justify-self:stretch;
   align-self:stretch;
 
-  background: ${({theme:{darkMode, hue,gray5}}) => darkMode ? gray5 : hue}da;
+  background: ${({theme:{darkMode, hue,gray5}}) => darkMode ? gray5 : hue}99;
   backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 0.5px ${({ theme: { darkMode,gray1,hueReverse } }) => darkMode ? hueReverse : gray1}da solid;
+//   border-bottom: 0.5px ${({ theme: { darkMode,gray1,hueReverse } }) => darkMode ? hueReverse : gray1}da solid;
 
   &:first-child {
-    border-top-left-radius: 7.5px;
-    border-top-right-radius: 7.5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     }
   &:last-child {
-      border-bottom-left-radius: 7.5px;
-      border-bottom-right-radius: 7.5px;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
       border: none;
     }
-    padding:2.5px;
+    padding:3px;
+`
+const Split = styled.div`
+justify-self:stretch;
+align-self:stretch;
+background: ${({ theme: { darkMode,gray1,hueReverse } }) => darkMode ? hueReverse : gray1}99;
+backdrop-filter: blur(20px) saturate(180%);
 `
 const Icon = styled.svg`
   border-radius: 25px;
@@ -75,6 +83,7 @@ const ToolbarTop = React.memo(({ listArr,view,changeView }) => {
                 {dots}
                 </Icon>
             </Container>
+            <Split/>
             <Container to="add/">
             <Icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 491.86 491.86">
                 {plus}
